@@ -1,3 +1,4 @@
+import 'package:adhan/adhan.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -49,10 +50,43 @@ double getTextSize2(String text, double fontSize) {
 }
 
 List<String> get daysOfWeek {
-  final List<String> lst = [];
-  for (var i = 0; i < 7; i++) {
-    final date = DateTime(2000, 1, i);
-    lst.add(intl.DateFormat('EE', "ar").format(date));
-  }
-  return lst;
+  return daysOfWeekInt.map((e) {
+    final date = DateTime(2020, 1, e + 5);
+    return intl.DateFormat('EE', "ar").format(date);
+  }).toList();
+}
+
+List<int> get daysOfWeekInt {
+  return List.generate(7, (index) => index + 1);
+}
+
+List<int> get timesOfDayInt {
+  return List.generate(7, (index) => index);
+}
+
+final List<AzanTimeClass> _times = [
+  AzanTimeClass("الفجر", Prayer.fajr),
+  AzanTimeClass("الضحى", Prayer.sunrise),
+  AzanTimeClass("الظهر", Prayer.dhuhr),
+  AzanTimeClass("العصر", Prayer.asr),
+  AzanTimeClass("المغرب", Prayer.maghrib),
+  AzanTimeClass("العشاء", Prayer.isha),
+  AzanTimeClass("ثلث الليل", Prayer.none),
+];
+List<AzanTimeClass> get azanTimes => _times;
+List<String> get timesOfDay {
+  return timesOfDayInt.map((e) {
+    return _times[e].name;
+  }).toList();
+}
+
+extension timerMethodes on DateTime {
+  String get myTime => intl.DateFormat.jms().format(this);
+  String get myTimeNoSeconds => intl.DateFormat.jm().format(this);
+}
+
+class AzanTimeClass {
+  String name;
+  Prayer type;
+  AzanTimeClass(this.name, this.type);
 }

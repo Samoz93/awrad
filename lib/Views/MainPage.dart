@@ -1,9 +1,12 @@
-import 'package:awrad/Views/awrad/AwradTypesScreen.dart';
 import 'package:awrad/Views/quran/QuranScreen.dart';
+import 'package:awrad/Views/services/MyServices.dart';
 import 'package:awrad/Views/welcome/WelcomeView.dart';
+
 import 'package:awrad/widgets/BkScaffold.dart';
 import 'package:awrad/widgets/MyBtn.dart';
 import 'package:flutter/material.dart';
+
+import 'awrad/AwradTypesScreen.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({Key key}) : super(key: key);
@@ -14,12 +17,11 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   final bucket = PageStorageBucket();
-
   List<Widget> pages = [
     WelcomeScreed(key: PageStorageKey('WelcomeScreed')),
     QuranScreen(key: PageStorageKey('QuranScreen')),
     AwradTypesScreen(key: PageStorageKey('AwradTypesScreen')),
-    WelcomeScreed(key: PageStorageKey('welcome3')),
+    MyServices(key: PageStorageKey('welcome3')),
   ];
   List<GlobalKey> _keys = [
     GlobalKey<NavigatorState>(),
@@ -28,6 +30,7 @@ class _MainPageState extends State<MainPage> {
     GlobalKey<NavigatorState>(),
   ];
   int index = 0;
+  String route = "services";
   @override
   Widget build(BuildContext context) {
     return BkScaffold(
@@ -36,15 +39,18 @@ class _MainPageState extends State<MainPage> {
           bottomNavigationBar: BottomAppBar(
             child: MyBottomAppBar(
               selectedIndex: index,
-              onIndexChanged: (v) {
-                setState(() {
-                  if (index == v) {
-                    final k = (_keys[index] as GlobalKey<NavigatorState>);
-                    k.currentState.popUntil((route) => route.isFirst);
-                  } else {
-                    index = v;
-                  }
-                });
+              onRouteChanged: (rou, ind) {
+                setState(
+                  () {
+                    if (index == ind) {
+                      final k = (_keys[index] as GlobalKey<NavigatorState>);
+                      k.currentState.popUntil((route) => route.isFirst);
+                    } else {
+                      index = ind;
+                      route = rou;
+                    }
+                  },
+                );
               },
             ),
           ),
@@ -74,9 +80,9 @@ class _MainPageState extends State<MainPage> {
 }
 
 class MyBottomAppBar extends StatefulWidget {
-  final Function(int) onIndexChanged;
+  final Function(String, int) onRouteChanged;
   final int selectedIndex;
-  MyBottomAppBar({Key key, this.onIndexChanged, this.selectedIndex})
+  MyBottomAppBar({Key key, this.onRouteChanged, this.selectedIndex})
       : super(key: key);
 
   @override
@@ -85,13 +91,13 @@ class MyBottomAppBar extends StatefulWidget {
 
 class _MyBottomAppBarState extends State<MyBottomAppBar> {
   int currentIndex = 0;
+  String currentKey = "main";
 
   @override
   Widget build(BuildContext context) {
     final media = MediaQuery.of(context).size;
     final activeWidth = media.width * 0.3;
     final iconWidth = (media.width - activeWidth) / 4;
-    currentIndex = widget.selectedIndex;
     return Container(
       height: 50,
       child: Stack(
@@ -165,10 +171,12 @@ class _MyBottomAppBarState extends State<MyBottomAppBar> {
   //     return currentIndex * active
   //   }
   // }
-  _setState(v) {
+  _setState(String v, int index) {
+    currentIndex = index;
+
     setState(() {
-      currentIndex = v;
+      currentKey = v;
     });
-    widget.onIndexChanged(v);
+    widget.onRouteChanged(v, index);
   }
 }

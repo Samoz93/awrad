@@ -4,27 +4,15 @@ import 'package:stacked/stacked.dart';
 
 class AwradVM extends BaseViewModel {
   final ser = AwradService();
+  int _selectedTile = 0;
+  int get selectedTile => _selectedTile;
+  set selectedTile(int val) {
+    _selectedTile = val;
+    notifyListeners();
+  }
 
   List<WrdModel> _awrad;
   List<WrdModel> get awrad => _awrad;
-  List<String> _selectedList = [];
-  List<String> get selectedList => _selectedList;
-
-  bool _showDays = false;
-  bool get showAlaramOption => _showDays;
-  toggelAlarmOption() {
-    _showDays = !_showDays;
-    notifyListeners();
-  }
-
-  addDay(day) {
-    if (_selectedList.contains(day))
-      _selectedList.remove(day);
-    else
-      _selectedList.add(day);
-
-    notifyListeners();
-  }
 
   fetchData(String type) {
     runBusyFuture(_getData(type));

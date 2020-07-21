@@ -8,7 +8,7 @@ class MyBtn extends StatelessWidget {
   final bool isSelected;
   final double width;
   final double selectedWidth;
-  final Function(int) onPressed;
+  final Function(String, int) onPressed;
   final String icon;
   const MyBtn(
       {Key key,
@@ -40,7 +40,7 @@ class MyBtn extends StatelessWidget {
             ],
           ),
         ),
-        onPressed: () => onPressed(index),
+        onPressed: () => onPressed(icon, index),
       ),
     );
   }
