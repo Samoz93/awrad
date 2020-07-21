@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "247776385623",
+    "firebase_url": "https://azankhaled-18847.firebaseio.com",
+    "project_id": "azankhaled-18847",
+    "storage_bucket": "azankhaled-18847.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:247776385623:android:62123ae20061cb9eeb6112",
+        "android_client_info": {
+          "package_name": "com.samozstudio.awrad"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "247776385623-cu09t9muq3tu3qr4pgihbudlu6r4s5tn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.samozstudio.awrad",
+            "certificate_hash": "dcd7d2f319d3f3e1a2b773a45be28ce02b2abb42"
+          }
+        },
+        {
+          "client_id": "247776385623-6p2nrvpscjm8kqgg6j6bs1elbgqbgsl6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBFXqHpbgL_zmCcXIicuiR-cAK4QZtKxwM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "247776385623-6p2nrvpscjm8kqgg6j6bs1elbgqbgsl6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
