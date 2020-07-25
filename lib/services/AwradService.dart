@@ -6,6 +6,7 @@ import 'package:firebase_database/firebase_database.dart';
 class AwradService {
   final _db = FirebaseDatabase.instance;
   final List<AwradTypesModel> _types = [];
+  final List<AwradTypesModel> _books = [];
   Future<List<WrdModel>> allAwrad(String wrdType) async {
     final data = await _db.reference().child('$AWRAD/$wrdType').once();
     if (data.value == null) return [];
@@ -31,4 +32,8 @@ class AwradService {
     _types.addAll(x);
     return _types;
   }
+
+  // Future<List<MyBooks>> get books {
+    
+  // }
 }

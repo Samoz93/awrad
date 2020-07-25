@@ -1,9 +1,10 @@
-import 'package:awrad/Views/awrad/AwradListScreen.dart';
 import 'package:awrad/models/AwradTypesModel.dart';
 import 'package:awrad/services/AwradService.dart';
 import 'package:awrad/widgets/AwradBtn.dart';
 import 'package:awrad/widgets/LoadingWidget.dart';
 import 'package:flutter/material.dart';
+
+import 'AwradListScreen.dart';
 
 class AwradTypesScreen extends StatelessWidget {
   AwradTypesScreen({Key key}) : super(key: key);
@@ -26,13 +27,11 @@ class AwradTypesScreen extends StatelessWidget {
                     AwradBtn(
                       txt: snapshot.data[index].typeName,
                       onPressed: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (_) => AwradListScreen(
-                              type: snapshot.data[index],
-                            ),
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => AwradListScreen(
+                            type: snapshot.data[index],
                           ),
-                        );
+                        ));
                       },
                     ),
                   ],

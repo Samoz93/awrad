@@ -16,7 +16,7 @@ class WelcomeScreed extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<SlideViewModel>.reactive(
-      builder: (ctx, model, ch) {
+      builder: (context, model, ch) {
         if (model.hasError) return Text(model.modelError);
         return model.isBusy
             ? Center(
