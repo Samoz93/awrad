@@ -49,8 +49,10 @@ dependencies:
   # expansion_card: ^0.1.0
   expansion_tile_card: ^1.0.3
 
-  intl: ^0.16.1
-  flutter_html_textview: 
+  intl: 
+  flutter_html: ^1.0.0-pre.1
+  assets_audio_player: ^2.0.8+2
+  flutter_widgets: ^0.1.12
 
   cupertino_icons: ^0.1.3
 
@@ -96,6 +98,18 @@ flutter:
     - family: gg
       fonts:
         - asset: assets/gg.otf
+          weight: 700
+    - family: ScheherazadeRegOT
+      fonts:
+        - asset: assets/ScheherazadeRegOT.ttf
+          weight: 700
+    - family: ArabicKufiSSK
+      fonts:
+        - asset: assets/ArabicKufiSSK.ttf
+          weight: 700
+    - family: elrady
+      fonts:
+        - asset: assets/elrady.otf
           weight: 700
   #   - family: Trajan Pro
   #     fonts:

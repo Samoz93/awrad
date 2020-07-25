@@ -1,3 +1,4 @@
+import 'package:awrad/Views/SavedAwrad/SavedAwrad.dart';
 import 'package:awrad/Views/quran/QuranScreen.dart';
 import 'package:awrad/Views/services/MyServices.dart';
 import 'package:awrad/Views/welcome/WelcomeView.dart';
@@ -20,10 +21,12 @@ class _MainPageState extends State<MainPage> {
   List<Widget> pages = [
     WelcomeScreed(key: PageStorageKey('WelcomeScreed')),
     QuranScreen(key: PageStorageKey('QuranScreen')),
+    SavedAwrad(key: PageStorageKey('saved')),
     AwradTypesScreen(key: PageStorageKey('AwradTypesScreen')),
-    MyServices(key: PageStorageKey('welcome3')),
+    MyServices(key: PageStorageKey('welcosme3')),
   ];
   List<GlobalKey> _keys = [
+    GlobalKey<NavigatorState>(),
     GlobalKey<NavigatorState>(),
     GlobalKey<NavigatorState>(),
     GlobalKey<NavigatorState>(),
@@ -107,25 +110,25 @@ class _MyBottomAppBarState extends State<MyBottomAppBar> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               MyBtn(
-                  txt: "غير",
-                  icon: "other",
+                  txt: "خدمات",
+                  icon: "services",
                   isSelected: currentIndex == 4,
                   index: 4,
                   selectedWidth: activeWidth,
                   width: iconWidth,
                   onPressed: _setState),
               MyBtn(
-                  txt: "خدمات",
-                  icon: "services",
+                  txt: "الاوراد",
+                  icon: "awrad",
                   selectedWidth: activeWidth,
                   isSelected: currentIndex == 3,
                   index: 3,
                   width: iconWidth,
                   onPressed: _setState),
               MyBtn(
-                  txt: "الأوراد",
+                  txt: "جدول الأوراد",
                   selectedWidth: activeWidth,
-                  icon: "awrad",
+                  icon: "saved",
                   isSelected: currentIndex == 2,
                   index: 2,
                   width: iconWidth,

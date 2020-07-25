@@ -23,22 +23,22 @@ class AdanService {
     print('---');
     return prayerTimes;
     // Custom Timezone Usage. (Most of you won't need this).
-    print('NewYork Prayer Times');
-    final newYork = Coordinates(35.7750, -78.6336);
-    final nyUtcOffset = Duration(hours: -4);
-    final nyDate = DateComponents(2015, 7, 12);
-    final nyParams = CalculationMethod.north_america.getParameters();
-    nyParams.madhab = Madhab.hanafi;
-    final nyPrayerTimes =
-        PrayerTimes(newYork, nyDate, nyParams, utcOffset: nyUtcOffset);
+    // print('NewYork Prayer Times');
+    // final newYork = Coordinates(35.7750, -78.6336);
+    // final nyUtcOffset = Duration(hours: -4);
+    // final nyDate = DateComponents(2015, 7, 12);
+    // final nyParams = CalculationMethod.north_america.getParameters();
+    // nyParams.madhab = Madhab.hanafi;
+    // final nyPrayerTimes =
+    //     PrayerTimes(newYork, nyDate, nyParams, utcOffset: nyUtcOffset);
 
-    print(nyPrayerTimes.fajr.timeZoneName);
-    print(DateFormat.jm().format(nyPrayerTimes.fajr));
-    print(DateFormat.jm().format(nyPrayerTimes.sunrise));
-    print(DateFormat.jm().format(nyPrayerTimes.dhuhr));
-    print(DateFormat.jm().format(nyPrayerTimes.asr));
-    print(DateFormat.jm().format(nyPrayerTimes.maghrib));
-    print(DateFormat.jm().format(nyPrayerTimes.isha));
+    // print(nyPrayerTimes.fajr.timeZoneName);
+    // print(DateFormat.jm().format(nyPrayerTimes.fajr));
+    // print(DateFormat.jm().format(nyPrayerTimes.sunrise));
+    // print(DateFormat.jm().format(nyPrayerTimes.dhuhr));
+    // print(DateFormat.jm().format(nyPrayerTimes.asr));
+    // print(DateFormat.jm().format(nyPrayerTimes.maghrib));
+    // print(DateFormat.jm().format(nyPrayerTimes.isha));
   }
 
   // Generate prayer times for one day on April 12th, 2018.

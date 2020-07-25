@@ -3,6 +3,7 @@ import 'dart:math' show pi;
 
 import 'package:awrad/Consts/ThemeCosts.dart';
 import 'package:awrad/widgets/LoadingWidget.dart';
+import 'package:awrad/widgets/MyScf.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_qiblah/flutter_qiblah.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -27,44 +28,47 @@ class _MyQublaState extends State<MyQubla> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.center,
-      padding: const EdgeInsets.all(8.0),
-      child: StreamBuilder(
-        stream: stream,
-        builder: (context, AsyncSnapshot<LocationStatus> snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting)
-            return LoadingWidget();
-          if (snapshot.data.enabled == true) {
-            switch (snapshot.data.status) {
-              case GeolocationStatus.granted:
-                return QiblahCompassWidget();
+    return MyScaffold(
+      title: "القبلة",
+      child: Container(
+        alignment: Alignment.center,
+        padding: const EdgeInsets.all(8.0),
+        child: StreamBuilder(
+          stream: stream,
+          builder: (context, AsyncSnapshot<LocationStatus> snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting)
+              return LoadingWidget();
+            if (snapshot.data.enabled == true) {
+              switch (snapshot.data.status) {
+                case GeolocationStatus.granted:
+                  return QiblahCompassWidget();
 
-              case GeolocationStatus.denied:
-                return LocationErrorWidget(
-                  error: "Location service permission denied",
-                  callback: _checkLocationStatus,
-                );
-              case GeolocationStatus.disabled:
-                return LocationErrorWidget(
-                  error: "Location service disabled",
-                  callback: _checkLocationStatus,
-                );
-              case GeolocationStatus.unknown:
-                return LocationErrorWidget(
-                  error: "Unknown Location service error",
-                  callback: _checkLocationStatus,
-                );
-              default:
-                return Container();
+                case GeolocationStatus.denied:
+                  return LocationErrorWidget(
+                    error: "Location service permission denied",
+                    callback: _checkLocationStatus,
+                  );
+                case GeolocationStatus.disabled:
+                  return LocationErrorWidget(
+                    error: "Location service disabled",
+                    callback: _checkLocationStatus,
+                  );
+                case GeolocationStatus.unknown:
+                  return LocationErrorWidget(
+                    error: "Unknown Location service error",
+                    callback: _checkLocationStatus,
+                  );
+                default:
+                  return Container();
+              }
+            } else {
+              return LocationErrorWidget(
+                error: "Please enable Location service",
+                callback: _checkLocationStatus,
+              );
             }
-          } else {
-            return LocationErrorWidget(
-              error: "Please enable Location service",
-              callback: _checkLocationStatus,
-            );
-          }
-        },
+          },
+        ),
       ),
     );
   }
@@ -107,24 +111,26 @@ class QiblahCompassWidget extends StatelessWidget {
 
         final qiblahDirection = snapshot.data;
 
-        return Stack(
-          alignment: Alignment.center,
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            Transform.rotate(
-              angle: ((qiblahDirection.direction ?? 0) * (pi / 180) * -1),
-              child: _compassSvg,
-            ),
-            Transform.rotate(
-              angle: ((qiblahDirection.qiblah ?? 0) * (pi / 180) * -1),
+            Stack(
               alignment: Alignment.center,
-              child: _needleSvg,
+              children: <Widget>[
+                Transform.rotate(
+                  angle: ((qiblahDirection.direction ?? 0) * (pi / 180) * -1),
+                  child: _compassSvg,
+                ),
+                Transform.rotate(
+                  angle: ((qiblahDirection.qiblah ?? 0) * (pi / 180) * -1),
+                  alignment: Alignment.center,
+                  child: _needleSvg,
+                ),
+              ],
             ),
-            Positioned(
-              bottom: 0,
-              child: Text(
-                "${qiblahDirection.offset.toStringAsFixed(3)}°",
-                style: TextStyle(color: AppColors.addColor, fontSize: 20),
-              ),
+            Text(
+              "${qiblahDirection.offset.toStringAsFixed(3)}°",
+              style: TextStyle(color: AppColors.addColor, fontSize: 20),
             )
           ],
         );
