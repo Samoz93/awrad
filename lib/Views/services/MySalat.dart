@@ -4,6 +4,7 @@ import 'package:awrad/Consts/ThemeCosts.dart';
 import 'package:awrad/Views/services/AdanVM.dart';
 import 'package:awrad/Views/services/TimerVm.dart';
 import 'package:awrad/widgets/LoadingWidget.dart';
+import 'package:awrad/widgets/MyScf.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:stacked/stacked.dart';
@@ -14,18 +15,23 @@ class MySalat extends StatelessWidget {
   MySalat({Key key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return ViewModelBuilder<AdanVm>.reactive(
-        builder: (context, model, ch) => model.isBusy
-            ? LoadingWidget()
-            : model.hasPermission
-                ? Prayers()
-                : LocationErrorWidget(
-                    error: "يرجى تزويد التطبيق بالاذونات المطلوبة للمتابعة",
-                    callback: model.askForPermissions(),
-                  ),
-        onModelReady: (vmm) => vmm.askForPermissions(),
-        disposeViewModel: false,
-        viewModelBuilder: () => AdanVm());
+    return MyScaffold(
+      title: "أوقات الصلاة",
+      child: SingleChildScrollView(
+        child: ViewModelBuilder<AdanVm>.reactive(
+            builder: (context, model, ch) => model.isBusy
+                ? LoadingWidget()
+                : model.hasPermission
+                    ? Prayers()
+                    : LocationErrorWidget(
+                        error: "يرجى تزويد التطبيق بالاذونات المطلوبة للمتابعة",
+                        callback: model.askForPermissions(),
+                      ),
+            onModelReady: (vmm) => vmm.askForPermissions(),
+            disposeViewModel: false,
+            viewModelBuilder: () => AdanVm()),
+      ),
+    );
   }
 }
 
@@ -75,7 +81,8 @@ class Prayers extends ViewModelWidget<AdanVm> {
   }
 
   List<Widget> _timeRow(PrayerTimes pr) {
-    final nxtPrayer = pr.nextPrayer();
+    final nxtPrayer =
+        pr.nextPrayer() == Prayer.none ? Prayer.fajr : pr.nextPrayer();
     return azanTimes.map((e) {
       final isActive = nxtPrayer == e.type;
       return e.type == Prayer.none

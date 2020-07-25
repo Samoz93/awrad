@@ -97,6 +97,8 @@ class Surahs {
 
 class Ayahs {
   int number;
+  String audio;
+  List<String> audioSecondary;
   String text;
   int numberInSurah;
   int juz;
@@ -105,9 +107,12 @@ class Ayahs {
   int ruku;
   int hizbQuarter;
   dynamic sajda;
-
+  String get normalizeText =>
+      text.replaceFirst("بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ", "");
   Ayahs(
       {this.number,
+      this.audio,
+      this.audioSecondary,
       this.text,
       this.numberInSurah,
       this.juz,
@@ -119,6 +124,8 @@ class Ayahs {
 
   Ayahs.fromJson(Map<String, dynamic> json) {
     number = json['number'];
+    audio = json['audio'];
+    audioSecondary = json['audioSecondary'].cast<String>();
     text = json['text'];
     numberInSurah = json['numberInSurah'];
     juz = json['juz'];
@@ -132,6 +139,8 @@ class Ayahs {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['number'] = this.number;
+    data['audio'] = this.audio;
+    data['audioSecondary'] = this.audioSecondary;
     data['text'] = this.text;
     data['numberInSurah'] = this.numberInSurah;
     data['juz'] = this.juz;

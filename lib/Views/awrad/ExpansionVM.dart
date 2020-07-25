@@ -1,35 +1,24 @@
-import 'dart:developer';
-
 import 'package:awrad/Consts/ConstMethodes.dart';
-import 'package:awrad/Consts/DATABASECONST.dart';
 import 'package:awrad/models/ReminderModel.dart';
+import 'package:awrad/services/ReminderService.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hive/hive.dart';
 import 'package:stacked/stacked.dart';
 
 class ExpansionVM extends BaseViewModel {
   final id;
-  Box<ReminderModel> box;
+  final _ser = Get.find<ReminderService>();
+  ReminderModel _rm;
   ExpansionVM({@required this.id}) {
-    _initData();
+    _init();
   }
-  _initData() {
-    try {
-      box = Hive.box<ReminderModel>(REMINDER_BOX);
-      rm = box.values.firstWhere((element) => element.id == id);
-      if (rm != null) {
-        _days = rm.days;
-        _times = rm.times;
-      }
-    } catch (e) {
-      log(e.toString());
-    }
+  _init() {
+    _rm = _ser.getReminder(id, isAwrad: true);
+    notifyListeners();
   }
 
-  ReminderModel rm;
-
-  bool get hasReminder => rm != null;
+  bool get hasReminder => _rm.days.length > 0 && _rm.times.length > 0;
+  ReminderModel get reminder => _rm;
 
   bool _showAlaramOption = false;
   bool get showAlaramOption => _showAlaramOption;
@@ -38,15 +27,16 @@ class ExpansionVM extends BaseViewModel {
     notifyListeners();
   }
 
-  List<int> _days = [];
-  List<int> _times = [];
-
   List<bool> get selectionBool {
-    return daysOfWeekInt.map((e) => _days.contains(e)).toList();
+    return daysOfWeekInt
+        .map((e) => _rm == null ? false : _rm.days.contains(e))
+        .toList();
   }
 
   List<bool> get selectionBoolTimes {
-    return timesOfDayInt.map((e) => _times.contains(e)).toList();
+    return timesOfDayInt
+        .map((e) => _rm == null ? false : _rm.times.contains(e))
+        .toList();
   }
 
   getDayName(int day) {
@@ -55,9 +45,7 @@ class ExpansionVM extends BaseViewModel {
 
   saveDate() async {
     try {
-      rm = ReminderModel(days: _days, times: _times, id: id, isAwrad: true);
-      await deleteNotification();
-      await box.add(rm);
+      await _ser.saveReminder(_rm);
       toggelAlarmOption();
       Get.snackbar("تم", "تم حفظ الإعدادات");
     } catch (e) {
@@ -65,47 +53,35 @@ class ExpansionVM extends BaseViewModel {
     }
   }
 
-  deleteNotification({bool showNotification = false}) async {
-    try {
-      final vals = box.values.toList();
-      final recur = vals.where((element) => element.id == id).toList().reversed;
-
-      for (var item in recur) {
-        final index = vals.indexOf(item);
-        await box.deleteAt(index);
-      }
-      if (showNotification) {
-        Get.snackbar("تم", "تم حذف التنبيه");
-        _days = [];
-        _times = [];
-        rm = null;
-        notifyListeners();
-      }
-    } catch (e) {
-      _handleError(e);
-    }
-  }
-
   void addDay(int index) {
     index += 1;
-    if (_days.contains(index)) {
-      _days.remove(index);
+    if (_rm.days.contains(index)) {
+      _rm.days.remove(index);
     } else {
-      _days.add(index);
+      _rm.days.add(index);
     }
     notifyListeners();
   }
 
   void addTime(int index) {
-    if (_times.contains(index)) {
-      _times.remove(index);
+    if (_rm.times.contains(index)) {
+      _rm.times.remove(index);
     } else {
-      _times.add(index);
+      _rm.times.add(index);
     }
     notifyListeners();
   }
 
   _handleError(e) {
     Get.snackbar("خطأ", "$e");
+  }
+
+  Future<void> deleteNotification(String uid, {bool showNotification}) async {
+    try {
+      await _ser.deleteDuplicatedReminders(uid, showNotification: true);
+      _init();
+    } catch (e) {
+      _handleError(e);
+    }
   }
 }

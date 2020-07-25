@@ -1,4 +1,5 @@
 import 'package:awrad/Consts/DATABASECONST.dart';
+import 'package:awrad/Consts/ThemeCosts.dart';
 import 'package:awrad/models/ReminderModel.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -46,11 +47,16 @@ class MyApp extends StatelessWidget {
       title: 'أوراد وأذكار',
       navigatorKey: _nab,
       theme: ThemeData(
+        primaryColor: AppColors.mainColorSelected,
+        accentColor: AppColors.mainColor,
         fontFamily: "gg",
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: Directionality(textDirection: TextDirection.rtl, child: MainPage()),
+      home: Directionality(
+        textDirection: TextDirection.rtl,
+        child: MainPage(),
+      ),
     );
   }
 }

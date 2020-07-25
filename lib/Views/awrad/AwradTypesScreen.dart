@@ -1,3 +1,4 @@
+import 'package:awrad/Views/Library/MyLibrary.dart';
 import 'package:awrad/models/AwradTypesModel.dart';
 import 'package:awrad/services/AwradService.dart';
 import 'package:awrad/widgets/AwradBtn.dart';
@@ -20,16 +21,34 @@ class AwradTypesScreen extends StatelessWidget {
           return Center(
             child: ListView.builder(
               shrinkWrap: true,
-              itemCount: snapshot.data.length,
+              itemCount: snapshot.data.length + 1,
               itemBuilder: (BuildContext context, int index) {
+                if (index == 0) {
+                  return Column(
+                    children: <Widget>[
+                      AwradBtn(
+                        txt: "مكتبة التصوف",
+                        onPressed: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: (context) => MyLibrary()),
+                          );
+                        },
+                      ),
+                      Divider(
+                        thickness: 2,
+                      )
+                    ],
+                  );
+                }
                 return Column(
                   children: <Widget>[
                     AwradBtn(
-                      txt: snapshot.data[index].typeName,
+                      txt: snapshot.data[index - 1].typeName,
                       onPressed: () {
                         Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => AwradListScreen(
-                            type: snapshot.data[index],
+                            type: snapshot.data[index - 1],
                           ),
                         ));
                       },

@@ -30,6 +30,7 @@ class AppColors {
   static final mainColorSelected = Color(0xff994D23);
   static final deleteColor = Color(0xffe63946);
   static final addColor = Color(0xff4ecdc4);
+  static final surahColor = Color(0xffEAAA87);
 
   static final adanNormal = Color(0xffD5C0B4);
   static final adanActive = Color(0xffDAD222);

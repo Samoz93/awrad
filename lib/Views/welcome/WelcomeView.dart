@@ -12,7 +12,7 @@ class WelcomeScreed extends StatelessWidget {
   WelcomeScreed({Key key}) : super(key: key);
   final noneActiveSize = 10.0;
   final activeSize = 20.0;
-  final _ctrl = PageController(initialPage: 0, viewportFraction: 0.99);
+  final _ctrl = PageController(initialPage: 0, viewportFraction: 0.9);
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<SlideViewModel>.reactive(
@@ -32,7 +32,7 @@ class WelcomeScreed extends StatelessWidget {
                       itemCount: model.data.length,
                       itemBuilder: (BuildContext context, int index) {
                         return Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding: const EdgeInsets.all(8),
                           child: SlideView(
                             model: model.data[index],
                           ),

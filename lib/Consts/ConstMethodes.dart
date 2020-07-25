@@ -18,19 +18,18 @@ Map<String, dynamic> getMap(data) {
   return Map<String, dynamic>.from(data);
 }
 
-Size getTextSize(String text, TextStyle style) {
+Size getTextSize(String text, TextStyle style, double maxWidth) {
   final TextPainter textPainter = TextPainter(
       text: TextSpan(text: text, style: style),
       // maxLines: 1,
       textDirection: TextDirection.ltr)
-    ..layout(minWidth: 0, maxWidth: double.infinity);
+    ..layout(minWidth: 0, maxWidth: maxWidth);
   return textPainter.size;
 }
 
 double getTextSize2(String text, double fontSize) {
   final constraints = BoxConstraints(
-    maxWidth: 800.0, // maxwidth calculated
-    minHeight: 0.0,
+    maxWidth: 100.0, // maxwidth calculated
     minWidth: 0.0,
   );
 
@@ -41,12 +40,12 @@ double getTextSize2(String text, double fontSize) {
         fontSize: fontSize,
       ),
     ),
-    textDirection: TextDirection.ltr,
+    textDirection: TextDirection.rtl,
     maxLines: 1,
   );
   renderParagraph.layout(constraints);
-  double textlen =
-      renderParagraph.getMinIntrinsicWidth(fontSize).ceilToDouble();
+  double textlen = renderParagraph.getMaxIntrinsicHeight(800);
+  return textlen;
 }
 
 List<String> get daysOfWeek {

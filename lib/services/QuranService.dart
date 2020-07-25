@@ -1,8 +1,8 @@
-import 'package:awrad/services/Api.dart';
+import 'package:awrad/services/QuranApi.dart';
 import 'package:get/get.dart';
 
 class QuranService {
-  final _rest = Get.find<Api>();
+  final _rest = Get.find<QuranApi>();
   dynamic _model;
 
   Future<dynamic> get quran async {
