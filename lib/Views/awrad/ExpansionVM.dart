@@ -39,7 +39,7 @@ class ExpansionVM extends BaseViewModel {
         .toList();
   }
 
-  getDayName(int day) {
+  String getDasyName(int day) {
     return daysOfWeek[0];
   }
 

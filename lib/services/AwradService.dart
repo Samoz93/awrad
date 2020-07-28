@@ -3,11 +3,9 @@ import 'package:awrad/models/AwradModel.dart';
 import 'package:awrad/models/AwradTypesModel.dart';
 import 'package:awrad/models/ReminderModel.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:hive/hive.dart';
 
 class AwradService {
   final _db = FirebaseDatabase.instance;
-  final box = Hive.box("main");
 
   final List<AwradTypesModel> _types = [];
   Future<List<WrdModel>> allAwrad(String wrdType) async {

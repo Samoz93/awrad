@@ -20,5 +20,6 @@ class AwradVM extends BaseViewModel {
 
   _getData(type) async {
     _awrad = await ser.allAwrad(type);
+    return _awrad;
   }
 }

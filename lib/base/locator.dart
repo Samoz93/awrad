@@ -13,9 +13,8 @@ import 'package:awrad/services/ReminderService.dart';
 import 'package:awrad/services/SlidesService.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
 import 'package:rxdart/rxdart.dart';
-
-import 'ScheduleService.dart';
 
 final providers = [];
 setupLocator() {

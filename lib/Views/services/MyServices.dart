@@ -1,4 +1,3 @@
-import 'package:awrad/Consts/ThemeCosts.dart';
 import 'package:awrad/Views/services/MyMasbaha.dart';
 import 'package:awrad/Views/services/MyQubla.dart';
 import 'package:awrad/Views/services/MySalat.dart';

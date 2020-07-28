@@ -91,6 +91,12 @@ class AzanTimeClass {
   AzanTimeClass(this.name, this.type);
 }
 
+// class AzanDaysClass {
+//   String name;
+//   Day day;
+//   AzanDaysClass(this.name, this.day);
+// }
+
 Future<bool> confirmMessage(String content) async {
   final x = await Get.dialog<bool>(
       AlertDialog(

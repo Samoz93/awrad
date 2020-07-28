@@ -3,10 +3,10 @@ import 'dart:io';
 
 import 'package:awrad/Consts/ConstMethodes.dart';
 import 'package:awrad/Consts/DATABASECONST.dart';
+import 'package:awrad/main.dart';
 import 'package:awrad/models/BookModel.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 
 class BookService {
@@ -16,7 +16,6 @@ class BookService {
       StreamController<double>.broadcast();
   Stream get progress => _progress.stream;
   bool hasActiveDownload = false;
-  final box = Hive.box(MAINBOX);
   Future<List<BookModel>> get bookList async {
     final data = (await _db.reference().child(BOOKS).once()).value;
     final models =
@@ -50,10 +49,10 @@ class BookService {
   }
 
   Future<void> savePage(String uid, double page) async {
-    await box.put(uid, page);
+    await mainBox.put(uid, page);
   }
 
   double getPage(String uid) {
-    return box.get(uid, defaultValue: 0.0);
+    return mainBox.get(uid, defaultValue: 0.0);
   }
 }

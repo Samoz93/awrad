@@ -4,6 +4,7 @@ const String SLIDES = "slides";
 
 const REMINDERS = "reminders";
 const MAINBOX = "main";
+const NOTIFICATIONBOX = "notificationBox";
 const REMINDER_BOX = "reminderBox";
 const QURAN_BOX = "Quran";
 const BOOKS = "books";

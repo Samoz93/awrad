@@ -2,21 +2,20 @@ import 'dart:convert';
 
 import 'package:awrad/Consts/ConstMethodes.dart';
 import 'package:awrad/Consts/DATABASECONST.dart';
+import 'package:awrad/main.dart';
 import 'package:awrad/models/AdanModel.dart';
 import 'package:awrad/services/LocationService.dart';
 import 'package:get/get.dart';
-import 'package:hive/hive.dart';
 
 class AdhanApi {
   final _locSer = Get.find<LocationSerivce>();
-  final box = Hive.box(MAINBOX);
   final String _baseUrl = "http://api.aladhan.com/v1/";
   Future<AdanModel> get adanTimes async {
     final date = DateTime.now();
     final month = date.month;
     final year = date.year;
     final constDate = "$ADAN_DATA$month$year";
-    String saveData = box.get(constDate);
+    String saveData = mainBox.get(constDate);
     if (saveData == null) {
       final locData = await _locSer.location;
 
@@ -25,7 +24,7 @@ class AdhanApi {
 
       final data = await getData(path, _baseUrl);
       final str = json.encode(data);
-      await box.put(constDate, str);
+      await mainBox.put(constDate, str);
       saveData = str;
     }
 

@@ -11,6 +11,9 @@ import 'package:path_provider/path_provider.dart';
 import 'Views/MainPage.dart';
 import 'base/locator.dart';
 
+Box mainBox;
+Box notificationBox;
+Box<ReminderModel> reminderBox;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // TestWidgetsFlutterBinding.ensureInitialized();
@@ -24,14 +27,22 @@ Future<void> main() async {
   Hive.init(appDocumentDir.path);
   Hive.registerAdapter(ReminderModelAdapter());
 
-  await Hive.openBox(
+  mainBox = await Hive.openBox(
     MAINBOX,
     compactionStrategy: (entries, deletedEntries) {
       if (deletedEntries > 20) return true;
       return false;
     },
   );
-  await Hive.openBox<ReminderModel>(
+
+  notificationBox = await Hive.openBox(
+    NOTIFICATIONBOX,
+    compactionStrategy: (entries, deletedEntries) {
+      if (deletedEntries > 20) return true;
+      return false;
+    },
+  );
+  reminderBox = await Hive.openBox<ReminderModel>(
     REMINDER_BOX,
     compactionStrategy: (entries, deletedEntries) {
       if (deletedEntries > 20) return true;
