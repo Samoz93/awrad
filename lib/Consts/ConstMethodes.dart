@@ -1,8 +1,9 @@
-import 'package:adhan/adhan.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart' as intl;
 
 getSvgIcon(String name, {double size, Color color}) {
@@ -64,13 +65,13 @@ List<int> get timesOfDayInt {
 }
 
 final List<AzanTimeClass> _times = [
-  AzanTimeClass("الفجر", Prayer.fajr),
-  AzanTimeClass("الضحى", Prayer.sunrise),
-  AzanTimeClass("الظهر", Prayer.dhuhr),
-  AzanTimeClass("العصر", Prayer.asr),
-  AzanTimeClass("المغرب", Prayer.maghrib),
-  AzanTimeClass("العشاء", Prayer.isha),
-  AzanTimeClass("ثلث الليل", Prayer.none),
+  AzanTimeClass("الفجر", "Fajr"),
+  AzanTimeClass("الضحى", "Sunrise"),
+  AzanTimeClass("الظهر", "Dhuhr"),
+  AzanTimeClass("العصر", "Asr"),
+  AzanTimeClass("المغرب", "Maghrib"),
+  AzanTimeClass("العشاء", "Isha"),
+  AzanTimeClass("ثلث الليل", "Midnight"),
 ];
 List<AzanTimeClass> get azanTimes => _times;
 List<String> get timesOfDay {
@@ -86,6 +87,49 @@ extension timerMethodes on DateTime {
 
 class AzanTimeClass {
   String name;
-  Prayer type;
+  String type;
   AzanTimeClass(this.name, this.type);
+}
+
+Future<bool> confirmMessage(String content) async {
+  final x = await Get.dialog<bool>(
+      AlertDialog(
+        title: Center(child: Text("تأكيد ")),
+        content: Text(content),
+        actions: <Widget>[
+          FlatButton(
+            child: Text("تأكيد"),
+            onPressed: () {
+              Get.back(
+                result: true,
+              );
+            },
+          ),
+          FlatButton(
+              child: Text("إلغاء"),
+              onPressed: () {
+                Get.back(
+                  result: false,
+                );
+              })
+        ],
+      ),
+      useRootNavigator: false);
+  return x != null && x == true;
+}
+
+getData(String path, String baseUrl) async {
+  final _dio = Dio();
+  const _extra = <String, dynamic>{};
+  final queryParameters = <String, dynamic>{};
+  final _data = <String, dynamic>{};
+  final Response<Map<String, dynamic>> _result = await _dio.request(path,
+      queryParameters: queryParameters,
+      options: RequestOptions(
+          method: 'GET',
+          headers: <String, dynamic>{},
+          extra: _extra,
+          baseUrl: baseUrl),
+      data: _data);
+  return _result.data;
 }

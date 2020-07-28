@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 class AwradBtn extends StatelessWidget {
   final String txt;
   final Function onPressed;
-  const AwradBtn({Key key, this.onPressed, this.txt}) : super(key: key);
+  final Widget icon;
+  const AwradBtn({Key key, this.onPressed, this.txt, this.icon})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,9 +24,17 @@ class AwradBtn extends StatelessWidget {
           border: Border.all(color: Color(0xffFEC4A3), width: 1),
           color: AppColors.mainColorSelected),
       child: FlatButton(
-        child: Text(
-          txt,
-          style: AppThemes.buttonTextStyle,
+        child: Row(
+          mainAxisAlignment: icon != null
+              ? MainAxisAlignment.spaceBetween
+              : MainAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              txt,
+              style: AppThemes.buttonTextStyle,
+            ),
+            icon != null ? icon : SizedBox()
+          ],
         ),
         onPressed: onPressed,
       ),

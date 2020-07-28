@@ -1,10 +1,14 @@
 import 'package:awrad/Consts/DATABASECONST.dart';
 import 'package:awrad/models/AwradModel.dart';
 import 'package:awrad/models/AwradTypesModel.dart';
+import 'package:awrad/models/ReminderModel.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:hive/hive.dart';
 
 class AwradService {
   final _db = FirebaseDatabase.instance;
+  final box = Hive.box("main");
+
   final List<AwradTypesModel> _types = [];
   Future<List<WrdModel>> allAwrad(String wrdType) async {
     final data = await _db.reference().child('$AWRAD/$wrdType').once();
@@ -18,7 +22,7 @@ class AwradService {
   }
 
   Future<List<AwradTypesModel>> get awradType async {
-    _types.clear();
+    // _types.clear();
     if (_types.isNotEmpty) return _types;
     final d = (await _db.reference().child(AWRAD_TYPES).once()).value;
     final m = Map<String, String>.from(d);
@@ -32,7 +36,14 @@ class AwradService {
     return _types;
   }
 
-  // Future<List<MyBooks>> get books {
-
-  // }
+  Future<WrdModel> getWrd(ReminderModel rmd) async {
+    final data = (await _db
+            .reference()
+            .child(AWRAD)
+            .child(rmd.type)
+            .child(rmd.id)
+            .once())
+        .value;
+    return WrdModel.fromJson(Map<String, String>.from(data));
+  }
 }

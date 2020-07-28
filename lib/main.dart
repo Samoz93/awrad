@@ -1,5 +1,6 @@
 import 'package:awrad/Consts/DATABASECONST.dart';
 import 'package:awrad/Consts/ThemeCosts.dart';
+import 'package:awrad/base/ScheduleService.dart';
 import 'package:awrad/models/ReminderModel.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -12,8 +13,13 @@ import 'base/locator.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // TestWidgetsFlutterBinding.ensureInitialized();
   await initializeDateFormatting('ar');
   setupLocator();
+  await setupNotification();
+  notificationAppLaunchDetails =
+      await flutterLocalNotificationsPlugin.getNotificationAppLaunchDetails();
+
   final appDocumentDir = await getApplicationDocumentsDirectory();
   Hive.init(appDocumentDir.path);
   Hive.registerAdapter(ReminderModelAdapter());
@@ -32,8 +38,12 @@ Future<void> main() async {
       return false;
     },
   );
-
+  _setupSchedule();
   runApp(MyApp());
+}
+
+_setupSchedule() {
+  initWorkManager();
 }
 
 class MyApp extends StatelessWidget {

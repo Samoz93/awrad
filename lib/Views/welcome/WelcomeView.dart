@@ -12,7 +12,7 @@ class WelcomeScreed extends StatelessWidget {
   WelcomeScreed({Key key}) : super(key: key);
   final noneActiveSize = 10.0;
   final activeSize = 20.0;
-  final _ctrl = PageController(initialPage: 0, viewportFraction: 0.9);
+  final _ctrl = PageController(initialPage: 0);
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<SlideViewModel>.reactive(

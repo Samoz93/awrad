@@ -1,54 +1,56 @@
-import 'dart:async';
-
-import 'package:adhan/adhan.dart';
-import 'package:awrad/services/AdanService.dart';
-import 'package:flutter/material.dart';
+import 'package:awrad/models/AdanModel.dart';
+import 'package:awrad/services/AdhanApi.dart';
+import 'package:awrad/services/ReminderService.dart';
 import 'package:get/get.dart';
-import 'package:location/location.dart';
+import 'package:intl/intl.dart';
 import 'package:stacked/stacked.dart';
 
 class AdanVm extends BaseViewModel {
-  final _loc = Location.instance;
+  final _ser = Get.find<AdhanApi>();
+  final _reminderSer = Get.find<ReminderService>();
 
-  final _prayerSer = AdanService();
-  bool _hasPermission = false;
-  bool get hasPermission => _hasPermission;
+  AdanModel _allData;
+  DateTime _selectedDate = DateTime.now();
+  AdanData get adanData {
+    return _allData.getAdan(_selectedDate);
+  }
 
-  askForPermissions() async {
+  String get selectedDate => DateFormat.yMEd('ar').format(_selectedDate);
+
+  nextDate() {
+    if (!canSetNext) return;
+    _selectedDate = _selectedDate.add(Duration(days: 1));
+    notifyListeners();
+  }
+
+  prevDay() {
+    if (!canSetPrev) return;
+    _selectedDate = _selectedDate.add(Duration(days: -1));
+    notifyListeners();
+  }
+
+  bool get canSetPrev {
+    final dif = _selectedDate.difference(DateTime.now()).inHours;
+    return dif > 0;
+  }
+
+  bool get canSetNext {
+    final sonra = _selectedDate.add(Duration(days: 1));
+    return sonra.month == DateTime.now().month;
+  }
+
+  initData() async {
     setBusy(true);
-
-    final per = await _loc.hasPermission();
-    _hasPermission = per == PermissionStatus.granted;
-    final hasService = await _loc.serviceEnabled();
-    if (hasService && _hasPermission) {
-    } else {
-      await Get.dialog(AlertDialog(
-        actions: <Widget>[
-          FlatButton(
-            child: Text("موافق"),
-            onPressed: () {
-              Get.back();
-            },
-          )
-        ],
-        title: Text("أذونات مطلوبة"),
-        content: Text(
-            "لحساب اوقات الصلاة نحتاج للوصول إلى معلومات موقعك , يرجى الموافقة على الاذونات التالية"),
-      ));
-      if (!_hasPermission) {
-        final per2 = await _loc.requestPermission();
-        _hasPermission = per2 == PermissionStatus.granted;
-      }
-      if (!hasService) {
-        final ser2 = await _loc.requestService();
-        _hasPermission = ser2;
-      }
-    }
+    _allData = await _ser.adanTimes;
     setBusy(false);
   }
 
-  Future<PrayerTimes> get adanTimes async {
-    final loc = await _loc.getLocation();
-    return _prayerSer.getTodayPryers(loc);
+  String getAzanState(String azanType) {
+    return _reminderSer.getAzanReminderState(azanType);
+  }
+
+  Future<void> toggleState(String type) async {
+    await _reminderSer.toggleAzanState(type);
+    notifyListeners();
   }
 }

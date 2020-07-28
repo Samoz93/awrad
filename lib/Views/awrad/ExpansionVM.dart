@@ -6,14 +6,14 @@ import 'package:get/get.dart';
 import 'package:stacked/stacked.dart';
 
 class ExpansionVM extends BaseViewModel {
-  final id;
+  final wrd;
   final _ser = Get.find<ReminderService>();
   ReminderModel _rm;
-  ExpansionVM({@required this.id}) {
+  ExpansionVM({@required this.wrd}) {
     _init();
   }
   _init() {
-    _rm = _ser.getReminder(id, isAwrad: true);
+    _rm = _ser.getReminder(wrd, isAwrad: true);
     notifyListeners();
   }
 

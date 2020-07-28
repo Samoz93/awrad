@@ -2,8 +2,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class AppThemes {
-  static const timerTextStyle = TextStyle(fontSize: 30);
-  static const azanTimeTextStyle = TextStyle(fontSize: 20);
+  static const todayTimeTextStyle =
+      TextStyle(fontSize: 20, color: Colors.white);
+  static const azanTimeTitleTextStyle =
+      TextStyle(fontSize: 25, color: Colors.white);
+  static const timeTimerTextStyle =
+      TextStyle(fontSize: 15, color: Colors.white);
+
+  static const wrdTitleTextStyle = TextStyle(fontSize: 20);
+  static const deleteInfoTextStyle =
+      TextStyle(fontSize: 20, color: Colors.white);
 
   static const linearTitle = LinearGradient(
       colors: [Colors.transparent, Colors.white],
@@ -21,8 +29,7 @@ class AppThemes {
   static const titleTextStyle = TextStyle(fontSize: 40);
   static final pageTitleStyle =
       TextStyle(fontSize: 30, color: AppColors.addColor);
-  static const buttonTextStyle =
-      TextStyle(fontSize: 30, color: Colors.white, fontFamily: "gg");
+  static const buttonTextStyle = TextStyle(fontSize: 30, color: Colors.white);
 }
 
 class AppColors {

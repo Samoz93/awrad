@@ -26,7 +26,7 @@ class AwradListScreen extends StatelessWidget {
             itemBuilder: (BuildContext context, int index) {
               final wrd = model.awrad[index];
               return ViewModelBuilder<ExpansionVM>.reactive(
-                viewModelBuilder: () => ExpansionVM(id: wrd.uid),
+                viewModelBuilder: () => ExpansionVM(wrd: wrd),
                 builder: (ctx, exVm, ch) => ExpansionTile(
                   initiallyExpanded: false,
                   subtitle: Align(

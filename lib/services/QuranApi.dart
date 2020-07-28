@@ -1,47 +1,30 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:awrad/Consts/ConstMethodes.dart';
+import 'package:awrad/Consts/DATABASECONST.dart';
 import 'package:awrad/models/QuranModel.dart';
-import 'package:dio/dio.dart';
 import 'package:hive/hive.dart';
 
 class QuranApi {
-  final _dio = Dio();
+  // final _dio = Dio();
   final baseUrl = "http://api.alquran.cloud/v1/";
-  final box = Hive.box("main");
+  final box = Hive.box(MAINBOX);
   Future<QuranModel> get quran async {
     try {
-      //TODO check
-      // await box.delete("Quran");
-      dynamic savedQuran = await box.get("Quran");
+      dynamic savedQuran = await box.get(QURAN_BOX);
       log(savedQuran.runtimeType.toString());
-      // dynamic savedQuran;
       if (savedQuran == null) {
-        final str = await _getData('/quran/ar.abdurrahmaansudais');
+        final str = await getData('/quran/ar.abdurrahmaansudais', baseUrl);
         final value = QuranModel.fromJson(Map<String, dynamic>.from(str));
         final dataString = json.encode(value);
-        box.put("Quran", dataString);
+        box.put(QURAN_BOX, dataString);
         return value;
       }
       return QuranModel.fromJson(json.decode(savedQuran));
     } catch (e) {
       throw e;
     }
-  }
-
-  _getData(String path) async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    final Response<Map<String, dynamic>> _result = await _dio.request(path,
-        queryParameters: queryParameters,
-        options: RequestOptions(
-            method: 'GET',
-            headers: <String, dynamic>{},
-            extra: _extra,
-            baseUrl: baseUrl),
-        data: _data);
-    return _result.data;
   }
 
   Future<void> saveBookMark(int surah, int index) async {
@@ -54,6 +37,7 @@ class QuranApi {
       }
     } catch (e) {
       log(e);
+      throw e;
     }
   }
 
@@ -69,8 +53,8 @@ class QuranApi {
   List<int> getbookMarks(int number) {
     final mainKey = "s${number}i";
     return box.keys
-        .where((e) => (e as String).contains(mainKey))
-        .map((e) => int.parse((e as String).replaceAll(mainKey, "")))
+        .where((e) => e.toString().contains(mainKey))
+        .map((e) => int.parse(e.toString().replaceAll(mainKey, "")))
         .toList();
   }
 }

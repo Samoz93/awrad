@@ -2,6 +2,7 @@ import 'package:awrad/Consts/ThemeCosts.dart';
 import 'package:awrad/Views/services/MyMasbaha.dart';
 import 'package:awrad/Views/services/MyQubla.dart';
 import 'package:awrad/Views/services/MySalat.dart';
+import 'package:awrad/widgets/AwradBtn.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -28,41 +29,15 @@ class MyServices extends StatelessWidget {
   ];
 
   _getCard(data, BuildContext context) {
-    final media = MediaQuery.of(context).size;
     final svgName = data['route'];
-    return InkWell(
-      onTap: () {
+    return AwradBtn(
+      onPressed: () {
         Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => data['route'],
         ));
       },
-      child: Container(
-        margin: EdgeInsets.all(10),
-        height: media.height * 0.15,
-        width: media.width * 0.6,
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            gradient: AppThemes.linearPointer,
-            shape: BoxShape.rectangle,
-            boxShadow: [
-              BoxShadow(
-                  blurRadius: 4,
-                  color: Colors.black38,
-                  offset: Offset(0.6, -1.0))
-            ]),
-        child: Center(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              Text(
-                data["name"],
-                style: TextStyle(color: Colors.white, fontSize: 30),
-              ),
-              SvgPicture.asset("assets/icons/$svgName.svg"),
-            ],
-          ),
-        ),
-      ),
+      txt: data["name"],
+      icon: SvgPicture.asset("assets/icons/$svgName.svg"),
     );
   }
 }

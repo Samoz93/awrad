@@ -1,5 +1,4 @@
 import 'package:assets_audio_player/assets_audio_player.dart';
-import 'package:awrad/Consts/ConstMethodes.dart';
 import 'package:awrad/Consts/ThemeCosts.dart';
 import 'package:awrad/Views/quran/QuranVm.dart';
 import 'package:awrad/models/QuranModel.dart';
@@ -16,7 +15,7 @@ class QuranScreen extends StatelessWidget {
   final vvm = QuranVM();
   @override
   Widget build(BuildContext context) {
-    final media = MediaQuery.of(context).size;
+    // final media = MediaQuery.of(context).size;
     final String wtTxt = "تحميل";
     return ViewModelBuilder<QuranVM>.reactive(
       viewModelBuilder: () => vvm,
