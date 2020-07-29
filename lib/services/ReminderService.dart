@@ -70,5 +70,6 @@ class ReminderService {
     if (crntState == "on") await _setAzanReminderState(azanType, "silent");
     if (crntState == "silent") await _setAzanReminderState(azanType, "off");
     if (crntState == "off") await _setAzanReminderState(azanType, "on");
+    _notiSer.scheduleAzanTimes();
   }
 }

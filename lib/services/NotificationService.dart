@@ -21,27 +21,27 @@ class NotificationService {
   }
 
   scheduleAzanTimes() async {
-    try {
-      final adanTimes = await _api.todayAdan;
+    final adanTimes = await _api.todayAdan;
 
-      for (var i = 0; i < azanTimes.length; i++) {
-        final aznCls = azanTimes[i];
-        final azanDate = adanTimes.timings.getTimingDateTime(aznCls.type);
-        final notificationType = _getAzanReminderState(aznCls.type);
-        bool hasSound = true;
-        bool enableVibration = true;
-        if (notificationType == "off") {
-          hasSound = false;
-          enableVibration = false;
-        }
+    for (var i = 0; i < azanTimes.length; i++) {
+      final aznCls = azanTimes[i];
+      final azanDate = adanTimes.timings.getTimingDateTime(aznCls.type);
+      final notificationType = _getAzanReminderState(aznCls.type);
+      bool hasSound = true;
+      bool enableVibration = true;
+      if (notificationType == "off") {
+        hasSound = false;
+        enableVibration = false;
+        await flutterLocalNotificationsPlugin.cancel(i);
+        log("canceld azan ${aznCls.type}");
+      } else {
         if (notificationType == "silent") {
           hasSound = false;
         }
         await _showDailyForAzan(azanDate, i, aznCls,
             enableVibration: enableVibration, playSound: hasSound);
+        log("scheduled azan ${aznCls.type}");
       }
-    } catch (e) {
-      log(e.toString());
     }
   }
 
@@ -109,14 +109,19 @@ class NotificationService {
       // sound: NotificationSound
       //TODO add azan sound
     );
+    final title =
+        azanClass.isAdan ? 'صلاة ${azanClass.name}' : "وقت ${azanClass.name}";
+    final message = azanClass.isAdan
+        ? 'حان الآن موعد صلاة ${azanClass.name}'
+        : "حان الآن موعد وقت ${azanClass.name}";
 
     var iOSPlatformChannelSpecifics = IOSNotificationDetails();
     var platformChannelSpecifics = NotificationDetails(
         androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
     await flutterLocalNotificationsPlugin.showDailyAtTime(
       azanIndex,
-      'صلاة ${azanClass.name}',
-      'حان الآن موعد صلاة ${azanClass.name}',
+      title,
+      message,
       time,
       platformChannelSpecifics,
       //TODO add named route
