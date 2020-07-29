@@ -1,6 +1,5 @@
 import 'dart:developer';
 
-import 'package:firebase_database/firebase_database.dart';
 import 'package:workmanager/workmanager.dart';
 
 initWorkManager() async {
@@ -9,12 +8,11 @@ initWorkManager() async {
       isInDebugMode:
           true // If enabled it will post a notification whenever the task is running. Handy for debugging tasks
       );
-  await Workmanager.registerPeriodicTask(
+  await Workmanager.registerOneOffTask(
     "azanTimer",
     "simpleTask",
-    frequency: Duration(minutes: 1),
     existingWorkPolicy: ExistingWorkPolicy.replace,
-    initialDelay: Duration(seconds: 30),
+    initialDelay: Duration(minutes: 30),
   ); //Android only (see below)
 }
 
@@ -24,18 +22,18 @@ callbackDispatcher() {
 
   Workmanager.executeTask((task, inputData) async {
     log("Native called background task: $task ,$inputData");
-    final _db = FirebaseDatabase.instance;
+    // final _db = FirebaseDatabase.instance;
 
-    await _db
-        .reference()
-        .child("test")
-        .push()
-        .update({"date": "$task ${DateTime.now().toString()}"});
-    // await Workmanager.registerOneOffTask(
-    //   "azanTimer",
-    //   "simpleTask",
-    //   initialDelay: Duration(seconds: 30),
-    // );
+    // await _db
+    //     .reference()
+    //     .child("test")
+    //     .push()
+    //     .update({"date": "$task ${DateTime.now().toString()}"});
+    await Workmanager.registerOneOffTask(
+      "azanTimer",
+      "simpleTask",
+      initialDelay: Duration(hours: 1),
+    );
     return Future.value(true);
   });
 }

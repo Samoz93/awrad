@@ -29,7 +29,7 @@ class SavedAwradVM extends BaseViewModel {
   }
 
   String todayName() {
-    return daysOfWeek[_getTodayNumber() - 1];
+    return daysOfWeek[_getTodayNumber()];
   }
 
   List<ReminderModel> get _todaysReminder {
@@ -50,7 +50,7 @@ class SavedAwradVM extends BaseViewModel {
   }
 
   List<ReminderModel> get quranData {
-    return _awradData.where((element) => element.isAwrad).toList();
+    return _awradData.where((element) => !element.isAwrad).toList();
   }
 
   deleteNotification(String id) async {

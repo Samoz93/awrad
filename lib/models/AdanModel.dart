@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:awrad/Consts/ConstMethodes.dart';
 import 'package:intl/intl.dart';
 
 class AdanModel {
@@ -157,12 +158,23 @@ class Timings {
           tim.substring(tim.indexOf(":") + 1, tim.indexOf(":") + 3);
 
       final now = DateTime.now();
-      final dt = DateTime.utc(now.year, now.month, now.day, int.parse(utcHour),
+      final dt = DateTime(now.year, now.month, now.day, int.parse(utcHour),
           int.parse(utcMinutes));
       return dt;
     } catch (e) {
       return DateTime.now();
     }
+  }
+
+  AzanTimeClass get nexAdanTime {
+    AzanTimeClass time = azanTimes[0];
+    for (var t in azanTimes) {
+      if (getTimingDateTime(t.type).isAfter(DateTime.now())) {
+        time = t;
+        break;
+      }
+    }
+    return time;
   }
 }
 

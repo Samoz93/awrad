@@ -17,7 +17,7 @@ class ExpansionVM extends BaseViewModel {
     notifyListeners();
   }
 
-  bool get hasReminder => _rm.days.length > 0 && _rm.times.length > 0;
+  bool get hasReminder => _rm.hasReminder;
   ReminderModel get reminder => _rm;
 
   bool _showAlaramOption = false;
@@ -39,22 +39,27 @@ class ExpansionVM extends BaseViewModel {
         .toList();
   }
 
-  String getDasyName(int day) {
-    return daysOfWeek[0];
-  }
+  // String getDasyName(int day) {
+  //   return daysOfWeek[day];
+  // }
 
   saveDate() async {
     try {
+      if (!_rm.hasReminder) {
+        showSnackBar("لايمكن المتابعة",
+            "يرجى اختيار يوم واحد وتاريخ واحد على الاقل لكي يتم حفظ التنبيه",
+            isErr: true);
+        return;
+      }
       await _ser.saveReminder(_rm);
       toggelAlarmOption();
-      Get.snackbar("تم", "تم حفظ الإعدادات");
+      showSnackBar("تم", "تم حفظ الإعدادات");
     } catch (e) {
       _handleError(e);
     }
   }
 
   void addDay(int index) {
-    index += 1;
     if (_rm.days.contains(index)) {
       _rm.days.remove(index);
     } else {
@@ -73,7 +78,7 @@ class ExpansionVM extends BaseViewModel {
   }
 
   _handleError(e) {
-    Get.snackbar("خطأ", "$e");
+    showSnackBar("خطأ", "$e", isErr: true);
   }
 
   Future<void> deleteNotification(String uid, {bool showNotification}) async {

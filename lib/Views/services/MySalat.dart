@@ -3,6 +3,7 @@ import 'package:awrad/Consts/ThemeCosts.dart';
 import 'package:awrad/Views/services/AdanVM.dart';
 import 'package:awrad/widgets/LoadingWidget.dart';
 import 'package:awrad/widgets/MyScf.dart';
+import 'package:awrad/widgets/TimerWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'AdanPermissionVm.dart';
@@ -91,6 +92,7 @@ class DayWidget extends ViewModelWidget<AdanVm> {
               Text(viewModel.selectedDate, style: AppThemes.todayTimeTextStyle),
               Text("${viewModel.adanData.date.hijri.formattedDate} ",
                   style: AppThemes.todayTimeTextStyle),
+              TimerWidget()
               // Directionality(
               //   textDirection: TextDirection.ltr,
               //   child: DigitalClock(
@@ -160,7 +162,11 @@ class AdanTimesWidget extends ViewModelWidget<AdanVm> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  _azanContainer(child: Text(e.name)),
+                  _azanContainer(
+                    child: Text(e.name),
+                    isNextAdan:
+                        e.type == viewModel.adanData.timings.nexAdanTime.type,
+                  ),
                   _azanContainer(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -181,6 +187,8 @@ class AdanTimesWidget extends ViewModelWidget<AdanVm> {
                         ),
                       ],
                     ),
+                    isNextAdan:
+                        e.type == viewModel.adanData.timings.nexAdanTime.type,
                   )
                 ],
               ),
@@ -191,10 +199,11 @@ class AdanTimesWidget extends ViewModelWidget<AdanVm> {
     );
   }
 
-  _azanContainer({Widget child}) {
+  _azanContainer({Widget child, bool isNextAdan = false}) {
     return Expanded(
       child: Container(
         decoration: BoxDecoration(
+          color: isNextAdan ? AppColors.adanActive : Colors.transparent,
           border: Border.all(
               color: Colors.black, width: 0.1, style: BorderStyle.solid),
         ),
