@@ -7,6 +7,7 @@ import 'package:stacked/stacked.dart';
 
 class SavedAwrad extends StatelessWidget {
   SavedAwrad({Key key}) : super(key: key);
+  static const route = "SavedAwrad";
   // final vm = SavedAwradVM();
   @override
   Widget build(BuildContext context) {
@@ -15,60 +16,63 @@ class SavedAwrad extends StatelessWidget {
       // disposeViewModel: false,
       builder: (ctx, model, ch) => Container(
         height: media.height,
-        child: Column(
+        child: Flex(
+          direction: Axis.vertical,
           children: <Widget>[
-            Align(
-              alignment: Alignment.center,
-              child: Container(
-                width: media.width * 0.8,
-                // color: Colors.red,
-                child: LayoutBuilder(
-                  builder: (context, box) => Stack(
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: <Widget>[
-                            _getText(
-                                "اوراد يوم  ${model.todayName()}", 0, model),
-                            _getText("جميع الأوراد", 1, model)
-                          ],
+            Flexible(
+              flex: 1,
+              fit: FlexFit.tight,
+              child: Align(
+                alignment: Alignment.center,
+                child: Container(
+                  // color: Colors.red,
+                  child: LayoutBuilder(
+                    builder: (context, box) => Stack(
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: <Widget>[
+                              _getText(
+                                  "اوراد يوم  ${model.todayName()}", 0, model),
+                              _getText("جميع الأوراد", 1, model)
+                            ],
+                          ),
                         ),
-                      ),
-                      AnimatedPositioned(
-                        duration: Duration(milliseconds: 200),
-                        curve: Curves.easeInSine,
-                        bottom: 0,
-                        right: model.selectedTap * box.maxWidth * 0.5,
-                        child: Container(
-                          color: Colors.black,
-                          width: box.maxWidth * 0.5,
-                          height: 1,
-                        ),
-                      )
-                    ],
+                        AnimatedPositioned(
+                          duration: Duration(milliseconds: 200),
+                          curve: Curves.easeInSine,
+                          bottom: 0,
+                          right: model.selectedTap * box.maxWidth * 0.5,
+                          child: Container(
+                            color: Colors.black,
+                            width: box.maxWidth * 0.5,
+                            height: 1,
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),
             ),
-            LayoutBuilder(
-              builder: (context, box) => Container(
-                height: 500,
-                child: CustomScrollView(
-                  slivers: <Widget>[
-                    SliverToBoxAdapter(
+            Flexible(
+              flex: 15,
+              fit: FlexFit.tight,
+              child: CustomScrollView(
+                slivers: <Widget>[
+                  SliverToBoxAdapter(
+                    child: SizedBox(
                       child: SizedBox(
-                        child: SizedBox(
-                          height: 20,
-                        ),
+                        height: 20,
                       ),
                     ),
-                    ...getAwradData(model),
-                  ],
-                ),
+                  ),
+                  ...getAwradData(model),
+                ],
               ),
-            )
+            ),
           ],
         ),
       ),

@@ -97,8 +97,10 @@ class ReminderWidget extends StatelessWidget {
                             ),
                           ),
                           InkWell(
-                            onTap: () {
-                              deleteFunction();
+                            onTap: () async {
+                              if (await confirmMessage(
+                                  "هل أنت متأكد من حذفك لهذا التنبيه ؟"))
+                                deleteFunction();
                             },
                             child: Icon(
                               Icons.alarm_off,

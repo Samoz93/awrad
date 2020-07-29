@@ -25,26 +25,30 @@ class BookService {
   }
 
   Future<String> getBook(BookModel book) async {
-    final pth = await _getBookPath(book.uid);
-    if (File(pth).existsSync()) {
-      _progress.add(1.0);
+    try {
+      final pth = await _getBookPath(book.uid);
+      if (File(pth).existsSync()) File(pth).deleteSync();
+      if (File(pth).existsSync()) {
+        _progress.add(1.0);
+        return pth;
+      }
+      if (hasActiveDownload) throw Exception(['يتم الان تحميل كتاب اخر']);
+      hasActiveDownload = true;
+      await dio.download(
+        book.bookLink,
+        pth,
+        // onReceiveProgress: (count, total) => _progress.sink.add(count / total),
+      );
       return pth;
+    } catch (e) {
+      throw e;
+    } finally {
+      hasActiveDownload = false;
     }
-    if (hasActiveDownload) throw Exception(['يتم الان تحميل كتاب اخر']);
-    hasActiveDownload = true;
-    await dio.download(
-      book.bookLink,
-      pth,
-      onReceiveProgress: (count, total) => _progress.sink.add(count / total),
-    );
-    hasActiveDownload = false;
-    return pth;
   }
 
   Future<String> _getBookPath(String uid) async {
-    final Directory pth = Platform.isAndroid
-        ? await getTemporaryDirectory()
-        : await getDownloadsDirectory();
+    final Directory pth = await getTemporaryDirectory();
     return "${pth.path}/$uid.pdf";
   }
 

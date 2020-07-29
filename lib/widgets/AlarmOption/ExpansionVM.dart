@@ -1,4 +1,5 @@
 import 'package:awrad/Consts/ConstMethodes.dart';
+import 'package:awrad/models/AwradModel.dart';
 import 'package:awrad/models/ReminderModel.dart';
 import 'package:awrad/services/ReminderService.dart';
 import 'package:flutter/material.dart';
@@ -6,14 +7,15 @@ import 'package:get/get.dart';
 import 'package:stacked/stacked.dart';
 
 class ExpansionVM extends BaseViewModel {
-  final wrd;
+  final WrdModel wrd;
+  final isAwrad;
   final _ser = Get.find<ReminderService>();
   ReminderModel _rm;
-  ExpansionVM({@required this.wrd}) {
+  ExpansionVM({@required this.wrd, this.isAwrad = true}) {
     _init();
   }
   _init() {
-    _rm = _ser.getReminder(wrd, isAwrad: true);
+    _rm = _ser.getReminder(wrd, isAwrad: isAwrad);
     notifyListeners();
   }
 

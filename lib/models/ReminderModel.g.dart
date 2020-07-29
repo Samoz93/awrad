@@ -48,6 +48,5 @@ class ReminderModelAdapter extends TypeAdapter<ReminderModel> {
   }
 
   @override
-  // TODO: implement typeId
   int get typeId => 0;
 }

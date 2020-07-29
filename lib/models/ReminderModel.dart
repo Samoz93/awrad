@@ -25,7 +25,7 @@ class ReminderModel {
   int notifId;
   ReminderModel({
     this.id,
-    this.isAwrad,
+    this.isAwrad = true,
     this.days,
     this.times,
     this.type,

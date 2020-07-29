@@ -6,10 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stacked/stacked.dart';
 
-import 'QuranScreen.dart';
-
 class QuranNewScreen extends StatelessWidget {
   const QuranNewScreen({Key key}) : super(key: key);
+  static const route = "QuranNewScreen";
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +66,7 @@ class QuranNewScreen extends StatelessWidget {
           ],
         );
       },
-      viewModelBuilder: () => QuranNewVM(),
+      viewModelBuilder: () => Get.find<QuranNewVM>(),
       fireOnModelReadyOnce: true,
       onModelReady: (vv) => vv.initData(),
       disposeViewModel: false,
