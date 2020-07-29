@@ -62,10 +62,6 @@ class AwradListScreen extends StatelessWidget {
                             Html(data: wrd.wrdDesc),
                             SizedBox(height: 20),
                             AlarmOptions(wrd: wrd),
-                            //TODO should i add it ?
-                            // exVm.showAlaramOption
-                            //     ? SizedBox()
-                            //     : Text("خيارات التنبيه")
                           ],
                         ),
                       ],

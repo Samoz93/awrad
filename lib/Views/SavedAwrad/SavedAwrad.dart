@@ -102,9 +102,10 @@ class SavedAwrad extends StatelessWidget {
               return Container(
                 height: 100,
                 child: ReminderWidget(
-                  reminder: model.awradData[index],
+                  uid: model.awradData[index].id,
                   deleteFunction: () {
-                    model.deleteNotification(model.awradData[index].id);
+                    model.deleteNotification(model.awradData[index].id,
+                        showNotification: true);
                   },
                 ),
               );
@@ -116,17 +117,28 @@ class SavedAwrad extends StatelessWidget {
     }
 
     if (model.quranData.isNotEmpty) {
-      lst.add(SliverPersistentHeader(
-          delegate: MyHeader(text: "أوراد القرآن", maxEx: 60, min: 20)));
+      lst.add(
+        SliverPersistentHeader(
+          delegate: MyHeader(text: "أوراد القرآن", maxEx: 60, min: 20),
+        ),
+      );
       lst.add(
         SliverList(
           delegate: SliverChildBuilderDelegate(
             (context, index) {
+              final id = model.quranData[index].id;
               return Container(
-                child: Text(index.toString()),
+                height: 100,
+                child: ReminderWidget(
+                  uid: id,
+                  deleteFunction: () {
+                    model.deleteNotification(model.quranData[index].id,
+                        showNotification: true);
+                  },
+                ),
               );
             },
-            childCount: 255,
+            childCount: model.quranData.length,
           ),
         ),
       );

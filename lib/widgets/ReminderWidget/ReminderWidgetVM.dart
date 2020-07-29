@@ -1,18 +1,24 @@
 import 'package:awrad/Consts/ConstMethodes.dart';
 import 'package:awrad/models/ReminderModel.dart';
+import 'package:awrad/services/ReminderService.dart';
 import 'package:stacked/stacked.dart';
 
 class ReminderWidgetVm extends BaseViewModel {
-  ReminderModel rmd;
-  ReminderWidgetVm({this.rmd});
+  ReminderModel _rmd;
+  final _ser = ReminderService();
+  ReminderWidgetVm(String uid) {
+    _rmd = _ser.getReminderById(uid);
+    print(_rmd);
+  }
 
+  ReminderModel get reminder => _rmd;
   List<String> get daysString {
     final weekDay = daysOfWeek;
-    return rmd.days.map((e) => weekDay[e]).toList();
+    return _rmd.days.map((e) => weekDay[e]).toList();
   }
 
   List<String> get timeString {
     final weekDay = timesOfDay;
-    return rmd.times.map((e) => weekDay[e]).toList();
+    return _rmd.times.map((e) => weekDay[e]).toList();
   }
 }

@@ -120,5 +120,5 @@ class ReminderModel {
         notifId.hashCode;
   }
 
-  bool get hasReminder => days.isNotEmpty && times.isNotEmpty;
+  bool get hasValidData => days.isNotEmpty && times.isNotEmpty;
 }

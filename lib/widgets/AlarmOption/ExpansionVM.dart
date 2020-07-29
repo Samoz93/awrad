@@ -19,7 +19,7 @@ class ExpansionVM extends BaseViewModel {
     notifyListeners();
   }
 
-  bool get hasReminder => _rm.hasReminder;
+  bool get hasReminder => _ser.hasReminder(_rm.id);
   ReminderModel get reminder => _rm;
 
   bool _showAlaramOption = false;
@@ -47,7 +47,7 @@ class ExpansionVM extends BaseViewModel {
 
   saveDate() async {
     try {
-      if (!_rm.hasReminder) {
+      if (!_rm.hasValidData) {
         showSnackBar("لايمكن المتابعة",
             "يرجى اختيار يوم واحد وتاريخ واحد على الاقل لكي يتم حفظ التنبيه",
             isErr: true);
@@ -81,6 +81,11 @@ class ExpansionVM extends BaseViewModel {
 
   _handleError(e) {
     showSnackBar("خطأ", "$e", isErr: true);
+  }
+
+  Future<void> deleteThisReminder() async {
+    await deleteNotification(_rm.id, showNotification: true);
+    toggelAlarmOption();
   }
 
   Future<void> deleteNotification(String uid, {bool showNotification}) async {

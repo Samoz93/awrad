@@ -29,8 +29,8 @@ class ReminderService {
     );
 
     try {
-      final data =
-          reminderBox.values.firstWhere((element) => element.id == wrd.uid);
+      final data = reminderBox.values
+          .firstWhere((element) => element.id == wrd.uid, orElse: () => null);
       if (data != null) {
         rm = data;
       }
@@ -38,6 +38,18 @@ class ReminderService {
     } catch (e) {
       return rm;
     }
+  }
+
+  ReminderModel getReminderById(String uid) {
+    final data = reminderBox.values
+        .firstWhere((element) => element.id == uid, orElse: () => null);
+    return data;
+  }
+
+  bool hasReminder(uid) {
+    final data = reminderBox.values
+        .firstWhere((element) => element.id == uid, orElse: () => null);
+    return data != null;
   }
 
   List<ReminderModel> get allReminders {

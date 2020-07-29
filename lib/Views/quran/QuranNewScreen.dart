@@ -1,13 +1,15 @@
 import 'package:awrad/Consts/ThemeCosts.dart';
 import 'package:awrad/Views/quran/QuranNewVM.dart';
 import 'package:awrad/widgets/LoadingWidget.dart';
+import 'package:awrad/widgets/MyErrorWidget.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stacked/stacked.dart';
 
 class QuranNewScreen extends StatelessWidget {
-  const QuranNewScreen({Key key}) : super(key: key);
+  final String suraName;
+  const QuranNewScreen({Key key, this.suraName = ""}) : super(key: key);
   static const route = "QuranNewScreen";
 
   @override
@@ -15,6 +17,7 @@ class QuranNewScreen extends StatelessWidget {
     return ViewModelBuilder<QuranNewVM>.reactive(
       builder: (ctx, model, ch) {
         if (model.isBusy) return LoadingWidget();
+        if (model.hasError) return MyErrorWidget(err: model.modelError);
         return Flex(
           direction: Axis.vertical,
           children: <Widget>[
@@ -66,9 +69,8 @@ class QuranNewScreen extends StatelessWidget {
           ],
         );
       },
-      viewModelBuilder: () => Get.find<QuranNewVM>(),
-      fireOnModelReadyOnce: true,
-      onModelReady: (vv) => vv.initData(),
+      viewModelBuilder: () => QuranNewVM(),
+      onModelReady: (vv) => vv.initData(suraName: suraName),
       disposeViewModel: false,
     );
   }
@@ -83,37 +85,12 @@ class QuranBar extends ViewModelWidget<QuranNewVM> {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
         _getTab(
-          txt: model.selectedSurah.name,
-          img: "dd.png",
+          txt: "رجوع",
+          img: "close.png",
+          isClose: true,
           isMiddle: false,
           onTap: () {
-            Get.bottomSheet(
-              ClipRRect(
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(20),
-                    topRight: Radius.circular(20)),
-                child: Container(
-                  color: AppColors.adanNormal,
-                  child: ListView(
-                    children: <Widget>[
-                      ...model.suras.map(
-                        (e) => InkWell(
-                          onTap: () {
-                            model.selectedSurah = e;
-                            model.saveSura();
-                            Get.back();
-                          },
-                          child: SuraWidget(
-                            name: e.name,
-                            info: e.ayahs.length.toString(),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            );
+            Navigator.of(context).pop();
           },
         ),
         _getTab(
@@ -172,7 +149,8 @@ class QuranBar extends ViewModelWidget<QuranNewVM> {
       String img,
       Function onTap,
       bool isMiddle = false,
-      isbookMarked = false}) {
+      isbookMarked = false,
+      isClose = false}) {
     return Expanded(
       flex: 1,
       child: InkWell(
@@ -182,15 +160,26 @@ class QuranBar extends ViewModelWidget<QuranNewVM> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
+              !isClose
+                  ? SizedBox()
+                  : Image.asset(
+                      "assets/icons/$img",
+                      fit: BoxFit.cover,
+                      width: 20,
+                      color: isbookMarked ? AppColors.mainColor : Colors.white,
+                    ),
               Text(
                 txt,
                 style: AppThemes.quranBarTextStyle,
               ),
-              Image.asset(
-                "assets/icons/$img",
-                fit: BoxFit.cover,
-                color: isbookMarked ? AppColors.mainColor : Colors.white,
-              ),
+              isClose
+                  ? SizedBox()
+                  : Image.asset(
+                      "assets/icons/$img",
+                      fit: BoxFit.cover,
+                      width: 20,
+                      color: isbookMarked ? AppColors.mainColor : Colors.white,
+                    ),
             ],
           ),
           decoration: BoxDecoration(

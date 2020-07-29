@@ -53,8 +53,9 @@ class SavedAwradVM extends BaseViewModel {
     return _awradData.where((element) => !element.isAwrad).toList();
   }
 
-  deleteNotification(String id) async {
-    await _ser.deleteDuplicatedReminders(id, showNotification: false);
+  deleteNotification(String id, {showNotification = false}) async {
+    await _ser.deleteDuplicatedReminders(id,
+        showNotification: showNotification);
     _init();
   }
 }

@@ -1,6 +1,6 @@
 import 'package:awrad/Consts/ConstMethodes.dart';
 import 'package:awrad/Consts/ThemeCosts.dart';
-import 'package:awrad/models/ReminderModel.dart';
+import 'package:awrad/Views/quran/QuranNewScreen.dart';
 import 'package:awrad/widgets/LoadingWidget.dart';
 import 'package:awrad/widgets/ReminderWidget/ReminderWidgetVM.dart';
 import 'package:flutter/material.dart';
@@ -10,41 +10,49 @@ import 'package:get/get.dart';
 import 'package:stacked/stacked.dart';
 
 class ReminderWidget extends StatelessWidget {
-  final ReminderModel reminder;
+  final String uid;
   final Function deleteFunction;
-  const ReminderWidget({Key key, this.reminder, @required this.deleteFunction})
+  const ReminderWidget({Key key, this.uid, @required this.deleteFunction})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<ReminderWidgetVm>.reactive(
-      viewModelBuilder: () => ReminderWidgetVm(rmd: reminder),
+      viewModelBuilder: () => ReminderWidgetVm(uid),
+      disposeViewModel: true,
       builder: (ctx, model, ch) {
         return model.isBusy
             ? LoadingWidget()
             : InkWell(
                 onTap: () {
-                  Get.dialog(
-                    Dialog(
-                      child: SingleChildScrollView(
-                        child: Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: Html(
-                            data: reminder.wrdText,
-                            style: {
-                              "*": Style(
-                                textAlign: TextAlign.center,
-                              ),
-                            },
-                            shrinkWrap: true,
+                  if (model.reminder.isAwrad)
+                    Get.dialog(
+                      Dialog(
+                        child: SingleChildScrollView(
+                          child: Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Html(
+                              data: model.reminder.wrdText,
+                              style: {
+                                "*": Style(
+                                  textAlign: TextAlign.center,
+                                ),
+                              },
+                              shrinkWrap: true,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  );
+                    );
+                  else
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => QuranNewScreen(
+                        suraName: model.reminder.wrdName,
+                      ),
+                    ));
                 },
                 child: Dismissible(
-                  key: Key(reminder.id),
+                  key: Key(model.reminder.id),
                   onDismissed: (dir) {
                     deleteFunction();
                   },
@@ -79,7 +87,7 @@ class ReminderWidget extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Text(
-                                  reminder.wrdName,
+                                  model.reminder.wrdName,
                                   style: AppThemes.wrdTitleTextStyle,
                                 ),
                                 FittedBox(

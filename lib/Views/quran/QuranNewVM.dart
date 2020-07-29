@@ -15,11 +15,16 @@ class QuranNewVM extends BaseViewModel {
   QuranModel get quran => _quran;
   PageController _ctrl = PageController(initialPage: 0);
   PageController get ctrl => _ctrl;
-  initData() async {
+  int get lastSavedSuraIndex => mainBox.get(LAST_SAVED_SURAH, defaultValue: 0);
+  initData({String suraName = ""}) async {
     setBusy(true);
-    _quran = await _ser.quran;
-    final lastSavedSura = mainBox.get(LAST_SAVED_SURAH, defaultValue: 0);
-    selectedSurah = _quran.data.surahs[lastSavedSura];
+    if (_quran == null) _quran = await _ser.quran;
+    if (suraName.isNotEmpty) {
+      final index = surasString.indexOf(suraName);
+      selectedSurah = _quran.data.surahs[index];
+    } else {
+      selectedSurah = _quran.data.surahs[lastSavedSuraIndex];
+    }
     setBusy(false);
   }
 
@@ -46,8 +51,7 @@ class QuranNewVM extends BaseViewModel {
       _selectedSurah = sura;
       _currentPageNumber = pagesNumber[0];
 
-      notifyListeners();
-      Future.delayed(Duration(milliseconds: 200)).then((_) {
+      Future.delayed(Duration(milliseconds: 500)).then((_) {
         final savedBookMark =
             mainBox.get(_selectedSurah.englishName, defaultValue: -1);
         int pageIndex = 0;
@@ -55,8 +59,8 @@ class QuranNewVM extends BaseViewModel {
         if (savedBookMark > -1) {
           pageIndex = indexOfPage(savedBookMark);
         }
-        ctrl.animateToPage(pageIndex,
-            duration: Duration(milliseconds: 500), curve: Curves.easeInExpo);
+        _ctrl.animateToPage(pageIndex,
+            duration: Duration(milliseconds: 500), curve: Curves.easeIn);
       });
     } catch (e) {
       log(e.toString());
@@ -78,7 +82,12 @@ class QuranNewVM extends BaseViewModel {
   }
 
   saveBookMark() async {
-    await mainBox.put(_selectedSurah.englishName, currentPageNumber);
+    if (mainBox.get(_selectedSurah.englishName, defaultValue: -1) ==
+        currentPageNumber) {
+      await mainBox.delete(_selectedSurah.englishName);
+    } else {
+      await mainBox.put(_selectedSurah.englishName, currentPageNumber);
+    }
     notifyListeners();
   }
   // int ss = 1;
