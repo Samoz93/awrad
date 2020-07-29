@@ -64,47 +64,7 @@ class SavedAwrad extends StatelessWidget {
                         ),
                       ),
                     ),
-                    SliverPersistentHeader(
-                        delegate:
-                            MyHeader(text: "الأوراد", maxEx: 60, min: 20)),
-                    SliverList(
-                      delegate: SliverChildBuilderDelegate(
-                        (context, index) {
-                          return Container(
-                            height: 100,
-                            child: ReminderWidget(
-                              reminder: model.awradData[index],
-                              deleteFunction: () {
-                                model.deleteNotification(
-                                    model.awradData[index].id);
-                              },
-                            ),
-                          );
-                        },
-                        childCount: model.awradData.length,
-                      ),
-                    ),
-                    model.quranData.length > 0
-                        ? SliverPersistentHeader(
-                            delegate: MyHeader(
-                                text: "أوراد القرآن", maxEx: 60, min: 20))
-                        : SliverToBoxAdapter(
-                            child: SizedBox(),
-                          ),
-                    model.quranData.length > 0
-                        ? SliverList(
-                            delegate: SliverChildBuilderDelegate(
-                              (context, index) {
-                                return Container(
-                                  child: Text(index.toString()),
-                                );
-                              },
-                              childCount: 255,
-                            ),
-                          )
-                        : SliverToBoxAdapter(
-                            child: SizedBox(),
-                          ),
+                    ...getAwradData(model),
                   ],
                 ),
               ),
@@ -115,6 +75,60 @@ class SavedAwrad extends StatelessWidget {
 
       viewModelBuilder: () => SavedAwradVM(),
     );
+  }
+
+  List<Widget> getAwradData(SavedAwradVM model) {
+    final List<Widget> lst = [];
+    if (model.awradData.isEmpty && model.quranData.isEmpty)
+      lst.add(
+        SliverFillRemaining(
+          child: Center(
+            child: Text("لا يوجد أوراد محفوظة "),
+          ),
+        ),
+      );
+
+    if (model.awradData.isNotEmpty) {
+      lst.add(SliverPersistentHeader(
+          delegate: MyHeader(text: "الأوراد", maxEx: 60, min: 20)));
+      lst.add(
+        SliverList(
+          delegate: SliverChildBuilderDelegate(
+            (context, index) {
+              return Container(
+                height: 100,
+                child: ReminderWidget(
+                  reminder: model.awradData[index],
+                  deleteFunction: () {
+                    model.deleteNotification(model.awradData[index].id);
+                  },
+                ),
+              );
+            },
+            childCount: model.awradData.length,
+          ),
+        ),
+      );
+    }
+
+    if (model.quranData.isNotEmpty) {
+      lst.add(SliverPersistentHeader(
+          delegate: MyHeader(text: "أوراد القرآن", maxEx: 60, min: 20)));
+      lst.add(
+        SliverList(
+          delegate: SliverChildBuilderDelegate(
+            (context, index) {
+              return Container(
+                child: Text(index.toString()),
+              );
+            },
+            childCount: 255,
+          ),
+        ),
+      );
+    }
+
+    return lst;
   }
 
   Widget _getText(String txt, int tapNumber, SavedAwradVM vm) {

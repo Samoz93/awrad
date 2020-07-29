@@ -1,3 +1,4 @@
+import 'package:awrad/Consts/ThemeCosts.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -57,7 +58,7 @@ List<String> get daysOfWeek {
 }
 
 List<int> get daysOfWeekInt {
-  return List.generate(7, (index) => index + 1);
+  return List.generate(7, (index) => index);
 }
 
 List<int> get timesOfDayInt {
@@ -138,4 +139,12 @@ getData(String path, String baseUrl) async {
           baseUrl: baseUrl),
       data: _data);
   return _result.data;
+}
+
+showSnackBar(title, message, {isErr = false}) {
+  Get.snackbar(title, message,
+      backgroundColor: isErr
+          ? AppColors.deleteColor.withOpacity(0.3)
+          : AppColors.addColor.withOpacity(0.3),
+      barBlur: 5);
 }

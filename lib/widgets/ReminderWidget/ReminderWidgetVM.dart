@@ -8,7 +8,7 @@ class ReminderWidgetVm extends BaseViewModel {
 
   List<String> get daysString {
     final weekDay = daysOfWeek;
-    return rmd.days.reversed.map((e) => weekDay[e - 1]).toList();
+    return rmd.days.map((e) => weekDay[e]).toList();
   }
 
   List<String> get timeString {

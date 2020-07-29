@@ -3,7 +3,7 @@ import 'package:awrad/Consts/ThemeCosts.dart';
 import 'package:awrad/Views/welcome/SlidesViewMode.dart';
 import 'package:awrad/models/SlideModel.dart';
 import 'package:awrad/widgets/LoadingWidget.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:stacked/stacked.dart';
@@ -76,8 +76,8 @@ class SlideView extends StatelessWidget {
             flex: 15,
             child: Stack(
               children: <Widget>[
-                CachedNetworkImage(
-                  imageUrl: model.img,
+                ExtendedImage.network(
+                  model.img,
                   height: double.infinity,
                   fit: BoxFit.cover,
                 ),

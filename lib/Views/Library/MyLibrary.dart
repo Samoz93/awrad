@@ -3,7 +3,7 @@ import 'package:awrad/Views/Library/BookScreen.dart';
 import 'package:awrad/Views/Library/LibraryListVM.dart';
 import 'package:awrad/widgets/LoadingWidget.dart';
 import 'package:awrad/widgets/MyScf.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
@@ -48,8 +48,8 @@ class MyLibrary extends StatelessWidget {
                               SizedBox(height: 5),
                               Flexible(
                                 fit: FlexFit.tight,
-                                child: CachedNetworkImage(
-                                  imageUrl: item.bookCover,
+                                child: ExtendedImage.network(
+                                  item.bookCover,
                                   fit: BoxFit.cover,
                                 ),
                               ),

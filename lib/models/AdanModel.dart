@@ -157,7 +157,7 @@ class Timings {
           tim.substring(tim.indexOf(":") + 1, tim.indexOf(":") + 3);
 
       final now = DateTime.now();
-      final dt = DateTime.utc(now.year, now.month, now.day, int.parse(utcHour),
+      final dt = DateTime(now.year, now.month, now.day, int.parse(utcHour),
           int.parse(utcMinutes));
       return dt;
     } catch (e) {

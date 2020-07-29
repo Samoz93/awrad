@@ -119,4 +119,6 @@ class ReminderModel {
         wrdText.hashCode ^
         notifId.hashCode;
   }
+
+  bool get hasReminder => days.isNotEmpty && times.isNotEmpty;
 }

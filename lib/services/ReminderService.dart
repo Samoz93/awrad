@@ -1,15 +1,16 @@
-import 'package:awrad/Consts/DATABASECONST.dart';
+import 'package:awrad/Consts/ConstMethodes.dart';
 import 'package:awrad/main.dart';
 import 'package:awrad/models/AwradModel.dart';
 import 'package:awrad/models/ReminderModel.dart';
+import 'package:awrad/services/NotificationService.dart';
 import 'package:get/get.dart';
 
 class ReminderService {
+  final _notiSer = Get.find<NotificationService>();
   saveReminder(ReminderModel rm) async {
     await deleteDuplicatedReminders(rm.id);
-    final int lastId = mainBox.get(LAST_SAVED_ID, defaultValue: 10) + 1;
-    await reminderBox.add(rm..notifId = lastId);
-    // _notiSer.scheduleNotification(rm);
+    await reminderBox.add(rm);
+    _notiSer.scheduleWrdNotification(rm);
   }
 
   testDeleteAll() async {
@@ -46,15 +47,13 @@ class ReminderService {
   deleteDuplicatedReminders(String uid, {bool showNotification = false}) async {
     final vals = reminderBox.values.toList();
     final recur = vals.where((element) => element.id == uid).toList().reversed;
-    int notiId = 0;
     for (var item in recur) {
-      notiId = item.notifId;
       final index = vals.indexOf(item);
       await reminderBox.deleteAt(index);
     }
-    // _notiSer.cancelSchedule(notiId);
+    await _notiSer.cancelSchedule(uid);
     if (showNotification) {
-      Get.snackbar("تم", "تم حذف التنبيه");
+      showSnackBar("تم", "تم حذف التنبيه");
     }
   }
 
