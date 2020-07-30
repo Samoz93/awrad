@@ -22,6 +22,7 @@ class AwradService {
   Future<List<AwradTypesModel>> get awradType async {
     // _types.clear();
     if (_types.isNotEmpty) return _types;
+    _types.clear();
     final d = (await _db.reference().child(AWRAD_TYPES).once()).value;
     final m = Map<String, String>.from(d);
 

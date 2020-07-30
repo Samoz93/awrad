@@ -71,6 +71,7 @@ class QuranNewVM extends BaseViewModel {
     final x = suras.indexOf(_selectedSurah);
     log(x.toString());
     await mainBox.put(LAST_SAVED_SURAH, x);
+    notifyListeners();
   }
 
   bool get isBookMarked =>

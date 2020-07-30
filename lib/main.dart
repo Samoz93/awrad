@@ -1,5 +1,7 @@
 import 'package:awrad/Consts/DATABASECONST.dart';
 import 'package:awrad/Consts/ThemeCosts.dart';
+import 'package:awrad/Views/MainPage.dart';
+import 'package:awrad/Views/services/MyMasbaha.dart';
 import 'package:awrad/base/ScheduleService.dart';
 import 'package:awrad/models/ReminderModel.dart';
 import 'package:awrad/services/NotificationService.dart';
@@ -9,7 +11,6 @@ import 'package:hive/hive.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:path_provider/path_provider.dart';
 
-import 'Views/MainPage.dart';
 import 'base/locator.dart';
 
 Box mainBox;
@@ -17,7 +18,6 @@ Box notificationBox;
 Box<ReminderModel> reminderBox;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // TestWidgetsFlutterBinding.ensureInitialized();
   await initializeDateFormatting('ar');
   setupLocator();
   await setupNotification();

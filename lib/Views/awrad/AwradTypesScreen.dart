@@ -28,6 +28,11 @@ class AwradTypesScreen extends StatelessWidget {
                     children: <Widget>[
                       AwradBtn(
                         txt: "مكتبة التصوف",
+                        // icon: Image.asset(
+                        //   "assets/icons/book.png",
+                        //   width: 30,
+                        //   color: Colors.white,
+                        // ),
                         onPressed: () {
                           Navigator.of(context).push(
                             MaterialPageRoute(
