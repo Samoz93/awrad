@@ -19,7 +19,6 @@ class ReminderWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return ViewModelBuilder<ReminderWidgetVm>.reactive(
       viewModelBuilder: () => ReminderWidgetVm(uid),
-      disposeViewModel: true,
       builder: (ctx, model, ch) {
         return model.isBusy
             ? LoadingWidget()
