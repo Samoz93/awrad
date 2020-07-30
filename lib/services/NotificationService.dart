@@ -74,7 +74,7 @@ class NotificationService {
     final dayNotification = Day(day + 1);
     final azanType = azanTimes[time].type;
     final azanDate = adanTimes.timings.getTimingDateTime(azanType);
-    log("will save ${rm.id} of $day and time ${azanType} to id $lastSaveID");
+    log("will save ${rm.id} of $day and time $azanType to id $lastSaveID");
 
     var timeNotification = azanDate.toNotificationTimeWithDelay();
 

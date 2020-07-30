@@ -1,5 +1,7 @@
 import 'dart:developer';
 
+import 'package:awrad/base/locator.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:workmanager/workmanager.dart';
 
 initWorkManager() async {
@@ -11,8 +13,7 @@ initWorkManager() async {
   await Workmanager.registerOneOffTask(
     "azanTimer",
     "simpleTask",
-    existingWorkPolicy: ExistingWorkPolicy.replace,
-    initialDelay: Duration(minutes: 30),
+    initialDelay: Duration(hours: 15),
   ); //Android only (see below)
 }
 
@@ -24,16 +25,29 @@ callbackDispatcher() {
     log("Native called background task: $task ,$inputData");
     // final _db = FirebaseDatabase.instance;
 
-    // await _db
+    await showNotification(); // await _db
     //     .reference()
     //     .child("test")
     //     .push()
     //     .update({"date": "$task ${DateTime.now().toString()}"});
+
     await Workmanager.registerOneOffTask(
-      "azanTimer",
+      DateTime.now().toString(),
       "simpleTask",
       initialDelay: Duration(hours: 1),
     );
     return Future.value(true);
   });
+}
+
+Future<void> showNotification() async {
+  var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+      'your channel id', 'your channel name', 'your channel description',
+      importance: Importance.Max, priority: Priority.High, ticker: 'ticker');
+  var iOSPlatformChannelSpecifics = IOSNotificationDetails();
+  var platformChannelSpecifics = NotificationDetails(
+      androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
+  await flutterLocalNotificationsPlugin.show(
+      8, 'plain title', 'plain body', platformChannelSpecifics,
+      payload: 'item x');
 }

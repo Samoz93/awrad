@@ -26,7 +26,8 @@ class BookService {
 
   Future<String> getBook(BookModel book) async {
     final pth = await _getBookPath(book.uid);
-    if (File(pth).existsSync()) {
+    final file = File(pth);
+    if (file.existsSync()) {
       _progress.add(1.0);
       return pth;
     }

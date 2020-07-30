@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 class AppThemes {
   static const todayTimeTextStyle =
       TextStyle(fontSize: 20, color: Colors.white);
+  static const quranFahrasTitleTextStyle =
+      TextStyle(fontSize: 20, color: Colors.white);
   static const quranBarTextStyle = TextStyle(fontSize: 15, color: Colors.white);
   static const azanTimeTitleTextStyle =
       TextStyle(fontSize: 25, color: Colors.white);

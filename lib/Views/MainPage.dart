@@ -1,5 +1,5 @@
 import 'package:awrad/Views/SavedAwrad/SavedAwrad.dart';
-import 'package:awrad/Views/quran/QuranNewScreen.dart';
+import 'package:awrad/Views/quran/QuranMainScreen.dart';
 import 'package:awrad/Views/services/MyServices.dart';
 import 'package:awrad/Views/welcome/WelcomeView.dart';
 
@@ -20,7 +20,7 @@ class _MainPageState extends State<MainPage> {
   final bucket = PageStorageBucket();
   List<Widget> pages = [
     WelcomeScreed(key: PageStorageKey('WelcomeScreed')),
-    QuranNewScreen(key: PageStorageKey('QuranScreen')),
+    QuranMainScreen(key: PageStorageKey('QuranScreen')),
     SavedAwrad(key: PageStorageKey('saved')),
     AwradTypesScreen(key: PageStorageKey('AwradTypesScreen')),
     MyServices(key: PageStorageKey('welcosme3')),

@@ -25,7 +25,7 @@ class ReminderModel {
   int notifId;
   ReminderModel({
     this.id,
-    this.isAwrad,
+    this.isAwrad = true,
     this.days,
     this.times,
     this.type,
@@ -120,5 +120,5 @@ class ReminderModel {
         notifId.hashCode;
   }
 
-  bool get hasReminder => days.isNotEmpty && times.isNotEmpty;
+  bool get hasValidData => days.isNotEmpty && times.isNotEmpty;
 }

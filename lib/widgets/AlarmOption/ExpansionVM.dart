@@ -1,4 +1,5 @@
 import 'package:awrad/Consts/ConstMethodes.dart';
+import 'package:awrad/models/AwradModel.dart';
 import 'package:awrad/models/ReminderModel.dart';
 import 'package:awrad/services/ReminderService.dart';
 import 'package:flutter/material.dart';
@@ -6,18 +7,19 @@ import 'package:get/get.dart';
 import 'package:stacked/stacked.dart';
 
 class ExpansionVM extends BaseViewModel {
-  final wrd;
+  final WrdModel wrd;
+  final isAwrad;
   final _ser = Get.find<ReminderService>();
   ReminderModel _rm;
-  ExpansionVM({@required this.wrd}) {
+  ExpansionVM({@required this.wrd, this.isAwrad = true}) {
     _init();
   }
   _init() {
-    _rm = _ser.getReminder(wrd, isAwrad: true);
+    _rm = _ser.getReminder(wrd, isAwrad: isAwrad);
     notifyListeners();
   }
 
-  bool get hasReminder => _rm.hasReminder;
+  bool get hasReminder => _ser.hasReminder(_rm.id);
   ReminderModel get reminder => _rm;
 
   bool _showAlaramOption = false;
@@ -45,7 +47,7 @@ class ExpansionVM extends BaseViewModel {
 
   saveDate() async {
     try {
-      if (!_rm.hasReminder) {
+      if (!_rm.hasValidData) {
         showSnackBar("لايمكن المتابعة",
             "يرجى اختيار يوم واحد وتاريخ واحد على الاقل لكي يتم حفظ التنبيه",
             isErr: true);
@@ -79,6 +81,11 @@ class ExpansionVM extends BaseViewModel {
 
   _handleError(e) {
     showSnackBar("خطأ", "$e", isErr: true);
+  }
+
+  Future<void> deleteThisReminder() async {
+    await deleteNotification(_rm.id, showNotification: true);
+    toggelAlarmOption();
   }
 
   Future<void> deleteNotification(String uid, {bool showNotification}) async {
