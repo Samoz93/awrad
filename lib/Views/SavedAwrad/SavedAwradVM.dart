@@ -25,7 +25,7 @@ class SavedAwradVM extends BaseViewModel {
   }
 
   _getTodayNumber() {
-    return DateTime.now().weekday;
+    return DateTime.now().weekday - 1;
   }
 
   String todayName() {

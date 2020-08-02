@@ -12,3 +12,4 @@ const BOOKS = "books";
 const LAST_SAVED_ID = "lastSavedId";
 const ADAN_DATA = "adan_data";
 const LAST_SAVED_SURAH = "LAST_SAVED_SURAH";
+const QURAN_READER = "QURAN_READER";

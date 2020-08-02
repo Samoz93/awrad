@@ -1,7 +1,6 @@
 import 'package:awrad/Consts/DATABASECONST.dart';
 import 'package:awrad/Consts/ThemeCosts.dart';
 import 'package:awrad/Views/MainPage.dart';
-import 'package:awrad/Views/services/MyMasbaha.dart';
 import 'package:awrad/base/ScheduleService.dart';
 import 'package:awrad/models/ReminderModel.dart';
 import 'package:awrad/services/NotificationService.dart';
@@ -26,7 +25,7 @@ Future<void> main() async {
 
   final appDocumentDir = await getApplicationDocumentsDirectory();
   Hive.init(appDocumentDir.path);
-  Hive.registerAdapter(ReminderModelAdapter());
+  Hive.registerAdapter<ReminderModel>(ReminderModelAdapter());
 
   mainBox = await Hive.openBox(
     MAINBOX,

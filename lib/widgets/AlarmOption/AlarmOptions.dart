@@ -12,6 +12,7 @@ class AlarmOptions extends ViewModelWidget<ExpansionVM> {
   @override
   Widget build(BuildContext context, ExpansionVM exVm) {
     final media = MediaQuery.of(context).size;
+    final iconSize = 30.0;
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
@@ -35,6 +36,7 @@ class AlarmOptions extends ViewModelWidget<ExpansionVM> {
                             ? IconButton(
                                 icon: Icon(
                                   Icons.cancel,
+                                  size: iconSize,
                                   color: AppColors.deleteColor,
                                 ),
                                 onPressed: () {
@@ -47,6 +49,7 @@ class AlarmOptions extends ViewModelWidget<ExpansionVM> {
                             exVm.showAlaramOption
                                 ? Icons.check_circle
                                 : Icons.alarm_add,
+                            size: iconSize,
                             color: AppColors.addColor,
                           ),
                           onPressed: () {
@@ -63,6 +66,7 @@ class AlarmOptions extends ViewModelWidget<ExpansionVM> {
                     ? IconButton(
                         icon: Icon(
                           Icons.alarm_off,
+                          size: iconSize,
                           color: AppColors.deleteColor,
                         ),
                         onPressed: () {

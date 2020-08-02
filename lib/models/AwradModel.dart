@@ -3,6 +3,8 @@ class WrdModel {
   String wrdDesc;
   String wrdName;
   String wrdType;
+  bool hasSound;
+  String link;
 
   WrdModel({this.uid, this.wrdDesc, this.wrdName, this.wrdType});
 
@@ -11,6 +13,8 @@ class WrdModel {
     wrdDesc = json['wrdDesc'];
     wrdName = json['wrdName'];
     wrdType = json['wrdType'];
+    hasSound = json['hasSound'] ?? false;
+    link = json['link'] ?? "";
   }
 
   Map<String, dynamic> toJson() {
@@ -19,6 +23,9 @@ class WrdModel {
     data['wrdDesc'] = this.wrdDesc;
     data['wrdName'] = this.wrdName;
     data['wrdType'] = this.wrdType;
+    data['hasSound'] = this.hasSound;
+    data['link'] = this.hasSound ?? "";
+
     return data;
   }
 }

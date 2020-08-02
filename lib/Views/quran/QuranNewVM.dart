@@ -40,7 +40,6 @@ class QuranNewVM extends BaseViewModel {
   int get currentPageNumber => _currentPageNumber;
   set currentPageNumber(int number) {
     _currentPageNumber = pagesNumber[number];
-
     notifyListeners();
   }
 
@@ -90,6 +89,14 @@ class QuranNewVM extends BaseViewModel {
       await mainBox.put(_selectedSurah.englishName, currentPageNumber);
     }
     notifyListeners();
+  }
+
+  List<Ayahs> get ayahSounds {
+    final x = _selectedSurah.ayahs
+        .where((e) => e.page == _currentPageNumber)
+        .map((e) => e)
+        .toList();
+    return x;
   }
   // int ss = 1;
   // void selectNextSurah() {

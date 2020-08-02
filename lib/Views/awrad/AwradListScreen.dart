@@ -5,6 +5,7 @@ import 'package:awrad/widgets/AlarmOption/AlarmOptions.dart';
 import 'package:awrad/widgets/AlarmOption/ExpansionVM.dart';
 import 'package:awrad/base/locator.dart';
 import 'package:awrad/models/AwradTypesModel.dart';
+import 'package:awrad/widgets/InstaAudioPlay/InstaAudioPlay.dart';
 import 'package:awrad/widgets/LoadingWidget.dart';
 import 'package:awrad/widgets/MyErrorWidget.dart';
 import 'package:awrad/widgets/MyScf.dart';
@@ -61,7 +62,20 @@ class AwradListScreen extends StatelessWidget {
                           children: <Widget>[
                             Html(data: wrd.wrdDesc),
                             SizedBox(height: 20),
-                            AlarmOptions(wrd: wrd),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                AlarmOptions(wrd: wrd),
+                                wrd.hasSound && !exVm.showAlaramOption
+                                    ? Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: InstaAudioPlay(
+                                          url: wrd.link,
+                                        ),
+                                      )
+                                    : SizedBox(),
+                              ],
+                            ),
                           ],
                         ),
                       ],

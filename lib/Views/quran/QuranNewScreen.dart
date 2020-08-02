@@ -1,5 +1,6 @@
 import 'package:awrad/Consts/ThemeCosts.dart';
 import 'package:awrad/Views/quran/QuranNewVM.dart';
+import 'package:awrad/widgets/AudioPlayer/MyAudioPlayer.dart';
 import 'package:awrad/widgets/LoadingWidget.dart';
 import 'package:awrad/widgets/MyErrorWidget.dart';
 import 'package:extended_image/extended_image.dart';
@@ -18,52 +19,81 @@ class QuranNewScreen extends StatelessWidget {
       builder: (ctx, model, ch) {
         if (model.isBusy) return LoadingWidget();
         if (model.hasError) return MyErrorWidget(err: model.modelError);
-        return Flex(
-          direction: Axis.vertical,
+        return Stack(
           children: <Widget>[
-            Flexible(
-              flex: 2,
-              fit: FlexFit.tight,
-              child: Container(
-                color: AppColors.mainColorSelected,
-                child: QuranBar(),
-              ),
-            ),
-            Flexible(
-              flex: 20,
-              fit: FlexFit.tight,
-              child: PageView.builder(
-                controller: model.ctrl,
-                itemCount: model.pagesNumber.length,
-                onPageChanged: (page) {
-                  model.currentPageNumber = page;
-                },
-                itemBuilder: (BuildContext context, int index) {
-                  int newIndex = model.pagesNumber[index] + 3;
-                  String dex = "";
-                  if (newIndex.toString().length == 1) dex = "000$newIndex";
-                  if (newIndex.toString().length == 2) dex = "00$newIndex";
-                  if (newIndex.toString().length == 3) dex = "0$newIndex";
-                  if (newIndex.toString().length == 4) dex = "$newIndex";
-                  return ExtendedImage.asset(
-                    "assets/L/$dex.png",
-                    fit: BoxFit.cover,
-                    mode: ExtendedImageMode.gesture,
-                    initGestureConfigHandler: (state) {
-                      return GestureConfig(
-                        minScale: 1,
-                        animationMinScale: 0.9,
-                        maxScale: 2.0,
-                        animationMaxScale: 2.1,
-                        speed: 1.0,
-                        inertialSpeed: 100.0,
-                        initialScale: 1.0,
-                        inPageView: true,
-                        initialAlignment: InitialAlignment.center,
+            Flex(
+              direction: Axis.vertical,
+              children: <Widget>[
+                Flexible(
+                  flex: 2,
+                  fit: FlexFit.tight,
+                  child: Container(
+                    color: AppColors.mainColorSelected,
+                    child: QuranBar(),
+                  ),
+                ),
+                Flexible(
+                  flex: 20,
+                  fit: FlexFit.tight,
+                  child: PageView.builder(
+                    controller: model.ctrl,
+                    itemCount: model.pagesNumber.length,
+                    onPageChanged: (page) {
+                      model.currentPageNumber = page;
+                    },
+                    itemBuilder: (BuildContext context, int index) {
+                      int newIndex = model.pagesNumber[index] + 3;
+                      String dex = "";
+                      if (newIndex.toString().length == 1) dex = "000$newIndex";
+                      if (newIndex.toString().length == 2) dex = "00$newIndex";
+                      if (newIndex.toString().length == 3) dex = "0$newIndex";
+                      if (newIndex.toString().length == 4) dex = "$newIndex";
+                      return ExtendedImage.asset(
+                        "assets/L/$dex.png",
+                        fit: BoxFit.cover,
+                        mode: ExtendedImageMode.gesture,
+                        initGestureConfigHandler: (state) {
+                          return GestureConfig(
+                            minScale: 1,
+                            animationMinScale: 0.9,
+                            maxScale: 2.0,
+                            animationMaxScale: 2.1,
+                            speed: 1.0,
+                            inertialSpeed: 100.0,
+                            initialScale: 1.0,
+                            inPageView: true,
+                            initialAlignment: InitialAlignment.center,
+                          );
+                        },
                       );
                     },
-                  );
-                },
+                  ),
+                ),
+              ],
+            ),
+            Positioned(
+              bottom: 5,
+              left: -5,
+              child: Container(
+                height: 40,
+                child: FloatingActionButton(
+                  onPressed: () {
+                    Get.bottomSheet(
+                      Container(
+                        height: MediaQuery.of(context).size.height * 0.2,
+                        child: MyAudioPlayer(
+                          lst: model.ayahSounds,
+                        ),
+                      ),
+                      isDismissible: true,
+                      enableDrag: true,
+                    );
+                  },
+                  child: Icon(
+                    Icons.play_arrow,
+                    size: 30,
+                  ),
+                ),
               ),
             ),
           ],

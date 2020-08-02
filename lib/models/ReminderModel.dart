@@ -5,7 +5,7 @@ import 'package:hive/hive.dart';
 
 part 'ReminderModel.g.dart';
 
-@HiveType()
+@HiveType(typeId: 0)
 class ReminderModel {
   @HiveField(0)
   String id;
@@ -23,16 +23,24 @@ class ReminderModel {
   String wrdText;
   @HiveField(7)
   int notifId;
+  @HiveField(8)
+  String link;
+  @HiveField(9)
+  bool hasSound;
   ReminderModel({
     this.id,
-    this.isAwrad = true,
+    this.isAwrad,
     this.days,
     this.times,
     this.type,
     this.wrdName,
     this.wrdText,
     this.notifId,
+    this.link,
+    this.hasSound,
   });
+
+  bool get hasValidData => days.isNotEmpty && times.isNotEmpty;
 
   ReminderModel copyWith({
     String id,
@@ -42,7 +50,9 @@ class ReminderModel {
     String type,
     String wrdName,
     String wrdText,
-    String notifId,
+    int notifId,
+    String link,
+    bool hasSound,
   }) {
     return ReminderModel(
       id: id ?? this.id,
@@ -53,6 +63,8 @@ class ReminderModel {
       wrdName: wrdName ?? this.wrdName,
       wrdText: wrdText ?? this.wrdText,
       notifId: notifId ?? this.notifId,
+      link: link ?? this.link,
+      hasSound: hasSound ?? this.hasSound,
     );
   }
 
@@ -66,6 +78,8 @@ class ReminderModel {
       'wrdName': wrdName,
       'wrdText': wrdText,
       'notifId': notifId,
+      'link': link,
+      'hasSound': hasSound,
     };
   }
 
@@ -81,6 +95,8 @@ class ReminderModel {
       wrdName: map['wrdName'],
       wrdText: map['wrdText'],
       notifId: map['notifId'],
+      link: map['link'],
+      hasSound: map['hasSound'],
     );
   }
 
@@ -90,7 +106,7 @@ class ReminderModel {
 
   @override
   String toString() {
-    return 'ReminderModel(id: $id, isAwrad: $isAwrad, days: $days, times: $times, type: $type, wrdName: $wrdName, wrdText: $wrdText, notifId: $notifId)';
+    return 'ReminderModel(id: $id, isAwrad: $isAwrad, days: $days, times: $times, type: $type, wrdName: $wrdName, wrdText: $wrdText, notifId: $notifId, link: $link, hasSound: $hasSound)';
   }
 
   @override
@@ -105,7 +121,9 @@ class ReminderModel {
         o.type == type &&
         o.wrdName == wrdName &&
         o.wrdText == wrdText &&
-        o.notifId == notifId;
+        o.notifId == notifId &&
+        o.link == link &&
+        o.hasSound == hasSound;
   }
 
   @override
@@ -117,8 +135,8 @@ class ReminderModel {
         type.hashCode ^
         wrdName.hashCode ^
         wrdText.hashCode ^
-        notifId.hashCode;
+        notifId.hashCode ^
+        link.hashCode ^
+        hasSound.hashCode;
   }
-
-  bool get hasValidData => days.isNotEmpty && times.isNotEmpty;
 }

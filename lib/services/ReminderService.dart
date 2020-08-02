@@ -26,6 +26,8 @@ class ReminderService {
       isAwrad: isAwrad,
       days: [],
       times: [],
+      hasSound: wrd.hasSound,
+      link: wrd.link,
     );
 
     try {

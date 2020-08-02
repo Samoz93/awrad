@@ -23,12 +23,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_compass: ^0.4.2+1
   location: ^3.0.2
   stacked: ^1.7.1+1
   auto_size_text: ^2.1.0
-
-  # get_it: ^4.0.2
   hive: ^1.4.1+1
   path_provider: 
   get: ^3.2.2
@@ -38,18 +35,15 @@ dependencies:
   advance_pdf_viewer: any 
   flutter_zoom_drawer: 
   flutter_qiblah: 
-  slide_digital_clock: ^1.0.0
-  # epub_kitty: ^0.1.7
   extended_image: ^0.9.0
-
   permission_handler: ^5.0.1+1
   retrofit: any
   logger: any  #for logging purpose
   dio: ^3.0.9
   flutter_svg: 
-  # expansion_card: ^0.1.0
   expansion_tile_card: ^1.0.3
   flutter_local_notifications: ^1.4.4+2
+  flutter_animation_progress_bar: ^1.0.0
 
   intl: 
   flutter_html: ^1.0.0-pre.1
@@ -84,6 +78,7 @@ flutter:
     - assets/decoration/
     - assets/alarm/
     - assets/compass/
+    - assets/json/
     - assets/L/
 
   # An image asset can refer to one or more resolution-specific "variants", see

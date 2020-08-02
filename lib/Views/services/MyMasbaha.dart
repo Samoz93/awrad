@@ -1,9 +1,5 @@
-import 'dart:developer';
-import 'dart:math' as math;
-
 import 'package:awrad/Consts/ThemeCosts.dart';
 import 'package:awrad/widgets/BkScaffold.dart';
-import 'package:awrad/widgets/MyScf.dart';
 import 'package:flutter/material.dart';
 
 class MyMasbaha extends StatefulWidget {
@@ -19,7 +15,7 @@ class _MyMasbahaState extends State<MyMasbaha>
   Animation<double> anim2;
   AnimationController controller;
   bool hasCompleted = false;
-  final duratio = 300;
+  final duratio = 500;
   @override
   void initState() {
     super.initState();
@@ -58,7 +54,8 @@ class _MyMasbahaState extends State<MyMasbaha>
   }
 
   int activeIndex = 2;
-  final max = 33;
+  int max = 33;
+  final startIndex = 2;
   @override
   Widget build(BuildContext context) {
     final media = MediaQuery.of(context).size;
@@ -66,20 +63,13 @@ class _MyMasbahaState extends State<MyMasbaha>
     return BkScaffold(
       child: InkWell(
         onTap: () {
-          log("activeIndex $activeIndex");
           if (activeIndex > max + 1) {
             setState(() {
-              activeIndex = 2;
+              activeIndex = startIndex;
             });
           } else {
             controller.forward();
           }
-
-          // setState(() {
-          //   activeIndex++;
-          // });
-
-          log("activeIndex2 $activeIndex");
         },
         child: LayoutBuilder(
           builder: (context, constraints) {
@@ -120,7 +110,7 @@ class _MyMasbahaState extends State<MyMasbaha>
                                   IconButton(
                                     onPressed: () {
                                       setState(() {
-                                        activeIndex = 2;
+                                        activeIndex = startIndex;
                                       });
                                     },
                                     icon: Icon(
@@ -131,23 +121,36 @@ class _MyMasbahaState extends State<MyMasbaha>
                                   ),
                                 ],
                               ),
-                              Row(
-                                children: <Widget>[
-                                  Text(
-                                    "33/",
-                                    style: TextStyle(
-                                      fontSize: 30,
-                                      color: mainColor,
+                              InkWell(
+                                onTap: () {
+                                  if (max == 33) {
+                                    setState(() {
+                                      max = 100;
+                                    });
+                                  } else {
+                                    setState(() {
+                                      max = 33;
+                                    });
+                                  }
+                                },
+                                child: Row(
+                                  children: <Widget>[
+                                    Text(
+                                      "$max/",
+                                      style: TextStyle(
+                                        fontSize: 30,
+                                        color: mainColor,
+                                      ),
                                     ),
-                                  ),
-                                  Text(
-                                    "${activeIndex - 2}",
-                                    style: TextStyle(
-                                      fontSize: 50,
-                                      color: mainColor,
+                                    Text(
+                                      "${activeIndex - 2}",
+                                      style: TextStyle(
+                                        fontSize: 50,
+                                        color: mainColor,
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ],
                           ),
@@ -194,7 +197,7 @@ class _MyMasbahaState extends State<MyMasbaha>
   }
 
   _getContainer(double ballSize, int index) {
-    final correctedIndex = index - (activeIndex - 2);
+    final correctedIndex = index - (activeIndex - startIndex);
     final normalPos = ((correctedIndex + anim2.value) * ballSize);
     final finalPos = correctedIndex < 3
         ? correctedIndex == 2 ? normalPos + (anim.value * ballSize) : normalPos
@@ -212,6 +215,7 @@ class _MyMasbahaState extends State<MyMasbaha>
     // final activeBot = anim2.value <= 0.8 ? upVal : downVal;
     return Positioned(
       left: finalPos,
+      // top: finalPos,
       // bottom: correctedIndex == 2 ? normalBot + activeBot : normalBot,
       child: Container(
         width: ballSize,
@@ -221,7 +225,7 @@ class _MyMasbahaState extends State<MyMasbaha>
           children: <Widget>[
             Transform.rotate(
                 angle: 0,
-                // angle: correctedIndex == 2 ? anim2.value : 0,
+                // angle: correctedIndex == 2 ? anim2.value * 10 : 0,
                 child: Image.asset("assets/mas.png")),
             Align(
                 alignment: Alignment.center,

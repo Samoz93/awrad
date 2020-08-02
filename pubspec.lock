@@ -356,6 +356,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.7.0"
+  flutter_animation_progress_bar:
+    dependency: "direct main"
+    description:
+      name: flutter_animation_progress_bar
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.0"
   flutter_cache_manager:
     dependency: transitive
     description:
@@ -364,7 +371,7 @@ packages:
     source: hosted
     version: "1.4.1"
   flutter_compass:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: flutter_compass
       url: "https://pub.dartlang.org"
@@ -840,13 +847,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.99"
-  slide_digital_clock:
-    dependency: "direct main"
-    description:
-      name: slide_digital_clock
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.0"
   smooth_page_indicator:
     dependency: "direct main"
     description:
