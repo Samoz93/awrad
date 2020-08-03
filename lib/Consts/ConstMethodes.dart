@@ -1,11 +1,13 @@
-import 'package:awrad/Consts/ThemeCosts.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart' as intl;
+
+import 'package:awrad/Consts/ThemeCosts.dart';
 
 getSvgIcon(String name, {double size, Color color}) {
   return SvgPicture.asset(
@@ -50,16 +52,32 @@ double getTextSize2(String text, double fontSize) {
   return textlen;
 }
 
-List<String> get daysOfWeek {
-  return daysOfWeekInt.map((e) {
-    final date = DateTime(2020, 1, e + 5);
-    return intl.DateFormat('EE', "ar").format(date);
-  }).toList();
+// List<String> get daysOfWeek {
+//   return daysOfWeekInt.map((e) {
+//     final date = DateTime(2020, 1, e + 5);
+//     return intl.DateFormat('EE', "ar").format(date);
+//   }).toList();
+// }
+
+List<MyWeekDays> get daysOfWeek2 {
+  return [
+    MyWeekDays(name: "الاثنين", dateWeek: DateTime.monday, notiDat: Day.Monday),
+    MyWeekDays(
+        name: "الثلاثاء", dateWeek: DateTime.tuesday, notiDat: Day.Tuesday),
+    MyWeekDays(
+        name: "الأربعاء", dateWeek: DateTime.wednesday, notiDat: Day.Wednesday),
+    MyWeekDays(
+        name: "الخميس", dateWeek: DateTime.thursday, notiDat: Day.Thursday),
+    MyWeekDays(name: "الجمعة", dateWeek: DateTime.friday, notiDat: Day.Friday),
+    MyWeekDays(
+        name: "السبت", dateWeek: DateTime.saturday, notiDat: Day.Saturday),
+    MyWeekDays(name: "الأحد", dateWeek: DateTime.sunday, notiDat: Day.Sunday),
+  ];
 }
 
-List<int> get daysOfWeekInt {
-  return List.generate(7, (index) => index);
-}
+// List<int> get daysOfWeekInt {
+//   return List.generate(7, (index) => index);
+// }
 
 List<int> get timesOfDayInt {
   return List.generate(7, (index) => index);
@@ -148,4 +166,49 @@ showSnackBar(title, message, {isErr = false}) {
           ? AppColors.deleteColor.withOpacity(0.3)
           : AppColors.addColor.withOpacity(0.3),
       barBlur: 5);
+}
+
+class MyWeekDays {
+  String name;
+  int dateWeek;
+  Day notiDat;
+  MyWeekDays({
+    this.name,
+    this.dateWeek,
+    this.notiDat,
+  });
+
+  MyWeekDays copyWith({
+    String name,
+    int dateWeek,
+    Day notiDat,
+  }) {
+    return MyWeekDays(
+      name: name ?? this.name,
+      dateWeek: dateWeek ?? this.dateWeek,
+      notiDat: notiDat ?? this.notiDat,
+    );
+  }
+
+  @override
+  String toString() =>
+      'MyWeekDays(name: $name, dateWeek: $dateWeek, notiDat: $notiDat)';
+
+  @override
+  bool operator ==(Object o) {
+    if (identical(this, o)) return true;
+
+    return o is MyWeekDays &&
+        o.name == name &&
+        o.dateWeek == dateWeek &&
+        o.notiDat == notiDat;
+  }
+
+  bool isTodayDate(int day) {
+    return dateWeek == day;
+  }
+
+  bool isNotificationDate(Day day) => notiDat == day;
+  @override
+  int get hashCode => name.hashCode ^ dateWeek.hashCode ^ notiDat.hashCode;
 }

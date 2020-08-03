@@ -24,17 +24,19 @@ class SavedAwradVM extends BaseViewModel {
     notifyListeners();
   }
 
-  _getTodayNumber() {
-    return DateTime.now().weekday - 1;
+  int get _todayNumber {
+    return DateTime.now().weekday;
   }
 
   String todayName() {
-    return daysOfWeek[_getTodayNumber()];
+    return daysOfWeek2
+        .firstWhere((element) => element.isTodayDate(_todayNumber))
+        .name;
   }
 
   List<ReminderModel> get _todaysReminder {
     return _remindres
-        .where((element) => element.days.contains(_getTodayNumber()))
+        .where((element) => element.days.contains(_todayNumber))
         .toList();
   }
 
