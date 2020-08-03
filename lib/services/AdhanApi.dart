@@ -40,4 +40,13 @@ class AdhanApi {
 
     return timing;
   }
+
+  Future<AdanData> get tommorowAdan async {
+    final day = DateTime.now().add(Duration(days: 1)).day;
+    final sss = await adanTimes;
+    final timing =
+        sss.data.firstWhere((e) => int.parse(e.date.gregorian.day) == day);
+
+    return timing;
+  }
 }

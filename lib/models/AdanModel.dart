@@ -71,6 +71,20 @@ class AdanData {
     }
     return data;
   }
+
+  DateTime getDateByType(String type) {
+    final year = int.parse(date.gregorian.year);
+    final day = int.parse(date.gregorian.day);
+    final now = DateTime(year, date.gregorian.month.number, day);
+    final tim = timings.getTiming(type);
+    final utcHour = tim.substring(0, 2);
+    final utcMinutes =
+        tim.substring(tim.indexOf(":") + 1, tim.indexOf(":") + 3);
+
+    final dt = DateTime(now.year, now.month, now.day, int.parse(utcHour),
+        int.parse(utcMinutes));
+    return dt;
+  }
 }
 
 class Timings {

@@ -10,17 +10,18 @@ class InstaAudioVM extends BaseViewModel {
 
   InstaAudioVM(this.url);
 
-  Widget get playingWidget {
+  Widget playingWidget(AnimationController ctrl) {
     return player.builderRealtimePlayingInfos(
       builder: (context, info) {
-        if (info == null || info.current == null) return getidleIcon(info);
+        if (info == null || info.current == null)
+          return getidleIcon(info, ctrl);
         if (info.isBuffering) return LoadingWidget();
-        return getidleIcon(info);
+        return getidleIcon(info, ctrl);
       },
     );
   }
 
-  Widget getidleIcon(RealtimePlayingInfos info) {
+  Widget getidleIcon(RealtimePlayingInfos info, AnimationController ctrl) {
     bool isPlaying = info == null ? false : info.isPlaying;
     bool hasData = info == null ? false : info.current != null;
     double currentProgress = info == null
@@ -29,6 +30,11 @@ class InstaAudioVM extends BaseViewModel {
             ? 0.0
             : info.currentPosition.inSeconds / info.duration.inSeconds;
 
+    if (!isPlaying) {
+      ctrl.value = 0.0;
+      ctrl.stop();
+    } else
+      ctrl.repeat();
     return InkWell(
       child: Container(
         height: 30,
@@ -42,9 +48,16 @@ class InstaAudioVM extends BaseViewModel {
               ),
             ),
             Center(
-              child: Icon(
-                isPlaying ? Icons.stop : Icons.play_arrow,
-                color: AppColors.addColor,
+              child: AnimatedBuilder(
+                animation: ctrl,
+                builder: (context, ch) => Transform.rotate(
+                  angle: ctrl.value,
+                  child: ch,
+                ),
+                child: Icon(
+                  isPlaying ? Icons.stop : Icons.play_arrow,
+                  color: AppColors.addColor,
+                ),
               ),
             ),
           ],

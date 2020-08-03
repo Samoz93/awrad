@@ -159,7 +159,7 @@ extension dateToTime on DateTime {
   Time toNotificationTimeWithDelay() {
     final defaultMinuterInteval =
         mainBox.get(DEFAULT_INTERVAL_BETWEEN_AZAN_AND_WRD, defaultValue: 5);
-
-    return Time(this.hour, this.minute + defaultMinuterInteval, this.second);
+    final newDate = this.add(Duration(minutes: defaultMinuterInteval));
+    return Time(newDate.hour, newDate.minute, newDate.second);
   }
 }

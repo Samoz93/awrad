@@ -3,7 +3,6 @@ import 'package:awrad/Consts/ThemeCosts.dart';
 import 'package:awrad/Views/MainPage.dart';
 import 'package:awrad/base/ScheduleService.dart';
 import 'package:awrad/models/ReminderModel.dart';
-import 'package:awrad/services/NotificationService.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
@@ -55,7 +54,7 @@ Future<void> main() async {
 
 _setupSchedule() {
   initWorkManager();
-  Get.find<NotificationService>().scheduleAzanTimes();
+  // Get.find<NotificationService>().scheduleAzanTimes();
 }
 
 class MyApp extends StatelessWidget {

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 class AppThemes {
   static const todayTimeTextStyle =
       TextStyle(fontSize: 20, color: Colors.white);
+  static const navTextStyle = TextStyle(fontSize: 15, color: Colors.white);
   static const quranFahrasTitleTextStyle =
       TextStyle(fontSize: 20, color: Colors.white);
   static const quranBarTextStyle = TextStyle(fontSize: 15, color: Colors.white);
@@ -29,7 +30,7 @@ class AppThemes {
       transform: GradientRotation(1),
       begin: Alignment.topCenter,
       end: Alignment.bottomCenter);
-  static const titleTextStyle = TextStyle(fontSize: 40);
+  static const titleTextStyle = TextStyle(fontSize: 40, color: Colors.black);
   static final pageTitleStyle =
       TextStyle(fontSize: 30, color: AppColors.addColor);
   static const buttonTextStyle = TextStyle(fontSize: 30, color: Colors.white);

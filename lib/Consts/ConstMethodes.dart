@@ -66,13 +66,13 @@ List<int> get timesOfDayInt {
 }
 
 final List<AzanTimeClass> _times = [
+  AzanTimeClass("ثلث الليل", "Midnight", false),
   AzanTimeClass("الفجر", "Fajr", true),
   AzanTimeClass("الضحى", "Sunrise", false),
   AzanTimeClass("الظهر", "Dhuhr", true),
   AzanTimeClass("العصر", "Asr", true),
   AzanTimeClass("المغرب", "Maghrib", true),
   AzanTimeClass("العشاء", "Isha", true),
-  AzanTimeClass("ثلث الليل", "Midnight", false),
 ];
 List<AzanTimeClass> get azanTimes => _times;
 List<String> get timesOfDay {

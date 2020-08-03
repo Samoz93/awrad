@@ -110,12 +110,13 @@ class ReminderWidget extends StatelessWidget {
                                 style: AppThemes.wrdTitleTextStyle,
                               ),
                               FittedBox(
-                                fit: BoxFit.contain,
+                                fit: BoxFit.scaleDown,
                                 child: Text(
                                   "سيتم التذكير في : ${model.daysString}",
                                 ),
                               ),
                               FittedBox(
+                                fit: BoxFit.scaleDown,
                                 child: Text(
                                   "سيتم تذكيرك بعد : ${model.timeString}",
                                 ),

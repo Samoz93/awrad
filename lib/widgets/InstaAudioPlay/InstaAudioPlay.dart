@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:awrad/widgets/InstaAudioPlay/InstaAudioVM.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
@@ -10,10 +12,25 @@ class InstaAudioPlay extends StatefulWidget {
   _InstaAudioPlayState createState() => _InstaAudioPlayState();
 }
 
-class _InstaAudioPlayState extends State<InstaAudioPlay> {
+class _InstaAudioPlayState extends State<InstaAudioPlay>
+    with SingleTickerProviderStateMixin {
+  AnimationController _ctrl;
   @override
   void initState() {
+    _ctrl = AnimationController(
+        vsync: this,
+        duration: Duration(seconds: 5),
+        lowerBound: 0.0,
+        upperBound: 2 * pi)
+      ..repeat();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _ctrl.dispose();
+
+    super.dispose();
   }
 
   @override
@@ -22,7 +39,7 @@ class _InstaAudioPlayState extends State<InstaAudioPlay> {
       viewModelBuilder: () => InstaAudioVM(widget.url),
       disposeViewModel: true,
       builder: (ctx, model, ch) {
-        return model.playingWidget;
+        return model.playingWidget(_ctrl);
       },
     );
   }
