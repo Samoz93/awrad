@@ -44,19 +44,20 @@ Duration getDifferince(DateTime future) {
 }
 
 Future<List<ADANTIMING>> get _allAdanTypesFromNow async {
-  if (allAdanTypes != null) return allAdanTypes;
   final azanSer = Get.find<AdhanApi>();
   var todaysAdan = await azanSer.todayAdan;
   var tommorowAdan = await azanSer.tommorowAdan;
   final now = DateTime.now();
-
+  int i = 0;
   allAdanTypes = azanTimes.map((e) {
     DateTime date = todaysAdan.getDateByType(e.type);
     if (now.isAfter(date)) {
       date = tommorowAdan.getDateByType(e.type);
     }
-    return ADANTIMING(date: date, type: e.type);
+    i++;
+    return ADANTIMING(date: date, type: e.type, index: i);
   }).toList();
+  allAdanTypes.sort((a, b) => a.date.compareTo(b.date));
   return allAdanTypes;
 }
 
@@ -67,8 +68,6 @@ Future<String> nextAdanType({String nowType}) async {
     return azanTimes[index + 1].type;
   } else {
     final allAdanTimes = await _allAdanTypesFromNow;
-    allAdanTimes.sort((a, b) => a.date.compareTo(b.date));
-    log(allAdanTimes.toString());
     return allAdanTimes[0].type;
   }
 }
@@ -77,16 +76,17 @@ callbackDispatcher() {
   Workmanager.executeTask((task, inputData) async {
     final type = inputData['type'];
     final date = inputData['date'];
-    showNotification(type, date); // await _db
+    final index = inputData['index'];
+    await showNotification(type, date, index); // await _db
     final nxtType = await nextAdanType(nowType: type);
     final nextAdan = await _getAdanByType(nxtType);
 
-    _scheduleWorkManager(nextAdan);
+    await _scheduleWorkManager(nextAdan);
     return Future.value(true);
   });
 }
 
-Future<void> showNotification(type, date) async {
+Future<void> showNotification(type, date, int index) async {
   var androidPlatformChannelSpecifics = AndroidNotificationDetails(
       'your channel id', 'your channel name', 'your channel description',
       importance: Importance.Max, priority: Priority.High, ticker: 'ticker');
@@ -94,25 +94,29 @@ Future<void> showNotification(type, date) async {
   var platformChannelSpecifics = NotificationDetails(
       androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
   await flutterLocalNotificationsPlugin.show(
-      8, type, date.toString(), platformChannelSpecifics,
+      index, type, date.toString(), platformChannelSpecifics,
       payload: 'item x');
 }
 
 class ADANTIMING {
   final String type;
   final DateTime date;
+  final int index;
   ADANTIMING({
     this.type,
     this.date,
+    this.index,
   });
 
   ADANTIMING copyWith({
     String type,
     DateTime date,
+    int index,
   }) {
     return ADANTIMING(
       type: type ?? this.type,
       date: date ?? this.date,
+      index: index ?? this.index,
     );
   }
 
@@ -120,6 +124,7 @@ class ADANTIMING {
     return {
       'type': type,
       'date': date?.millisecondsSinceEpoch,
+      'index': index,
     };
   }
 
@@ -129,6 +134,7 @@ class ADANTIMING {
     return ADANTIMING(
       type: map['type'],
       date: DateTime.fromMillisecondsSinceEpoch(map['date']),
+      index: map['index'],
     );
   }
 
@@ -137,15 +143,18 @@ class ADANTIMING {
   static ADANTIMING fromJson(String source) => fromMap(json.decode(source));
 
   @override
-  String toString() => 'ADANTIMING(type: $type, date: $date)';
+  String toString() => 'ADANTIMING(type: $type, date: $date, index: $index)';
 
   @override
   bool operator ==(Object o) {
     if (identical(this, o)) return true;
 
-    return o is ADANTIMING && o.type == type && o.date == date;
+    return o is ADANTIMING &&
+        o.type == type &&
+        o.date == date &&
+        o.index == index;
   }
 
   @override
-  int get hashCode => type.hashCode ^ date.hashCode;
+  int get hashCode => type.hashCode ^ date.hashCode ^ index.hashCode;
 }

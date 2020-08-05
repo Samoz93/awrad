@@ -48,23 +48,27 @@ class QuranNewScreen extends StatelessWidget {
                       if (newIndex.toString().length == 2) dex = "00$newIndex";
                       if (newIndex.toString().length == 3) dex = "0$newIndex";
                       if (newIndex.toString().length == 4) dex = "$newIndex";
-                      return ExtendedImage.asset(
-                        "assets/L/$dex.png",
-                        fit: BoxFit.cover,
-                        mode: ExtendedImageMode.gesture,
-                        initGestureConfigHandler: (state) {
-                          return GestureConfig(
-                            minScale: 1,
-                            animationMinScale: 0.9,
-                            maxScale: 2.0,
-                            animationMaxScale: 2.1,
-                            speed: 1.0,
-                            inertialSpeed: 100.0,
-                            initialScale: 1.0,
-                            inPageView: true,
-                            initialAlignment: InitialAlignment.center,
-                          );
-                        },
+                      return LayoutBuilder(
+                        builder: (context, constraints) => ExtendedImage.asset(
+                          "assets/L/$dex.png",
+                          fit: BoxFit.fill,
+                          width: constraints.maxWidth,
+                          height: constraints.maxHeight,
+                          mode: ExtendedImageMode.gesture,
+                          initGestureConfigHandler: (state) {
+                            return GestureConfig(
+                              minScale: 1,
+                              animationMinScale: 0.9,
+                              maxScale: 2.0,
+                              animationMaxScale: 2.1,
+                              speed: 1.0,
+                              inertialSpeed: 100.0,
+                              initialScale: 1.0,
+                              inPageView: true,
+                              initialAlignment: InitialAlignment.center,
+                            );
+                          },
+                        ),
                       );
                     },
                   ),
