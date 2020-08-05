@@ -9,6 +9,9 @@ import 'package:awrad/services/AdhanApi.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 
+const adanLink = "adan";
+const adanLinkIos = "adan.m4r";
+
 class NotificationService {
   // final _mainBox = Hive.box(MAINBOX);
   // final _reminderBox = Hive.box(REMINDER_BOX);
@@ -111,8 +114,7 @@ class NotificationService {
       'هذه القناة مختصة للتنبيه بأوقات الصلاة',
       playSound: playSound,
       enableVibration: enableVibration,
-      // sound: NotificationSound
-      //TODO add azan sound
+      sound: RawResourceAndroidNotificationSound(adanLink),
     );
     final title =
         azanClass.isAdan ? 'صلاة ${azanClass.name}' : "وقت ${azanClass.name}";
@@ -120,7 +122,11 @@ class NotificationService {
         ? 'حان الآن موعد صلاة ${azanClass.name}'
         : "حان الآن موعد وقت ${azanClass.name}";
 
-    var iOSPlatformChannelSpecifics = IOSNotificationDetails();
+    var iOSPlatformChannelSpecifics = IOSNotificationDetails(
+      sound: adanLinkIos,
+      presentAlert: true,
+      presentSound: true,
+    );
     var platformChannelSpecifics = NotificationDetails(
         androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
     await flutterLocalNotificationsPlugin.showDailyAtTime(

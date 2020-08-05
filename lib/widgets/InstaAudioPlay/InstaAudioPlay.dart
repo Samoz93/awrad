@@ -39,7 +39,12 @@ class _InstaAudioPlayState extends State<InstaAudioPlay>
       viewModelBuilder: () => InstaAudioVM(widget.url),
       disposeViewModel: true,
       builder: (ctx, model, ch) {
-        return model.playingWidget(_ctrl);
+        return model.hasError
+            ? Icon(
+                Icons.error,
+                color: Colors.red,
+              )
+            : model.playingWidget(_ctrl);
       },
     );
   }

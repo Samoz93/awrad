@@ -70,9 +70,13 @@ class InstaAudioVM extends BaseViewModel {
   }
 
   open() async {
-    setBusy(true);
-    await this.player.open(Audio.network(url, cached: true));
-    setBusy(false);
+    try {
+      setBusy(true);
+      await this.player.open(Audio.network(url));
+      setBusy(false);
+    } catch (e) {
+      setError(e.toString());
+    }
   }
 
   @override

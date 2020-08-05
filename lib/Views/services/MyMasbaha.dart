@@ -61,7 +61,7 @@ class _MyMasbahaState extends State<MyMasbaha>
   int total = 0;
   final int defaultRound = 33;
   _vibrate() {
-    Vibration.vibrate(pattern: [100, 100, 100, 100, 100, 100]);
+    Vibration.vibrate(pattern: [50, 150, 50, 150, 50, 150]);
   }
 
   @override
@@ -216,7 +216,7 @@ class _MyMasbahaState extends State<MyMasbaha>
                 child: Image.asset("assets/mas.png")),
             Align(
                 alignment: Alignment.center,
-                child: Text(correctedIndex != 2 ? "" : "${index - 3}"))
+                child: Text(correctedIndex != 2 ? "" : "${index - 2}"))
           ],
         )),
       ),

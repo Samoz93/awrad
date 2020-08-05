@@ -13,10 +13,9 @@ class ReminderWidgetVm extends BaseViewModel {
 
   ReminderModel get reminder => _rmd;
   List<String> get daysString {
-    final weekDay = daysOfWeek;
+    final weekDay = daysOfWeek2;
     if (_rmd.days.length == weekDay.length) return ["جميع ايام الاسبوع"];
-    return _rmd.days.map((e) => weekDay[e]).toList();
-
+    return _rmd.days.map((e) => weekDay[e].name).toList();
   }
 
   List<String> get timeString {

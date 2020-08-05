@@ -94,30 +94,11 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-    - family: main
-      fonts:
-        - asset: assets/ff.ttf
-          weight: 700
     - family: gg
       fonts:
         - asset: assets/gg.otf
           weight: 700
-    - family: ScheherazadeRegOT
-      fonts:
-        - asset: assets/ScheherazadeRegOT.ttf
-          weight: 700
-    - family: ArabicKufiSSK
-      fonts:
-        - asset: assets/ArabicKufiSSK.ttf
-          weight: 700
-    - family: elrady
-      fonts:
-        - asset: assets/elrady.otf
-          weight: 700
-    - family: madina
-      fonts:
-        - asset: assets/madina.ttf
-          weight: 700
+
   #   - family: Trajan Pro
   #     fonts:
   #       - asset: fonts/TrajanPro.ttf
