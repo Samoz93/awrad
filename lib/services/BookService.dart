@@ -43,9 +43,7 @@ class BookService {
   }
 
   Future<String> _getBookPath(String uid) async {
-    final Directory pth = Platform.isAndroid
-        ? await getTemporaryDirectory()
-        : await getDownloadsDirectory();
+    final Directory pth = await getTemporaryDirectory();
     return "${pth.path}/$uid.pdf";
   }
 

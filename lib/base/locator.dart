@@ -45,16 +45,17 @@ setupNotification() async {
 // initialise the plugin. app_icon needs to be a added as a drawable resource to the Android head project
     var initializationSettingsAndroid = AndroidInitializationSettings('mo');
     var initializationSettingsIOS = IOSInitializationSettings(
-        requestAlertPermission: false,
-        requestBadgePermission: false,
-        requestSoundPermission: false,
-        onDidReceiveLocalNotification: (id, title, body, payload) {
-          iosData.add(
-            ReceivedNotification(
-                id: id, body: body, title: title, payload: payload),
-          );
-          return;
-        });
+      requestAlertPermission: true,
+      requestBadgePermission: true,
+      requestSoundPermission: true,
+      onDidReceiveLocalNotification: (id, title, body, payload) {
+        iosData.add(
+          ReceivedNotification(
+              id: id, body: body, title: title, payload: payload),
+        );
+        return;
+      },
+    );
     var initializationSettings = InitializationSettings(
       initializationSettingsAndroid,
       initializationSettingsIOS,
