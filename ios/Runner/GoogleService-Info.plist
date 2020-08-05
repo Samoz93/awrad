@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>247776385623-t6m3m0kdeh8vb8cvb0d6v19olg8eusmj.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.247776385623-t6m3m0kdeh8vb8cvb0d6v19olg8eusmj</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>247776385623-du3ieeclv1tnfecnq96cvcm315ojgfff.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCK64t_yHoD2dHR7IbUx2ww5dFEX4VOfDM</string>
+	<key>GCM_SENDER_ID</key>
+	<string>247776385623</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.samozstudio.awrad</string>
+	<key>PROJECT_ID</key>
+	<string>azankhaled-18847</string>
+	<key>STORAGE_BUCKET</key>
+	<string>azankhaled-18847.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:247776385623:ios:935f34b822f5c29ceb6112</string>
+	<key>DATABASE_URL</key>
+	<string>https://azankhaled-18847.firebaseio.com</string>
+</dict>
+</plist>
