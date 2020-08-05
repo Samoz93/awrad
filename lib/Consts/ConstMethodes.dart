@@ -84,13 +84,13 @@ List<int> get timesOfDayInt {
 }
 
 final List<AzanTimeClass> _times = [
+  AzanTimeClass("ثلث الليل", "Midnight", false),
   AzanTimeClass("الفجر", "Fajr", true),
   AzanTimeClass("الضحى", "Sunrise", false),
   AzanTimeClass("الظهر", "Dhuhr", true),
   AzanTimeClass("العصر", "Asr", true),
   AzanTimeClass("المغرب", "Maghrib", true),
   AzanTimeClass("العشاء", "Isha", true),
-  AzanTimeClass("ثلث الليل", "Midnight", false),
 ];
 List<AzanTimeClass> get azanTimes => _times;
 List<String> get timesOfDay {
@@ -110,12 +110,6 @@ class AzanTimeClass {
   bool isAdan;
   AzanTimeClass(this.name, this.type, this.isAdan);
 }
-
-// class AzanDaysClass {
-//   String name;
-//   Day day;
-//   AzanDaysClass(this.name, this.day);
-// }
 
 Future<bool> confirmMessage(String content) async {
   final x = await Get.dialog<bool>(

@@ -106,7 +106,13 @@ class SlideView extends StatelessWidget {
             ),
           ),
           Expanded(flex: 1, child: SizedBox()),
-          Expanded(flex: 3, child: Text(model.desc))
+          Expanded(
+            flex: 3,
+            child: Text(
+              model.desc,
+              textAlign: TextAlign.center,
+            ),
+          )
         ],
       ),
     );

@@ -54,7 +54,7 @@ Future<void> main() async {
 }
 
 _setupSchedule() {
-  initWorkManager();
+  // initWorkManager();
   Get.find<NotificationService>().scheduleAzanTimes();
 }
 

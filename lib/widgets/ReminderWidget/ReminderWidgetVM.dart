@@ -13,13 +13,15 @@ class ReminderWidgetVm extends BaseViewModel {
 
   ReminderModel get reminder => _rmd;
   List<String> get daysString {
-    return _rmd.days
-        .map((e) => daysOfWeek2.firstWhere((g) => g.isTodayDate(e)).name)
-        .toList();
+    final weekDay = daysOfWeek;
+    if (_rmd.days.length == weekDay.length) return ["جميع ايام الاسبوع"];
+    return _rmd.days.map((e) => weekDay[e]).toList();
+
   }
 
   List<String> get timeString {
     final weekDay = timesOfDay;
+    if (_rmd.times.length == weekDay.length) return ["جميع اوقات اليوم"];
     return _rmd.times.map((e) => weekDay[e]).toList();
   }
 }

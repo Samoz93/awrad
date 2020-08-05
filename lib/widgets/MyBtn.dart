@@ -36,7 +36,12 @@ class MyBtn extends StatelessWidget {
             children: <Widget>[
               getSvgIcon(icon, color: color, size: width * 0.23),
               SizedBox(width: selectedWidth * 0.1),
-              !isSelected ? SizedBox() : Text(txt),
+              !isSelected
+                  ? SizedBox()
+                  : Text(
+                      txt,
+                      style: AppThemes.navTextStyle,
+                    ),
             ],
           ),
         ),
