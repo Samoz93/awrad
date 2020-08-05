@@ -16,6 +16,7 @@ class ReminderWidgetVm extends BaseViewModel {
     final weekDay = daysOfWeek;
     if (_rmd.days.length == weekDay.length) return ["جميع ايام الاسبوع"];
     return _rmd.days.map((e) => weekDay[e]).toList();
+
   }
 
   List<String> get timeString {

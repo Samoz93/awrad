@@ -93,8 +93,11 @@ class SavedAwrad extends StatelessWidget {
       );
 
     if (model.awradData.isNotEmpty) {
-      lst.add(SliverPersistentHeader(
-          delegate: MyHeader(text: "الأوراد", maxEx: 60, min: 20)));
+      lst.add(
+        SliverPersistentHeader(
+          delegate: MyHeader(text: "الأوراد", maxEx: 60, min: 20),
+        ),
+      );
       lst.add(
         SliverList(
           delegate: SliverChildBuilderDelegate(

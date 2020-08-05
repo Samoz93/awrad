@@ -30,8 +30,8 @@ class ExpansionVM extends BaseViewModel {
   }
 
   List<bool> get selectionBool {
-    return daysOfWeekInt
-        .map((e) => _rm == null ? false : _rm.days.contains(e))
+    return daysOfWeek2
+        .map((e) => _rm == null ? false : _rm.days.contains(e.dateWeek))
         .toList();
   }
 
@@ -62,10 +62,11 @@ class ExpansionVM extends BaseViewModel {
   }
 
   void addDay(int index) {
-    if (_rm.days.contains(index)) {
-      _rm.days.remove(index);
+    final day = daysOfWeek2[index];
+    if (_rm.days.contains(day.dateWeek)) {
+      _rm.days.remove(day.dateWeek);
     } else {
-      _rm.days.add(index);
+      _rm.days.add(day.dateWeek);
     }
     notifyListeners();
   }

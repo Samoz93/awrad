@@ -55,12 +55,18 @@ class NotificationService {
 
     for (var d = 0; d < rm.days.length; d++) {
       for (var t = 0; t < rm.times.length; t++) {
-        await _showWeeklyForWrd(rm, rm.days[d], rm.times[t], lastSaveID);
+        log("dayInt${rm.days[d]}");
+        await _showWeeklyForWrd(rm, _dateDayToNotificationDate(rm.days[d]),
+            rm.times[t], lastSaveID);
         await notificationBox.put(lastSaveID, rm.id);
         await _increaseLastID();
-        log("saved ${rm.id} next id will be $lastSaveID");
+        // log("saved ${rm.id} next id will be $lastSaveID");
       }
     }
+  }
+
+  Day _dateDayToNotificationDate(int dateTime) {
+    return daysOfWeek2.firstWhere((e) => e.isTodayDate(dateTime)).notiDat;
   }
 
   cancelSchedule(String uid) async {
@@ -68,10 +74,9 @@ class NotificationService {
   }
 
   Future<void> _showWeeklyForWrd(
-      ReminderModel rm, int day, int time, lastID) async {
+      ReminderModel rm, Day day, int time, lastID) async {
     //Remove the previously scheduled notification for this wrd + their keys in the box
     final adanTimes = await _api.todayAdan;
-    final dayNotification = Day(day + 1);
     final azanType = azanTimes[time].type;
     final azanDate = adanTimes.timings.getTimingDateTime(azanType);
     log("will save ${rm.id} of $day and time $azanType to id $lastSaveID");
@@ -89,7 +94,7 @@ class NotificationService {
       lastID,
       rm.wrdName,
       rm.wrdText,
-      dayNotification,
+      day,
       timeNotification,
       platformChannelSpecifics,
       payload: rm.id,

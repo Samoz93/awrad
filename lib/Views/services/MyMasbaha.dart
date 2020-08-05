@@ -1,6 +1,7 @@
 import 'package:awrad/Consts/ThemeCosts.dart';
 import 'package:awrad/widgets/BkScaffold.dart';
 import 'package:flutter/material.dart';
+import 'package:vibration/vibration.dart';
 
 class MyMasbaha extends StatefulWidget {
   MyMasbaha({Key key}) : super(key: key);
@@ -15,7 +16,8 @@ class _MyMasbahaState extends State<MyMasbaha>
   Animation<double> anim2;
   AnimationController controller;
   bool hasCompleted = false;
-  final duratio = 500;
+  final duratio = 250;
+
   @override
   void initState() {
     super.initState();
@@ -30,13 +32,14 @@ class _MyMasbahaState extends State<MyMasbaha>
             if (status == AnimationStatus.completed) {
               setState(() {
                 activeIndex++;
+                total++;
               });
               controller.value = 0;
             }
           });
 
     anim2 = Tween<double>(begin: 0.0, end: 1)
-        .animate(CurvedAnimation(parent: controller, curve: Curves.easeOutCirc))
+        .animate(CurvedAnimation(parent: controller, curve: Curves.decelerate))
           ..addListener(() {
             setState(() {});
           })
@@ -54,22 +57,24 @@ class _MyMasbahaState extends State<MyMasbaha>
   }
 
   int activeIndex = 2;
-  int max = 33;
   final startIndex = 2;
+  int total = 0;
+  final int defaultRound = 33;
+  _vibrate() {
+    Vibration.vibrate(pattern: [100, 100, 100, 100, 100, 100]);
+  }
+
   @override
   Widget build(BuildContext context) {
     final media = MediaQuery.of(context).size;
     final mainColor = Colors.white;
     return BkScaffold(
       child: InkWell(
-        onTap: () {
-          if (activeIndex > max + 1) {
-            setState(() {
-              activeIndex = startIndex;
-            });
-          } else {
-            controller.forward();
-          }
+        onTap: () async {
+          final w = (activeIndex - startIndex + 1);
+          final _shoudVibrate = w > 0 && w % defaultRound == 0;
+          if (_shoudVibrate) _vibrate();
+          controller.forward();
         },
         child: LayoutBuilder(
           builder: (context, constraints) {
@@ -111,6 +116,7 @@ class _MyMasbahaState extends State<MyMasbaha>
                                     onPressed: () {
                                       setState(() {
                                         activeIndex = startIndex;
+                                        total = 0;
                                       });
                                     },
                                     icon: Icon(
@@ -121,37 +127,7 @@ class _MyMasbahaState extends State<MyMasbaha>
                                   ),
                                 ],
                               ),
-                              InkWell(
-                                onTap: () {
-                                  if (max == 33) {
-                                    setState(() {
-                                      max = 100;
-                                    });
-                                  } else {
-                                    setState(() {
-                                      max = 33;
-                                    });
-                                  }
-                                },
-                                child: Row(
-                                  children: <Widget>[
-                                    Text(
-                                      "$max/",
-                                      style: TextStyle(
-                                        fontSize: 30,
-                                        color: mainColor,
-                                      ),
-                                    ),
-                                    Text(
-                                      "${activeIndex - 2}",
-                                      style: TextStyle(
-                                        fontSize: 50,
-                                        color: mainColor,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
+                              Text("$total", style: AppThemes.counterTextStyle),
                             ],
                           ),
                         ),
@@ -171,6 +147,17 @@ class _MyMasbahaState extends State<MyMasbaha>
                   flex: 10,
                   child: Stack(
                     children: <Widget>[
+                      // Align(
+                      //   alignment: Alignment.topCenter,
+                      //   child: Padding(
+                      //     padding: const EdgeInsets.all(20.0),
+                      //     child: Text(
+                      //       "العدد الكلي : $total",
+                      //       textAlign: TextAlign.center,
+                      //       style: AppThemes.counterTextStyle,
+                      //     ),
+                      //   ),
+                      // ),
                       Center(
                         child: Divider(
                           color: Colors.green,
@@ -229,7 +216,7 @@ class _MyMasbahaState extends State<MyMasbaha>
                 child: Image.asset("assets/mas.png")),
             Align(
                 alignment: Alignment.center,
-                child: Text(correctedIndex != 3 ? "" : "${index - 3}"))
+                child: Text(correctedIndex != 2 ? "" : "${index - 3}"))
           ],
         )),
       ),

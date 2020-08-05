@@ -34,6 +34,7 @@ class AppThemes {
   static final pageTitleStyle =
       TextStyle(fontSize: 30, color: AppColors.addColor);
   static const buttonTextStyle = TextStyle(fontSize: 30, color: Colors.white);
+  static const counterTextStyle = TextStyle(fontSize: 40, color: Colors.white);
 }
 
 class AppColors {

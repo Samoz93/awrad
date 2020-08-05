@@ -163,8 +163,8 @@ class QuranFahras extends StatelessWidget {
                                           borderRadius:
                                               BorderRadius.circular(8),
                                           children: <Widget>[
-                                            ...daysOfWeek.map(
-                                              (e) => Text(e),
+                                            ...daysOfWeek2.map(
+                                              (e) => Text(e.name),
                                             ),
                                           ],
                                           isSelected: model.selectionBool,
