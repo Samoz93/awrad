@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:awrad/Consts/DATABASECONST.dart';
 import 'package:awrad/main.dart';
 import 'package:flutter/cupertino.dart';
@@ -15,6 +16,28 @@ class QuranNewVM extends BaseViewModel {
   QuranModel get quran => _quran;
   PageController _ctrl = PageController(initialPage: 0);
   PageController get ctrl => _ctrl;
+  final player = AssetsAudioPlayer.newPlayer();
+  // final _api = Get.find<QuranApi>();
+
+  @override
+  void dispose() {
+    super.dispose();
+    player.dispose();
+  }
+
+  // Future<bool> get isPlaying => player.isPlaying.first;
+
+  // bool get shouldStopPlaying {
+  //   if (player == null || player.current == null) return false;
+  //   if (player.playlist.isNullOrBlank) return false;
+  //   final theSameSize = player.playlist.numberOfItems == ayahSounds.length;
+  //   if (!theSameSize) return true;
+  //   final firstPlaying = player.playlist.audios.first.path;
+  //   final firstInList =
+  //       getPath(ayahSounds.first.number, _api.deafultQuranReader);
+  //   return firstPlaying != firstInList;
+  // }
+
   int get lastSavedSuraIndex => mainBox.get(LAST_SAVED_SURAH, defaultValue: 0);
   initData({String suraName = ""}) async {
     setBusy(true);

@@ -1,12 +1,15 @@
 import 'dart:math';
 
+import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:awrad/widgets/InstaAudioPlay/InstaAudioVM.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
 class InstaAudioPlay extends StatefulWidget {
   final String url;
-  const InstaAudioPlay({Key key, @required this.url}) : super(key: key);
+  final AssetsAudioPlayer player;
+  const InstaAudioPlay({Key key, @required this.url, @required this.player})
+      : super(key: key);
 
   @override
   _InstaAudioPlayState createState() => _InstaAudioPlayState();
@@ -36,7 +39,7 @@ class _InstaAudioPlayState extends State<InstaAudioPlay>
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<InstaAudioVM>.reactive(
-      viewModelBuilder: () => InstaAudioVM(widget.url),
+      viewModelBuilder: () => InstaAudioVM(widget.url, widget.player),
       disposeViewModel: true,
       builder: (ctx, model, ch) {
         return model.hasError

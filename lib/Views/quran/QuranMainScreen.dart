@@ -1,7 +1,6 @@
 import 'package:awrad/Views/quran/QuranFahras.dart';
 import 'package:awrad/Views/quran/TajweedScreen.dart';
 import 'package:awrad/base/locator.dart';
-import 'package:awrad/services/NotificationService.dart';
 import 'package:awrad/widgets/AwradBtn.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';

@@ -1,3 +1,4 @@
+import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:awrad/Consts/ThemeCosts.dart';
 import 'package:awrad/Views/quran/QuranNewVM.dart';
 import 'package:awrad/widgets/AudioPlayer/MyAudioPlayer.dart';
@@ -8,11 +9,16 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stacked/stacked.dart';
 
-class QuranNewScreen extends StatelessWidget {
+class QuranNewScreen extends StatefulWidget {
   final String suraName;
   const QuranNewScreen({Key key, this.suraName = ""}) : super(key: key);
   static const route = "QuranNewScreen";
 
+  @override
+  _QuranNewScreenState createState() => _QuranNewScreenState();
+}
+
+class _QuranNewScreenState extends State<QuranNewScreen> {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<QuranNewVM>.reactive(
@@ -80,22 +86,25 @@ class QuranNewScreen extends StatelessWidget {
               left: -5,
               child: Container(
                 height: 40,
-                child: FloatingActionButton(
-                  onPressed: () {
-                    Get.bottomSheet(
-                      Container(
-                        height: MediaQuery.of(context).size.height * 0.2,
-                        child: MyAudioPlayer(
-                          lst: model.ayahSounds,
+                child: model.player.builderIsPlaying(
+                  builder: (context, isPlayin) => FloatingActionButton(
+                    onPressed: () async {
+                      Get.bottomSheet(
+                        Container(
+                          height: MediaQuery.of(context).size.height * 0.2,
+                          child: MyAudioPlayer(
+                            lst: model.ayahSounds,
+                            player: model.player,
+                          ),
                         ),
-                      ),
-                      isDismissible: true,
-                      enableDrag: true,
-                    );
-                  },
-                  child: Icon(
-                    Icons.play_arrow,
-                    size: 30,
+                        isDismissible: true,
+                        enableDrag: true,
+                      );
+                    },
+                    child: Icon(
+                      isPlayin ? Icons.pause : Icons.play_arrow,
+                      size: 30,
+                    ),
                   ),
                 ),
               ),
@@ -104,8 +113,8 @@ class QuranNewScreen extends StatelessWidget {
         );
       },
       viewModelBuilder: () => QuranNewVM(),
-      onModelReady: (vv) => vv.initData(suraName: suraName),
-      disposeViewModel: false,
+      onModelReady: (vv) => vv.initData(suraName: widget.suraName),
+      disposeViewModel: true,
     );
   }
 }

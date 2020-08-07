@@ -1,3 +1,4 @@
+import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -162,6 +163,10 @@ showSnackBar(title, message, {isErr = false}) {
       barBlur: 5);
 }
 
+String getPath(int number, String reader) {
+  return "https://cdn.alquran.cloud/media/audio/ayah/$reader/$number";
+}
+
 class MyWeekDays {
   String name;
   int dateWeek;
@@ -205,4 +210,12 @@ class MyWeekDays {
   bool isNotificationDate(Day day) => notiDat == day;
   @override
   int get hashCode => name.hashCode ^ dateWeek.hashCode ^ notiDat.hashCode;
+}
+
+double getProgress(RealtimePlayingInfos info) {
+  return info == null
+      ? 0.0
+      : info.current == null
+          ? 0.0
+          : info.currentPosition.inSeconds / info.duration.inSeconds;
 }

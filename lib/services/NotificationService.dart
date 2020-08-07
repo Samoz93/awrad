@@ -25,7 +25,6 @@ class NotificationService {
 
   scheduleAzanTimes() async {
     final adanTimes = await _api.todayAdan;
-
     for (var i = 0; i < azanTimes.length; i++) {
       final aznCls = azanTimes[i];
       final azanDate = adanTimes.timings.getTimingDateTime(aznCls.type);
@@ -46,6 +45,8 @@ class NotificationService {
         log("scheduled azan ${aznCls.type}");
       }
     }
+
+    mainBox.put(LAST_AZAN_SCHEDULE, DateTime.now().millisecondsSinceEpoch);
   }
 
   String _getAzanReminderState(String azanType) {
@@ -76,6 +77,8 @@ class NotificationService {
         i++;
       }
     }
+
+    mainBox.put(LAST_AWRAD_SCHEDULE, DateTime.now().millisecondsSinceEpoch);
   }
 
   _scheduleAwrad(d, t, i) async {
@@ -220,7 +223,6 @@ class NotificationService {
       message,
       time,
       platformChannelSpecifics,
-      //TODO add named route
       payload: "azan",
     );
   }

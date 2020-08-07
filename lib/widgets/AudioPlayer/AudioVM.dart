@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:assets_audio_player/assets_audio_player.dart';
+import 'package:awrad/Consts/ConstMethodes.dart';
 import 'package:awrad/models/QuranModel.dart';
 import 'package:awrad/models/Readears.dart';
 import 'package:awrad/services/QuranApi.dart';
@@ -12,11 +13,10 @@ class AudiVM extends BaseViewModel {
   List<Ayahs> data;
   QuranReader _readers;
   final _api = Get.find<QuranApi>();
-  AssetsAudioPlayer player;
-  AudiVM(this.data) {
-    player = AssetsAudioPlayer.newPlayer();
+  final AssetsAudioPlayer player;
+  AudiVM(this.data, this.player) {
     _getReaders();
-    play();
+    init();
   }
 
   _getReaders() async {
@@ -24,15 +24,28 @@ class AudiVM extends BaseViewModel {
     notifyListeners();
   }
 
-  play() {
-    try {
-      final urlList = data
-          .map((e) => Audio.network(
-              "https://cdn.alquran.cloud/media/audio/ayah/$reader/${e.number}"))
-          .toList();
+  bool get _shouldStopPlaying {
+    if (player == null || player.current == null) return true;
+    if (player.playlist.isNullOrBlank) return true;
+    final theSameSize = player.playlist.numberOfItems == data.length;
+    if (!theSameSize) return true;
+    final firstPlaying = player.playlist.audios.first.path;
+    final firstInList = getPath(data.first.number, reader);
+    return firstPlaying != firstInList;
+  }
 
-      player.open(Playlist(audios: urlList, startIndex: 0),
-          loopMode: LoopMode.playlist);
+  init() async {
+    try {
+      if (_shouldStopPlaying) {
+        await player.stop();
+        final urlList =
+            data.map((e) => Audio.network(getPath(e.number, reader))).toList();
+
+        player.open(Playlist(audios: urlList, startIndex: 0),
+            loopMode: LoopMode.playlist);
+      } else {
+        player.playOrPause();
+      }
     } catch (e) {
       log(e.toString());
     }
@@ -60,7 +73,7 @@ class AudiVM extends BaseViewModel {
 
   changeReader(val) async {
     await _api.setReader(val);
-    play();
+    init();
   }
 
   faster() async {
@@ -100,7 +113,7 @@ class AudiVM extends BaseViewModel {
   }
 
   _dis() async {
-    await player.stop();
-    await player.dispose();
+    // await player.stop();
+    // await player.dispose();
   }
 }

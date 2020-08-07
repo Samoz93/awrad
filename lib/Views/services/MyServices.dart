@@ -5,26 +5,8 @@ import 'package:awrad/widgets/AwradBtn.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class MyServices extends StatefulWidget {
-  final bool goToSalat;
-  MyServices({Key key, this.goToSalat = false}) : super(key: key);
-
-  @override
-  _MyServicesState createState() => _MyServicesState();
-}
-
-class _MyServicesState extends State<MyServices> {
-  @override
-  void initState() {
-    super.initState();
-
-    Future.delayed(Duration.zero).then((_) {
-      if (widget.goToSalat)
-        Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => MySalat(),
-        ));
-    });
-  }
+class MyServices extends StatelessWidget {
+  MyServices({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

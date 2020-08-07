@@ -1,4 +1,5 @@
 import 'package:assets_audio_player/assets_audio_player.dart';
+import 'package:awrad/Consts/ConstMethodes.dart';
 import 'package:awrad/Consts/ThemeCosts.dart';
 import 'package:awrad/models/QuranModel.dart';
 import 'package:awrad/widgets/AudioPlayer/AudioVM.dart';
@@ -7,7 +8,9 @@ import 'package:stacked/stacked.dart';
 
 class MyAudioPlayer extends StatefulWidget {
   final List<Ayahs> lst;
-  const MyAudioPlayer({Key key, @required this.lst}) : super(key: key);
+  final AssetsAudioPlayer player;
+  const MyAudioPlayer({Key key, @required this.lst, @required this.player})
+      : super(key: key);
 
   @override
   _MyAudioPlayerState createState() => _MyAudioPlayerState();
@@ -30,7 +33,7 @@ class _MyAudioPlayerState extends State<MyAudioPlayer>
   Widget build(BuildContext context) {
     return Material(
       child: ViewModelBuilder<AudiVM>.reactive(
-        viewModelBuilder: () => AudiVM(widget.lst),
+        viewModelBuilder: () => AudiVM(widget.lst, widget.player),
         builder: (ctx, model, child) => Container(
           child: Flex(
             direction: Axis.vertical,
@@ -86,11 +89,7 @@ class _MyAudioPlayerState extends State<MyAudioPlayer>
                             animation: _anim,
                             builder: (context, child) => InkWell(
                               onTap: () {
-                                if (isPlaying) {
-                                  model.pause();
-                                } else {
-                                  model.play();
-                                }
+                                model.player.playOrPause();
                               },
                               child: AnimatedIcon(
                                 size: 40,
@@ -121,10 +120,7 @@ class _MyAudioPlayerState extends State<MyAudioPlayer>
                 child: Container(
                   child: model.player.builderRealtimePlayingInfos(
                     builder: (context, data) {
-                      final full = data?.duration ?? Duration(seconds: 1);
-                      final current =
-                          data?.currentPosition ?? Duration(seconds: 1);
-                      double pre = current.inSeconds / full.inSeconds;
+                      double pre = getProgress(data);
                       return Column(
                         children: <Widget>[
                           LinearProgressIndicator(
@@ -134,8 +130,12 @@ class _MyAudioPlayerState extends State<MyAudioPlayer>
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: <Widget>[
-                              Text(_formatedDate(current)),
-                              Text(_formatedDate(full)),
+                              Text(data == null
+                                  ? "00:00"
+                                  : _formatedDate(data.currentPosition)),
+                              Text(data == null
+                                  ? "00:00"
+                                  : _formatedDate(data.duration)),
                             ],
                           ),
                         ],

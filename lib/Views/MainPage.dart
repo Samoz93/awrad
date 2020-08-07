@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:awrad/Views/SavedAwrad/SavedAwrad.dart';
 import 'package:awrad/Views/quran/QuranMainScreen.dart';
+import 'package:awrad/Views/services/MySalat.dart';
 import 'package:awrad/Views/services/MyServices.dart';
 import 'package:awrad/Views/welcome/WelcomeView.dart';
 import 'package:awrad/base/locator.dart';
@@ -9,21 +10,22 @@ import 'package:awrad/base/locator.dart';
 import 'package:awrad/widgets/BkScaffold.dart';
 import 'package:awrad/widgets/MyBtn.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 
 import 'awrad/AwradTypesScreen.dart';
+
+class MainPageClass {
+  Widget widget;
+  GlobalKey<NavigatorState> globalKey = GlobalKey<NavigatorState>();
+
+  MainPageClass({this.widget});
+}
 
 class MainPage extends StatefulWidget {
   const MainPage({Key key}) : super(key: key);
 
   @override
   _MainPageState createState() => _MainPageState();
-}
-
-class MainPageClass {
-  Widget widget;
-  GlobalKey globalKey = GlobalKey<NavigatorState>();
-
-  MainPageClass({this.widget});
 }
 
 class _MainPageState extends State<MainPage> {
@@ -38,7 +40,6 @@ class _MainPageState extends State<MainPage> {
     MainPageClass(
         widget: MyServices(
       key: PageStorageKey('MyServices'),
-      goToSalat: false,
     )),
   ];
   int index = 0;
@@ -50,22 +51,39 @@ class _MainPageState extends State<MainPage> {
       selectedData.listen((value) {
         log("messageAndroid$value");
         if (value == "azan") return _goToSalat();
+        if (value.contains("awrad")) {
+          setState(() {
+            index = 2;
+          });
+        }
       });
       iosData.listen(
         (value) {
           if (value.payload == "azan") return _goToSalat();
+          if (value.payload.contains("awrad")) {
+            setState(() {
+              index = 2;
+            });
+          }
         },
       );
     });
   }
 
   _goToSalat() {
-    pages[4].widget = MyServices(
-      key: PageStorageKey('MyServices'),
-      goToSalat: true,
-    );
+    // pages[4].widget = MyServices(
+    //   key: PageStorageKey('MyServices'),
+    //   goToSalat: true,
+    // );
     setState(() {
       index = 4;
+    });
+    SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+      pages[4].globalKey.currentState.push(
+            MaterialPageRoute(
+              builder: (context) => MySalat(),
+            ),
+          );
     });
   }
 
@@ -81,8 +99,7 @@ class _MainPageState extends State<MainPage> {
                 setState(
                   () {
                     if (index == ind) {
-                      final k =
-                          (pages[index].globalKey as GlobalKey<NavigatorState>);
+                      final k = pages[index].globalKey;
                       k.currentState.popUntil((route) => route.isFirst);
                     } else {
                       index = ind;
@@ -103,7 +120,7 @@ class _MainPageState extends State<MainPage> {
   _buildPage(int index) {
     return WillPopScope(
       onWillPop: () {
-        final k = (pages[index].globalKey as GlobalKey<NavigatorState>);
+        final k = pages[index].globalKey;
         if (k.currentState.canPop())
           k.currentState.pop();
         else

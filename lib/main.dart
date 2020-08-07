@@ -1,10 +1,11 @@
+import 'dart:developer';
+
 import 'package:awrad/Consts/DATABASECONST.dart';
 import 'package:awrad/Consts/ThemeCosts.dart';
 import 'package:awrad/Views/MainPage.dart';
 
 import 'package:awrad/models/ReminderModel.dart';
 import 'package:awrad/services/NotificationService.dart';
-import 'package:awrad/testScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
@@ -54,9 +55,22 @@ Future<void> main() async {
   runApp(MyApp());
 }
 
+const int minToUpdate = 5;
+bool _shouldReschedule(String key) {
+  final last = mainBox.get(key,
+      defaultValue:
+          DateTime.now().add(Duration(days: -4)).millisecondsSinceEpoch);
+  final lastDate = DateTime.fromMillisecondsSinceEpoch(last);
+  final x = DateTime.now().difference(lastDate).inHours;
+  return x > minToUpdate;
+}
+
 _setupSchedule() {
-  // initWorkManager();
-  Get.find<NotificationService>().scheduleAzanTimes();
+  if (_shouldReschedule(LAST_AZAN_SCHEDULE))
+    Get.find<NotificationService>().scheduleAzanTimes();
+
+  if (_shouldReschedule(LAST_AWRAD_SCHEDULE))
+    Get.find<NotificationService>().reshechduleAwrad();
 }
 
 class MyApp extends StatelessWidget {

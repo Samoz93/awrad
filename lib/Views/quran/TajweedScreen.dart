@@ -1,6 +1,5 @@
 import 'package:advance_pdf_viewer/advance_pdf_viewer.dart';
 import 'package:awrad/widgets/LoadingWidget.dart';
-import 'package:awrad/widgets/MyScf.dart';
 import 'package:flutter/material.dart';
 
 class TajweedScreen extends StatefulWidget {

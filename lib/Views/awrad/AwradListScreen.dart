@@ -9,14 +9,13 @@ import 'package:awrad/widgets/InstaAudioPlay/InstaAudioPlay.dart';
 import 'package:awrad/widgets/LoadingWidget.dart';
 import 'package:awrad/widgets/MyErrorWidget.dart';
 import 'package:awrad/widgets/MyScf.dart';
+import 'package:awrad/widgets/Myhtml.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:stacked/stacked.dart';
 
 class AwradListScreen extends StatelessWidget {
   final AwradTypesModel type;
   AwradListScreen({Key key, this.type}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return MyScaffold(
@@ -60,7 +59,7 @@ class AwradListScreen extends StatelessWidget {
                         Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                            Html(data: wrd.wrdDesc),
+                            MyHtml(html: wrd.wrdDesc),
                             SizedBox(height: 20),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -71,6 +70,7 @@ class AwradListScreen extends StatelessWidget {
                                         padding: const EdgeInsets.all(8.0),
                                         child: InstaAudioPlay(
                                           url: wrd.link,
+                                          player: model.player,
                                         ),
                                       )
                                     : SizedBox(),

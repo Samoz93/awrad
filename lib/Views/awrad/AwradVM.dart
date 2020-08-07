@@ -1,8 +1,11 @@
+import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:awrad/models/AwradModel.dart';
 import 'package:awrad/services/AwradService.dart';
 import 'package:stacked/stacked.dart';
 
 class AwradVM extends BaseViewModel {
+  final AssetsAudioPlayer player = AssetsAudioPlayer.newPlayer();
+
   final ser = AwradService();
   int _selectedTile = 0;
   int get selectedTile => _selectedTile;
@@ -21,5 +24,11 @@ class AwradVM extends BaseViewModel {
   _getData(type) async {
     _awrad = await ser.allAwrad(type);
     return _awrad;
+  }
+
+  @override
+  void dispose() {
+    player.dispose();
+    super.dispose();
   }
 }

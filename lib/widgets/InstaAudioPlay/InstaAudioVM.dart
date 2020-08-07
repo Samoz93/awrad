@@ -6,16 +6,17 @@ import 'package:stacked/stacked.dart';
 
 class InstaAudioVM extends BaseViewModel {
   final String url;
-  final AssetsAudioPlayer player = AssetsAudioPlayer.newPlayer();
+  final AssetsAudioPlayer player;
 
-  InstaAudioVM(this.url);
+  InstaAudioVM(this.url, this.player);
 
   Widget playingWidget(AnimationController ctrl) {
     return player.builderRealtimePlayingInfos(
       builder: (context, info) {
         if (info == null || info.current == null)
           return getidleIcon(info, ctrl);
-        if (info.isBuffering) return LoadingWidget();
+        final isTheSameFile = info.current.audio.assetAudioPath == url;
+        if (info.isBuffering && !isTheSameFile) return LoadingWidget();
         return getidleIcon(info, ctrl);
       },
     );
@@ -30,7 +31,11 @@ class InstaAudioVM extends BaseViewModel {
             ? 0.0
             : info.currentPosition.inSeconds / info.duration.inSeconds;
 
-    if (!isPlaying) {
+    bool isTheSameFile = true;
+    if (hasData) {
+      isTheSameFile = info.current.audio.assetAudioPath == url;
+    }
+    if (!isPlaying || !isTheSameFile) {
       ctrl.value = 0.0;
       ctrl.stop();
     } else
@@ -43,7 +48,7 @@ class InstaAudioVM extends BaseViewModel {
           children: <Widget>[
             Center(
               child: CircularProgressIndicator(
-                value: currentProgress,
+                value: !isTheSameFile ? 0.0 : currentProgress,
                 backgroundColor: AppColors.addColor,
               ),
             ),
@@ -55,7 +60,7 @@ class InstaAudioVM extends BaseViewModel {
                   child: ch,
                 ),
                 child: Icon(
-                  isPlaying ? Icons.stop : Icons.play_arrow,
+                  (isPlaying && isTheSameFile) ? Icons.stop : Icons.play_arrow,
                   color: AppColors.addColor,
                 ),
               ),
@@ -64,7 +69,9 @@ class InstaAudioVM extends BaseViewModel {
         ),
       ),
       onTap: () {
-        !hasData ? open() : isPlaying ? player.pause() : player.play();
+        (!hasData || !isTheSameFile)
+            ? open()
+            : isPlaying ? player.pause() : player.play();
       },
     );
   }
@@ -82,7 +89,7 @@ class InstaAudioVM extends BaseViewModel {
   @override
   void dispose() {
     // player.stop();
-    player?.dispose();
+    player?.stop();
     super.dispose();
   }
 }
