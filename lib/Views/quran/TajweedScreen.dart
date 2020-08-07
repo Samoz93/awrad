@@ -21,20 +21,13 @@ class _TajweedScreenState extends State<TajweedScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return MyScaffold(
-      title: "آداب القرآن",
-      child: doc == null
-          ? LoadingWidget()
-          : Container(
-              height: double.infinity,
-              width: double.infinity,
-              child: PDFViewer(
-                scrollDirection: Axis.vertical,
-                document: doc,
-                showPicker: false,
-              ),
-            ),
-    );
+    return doc == null
+        ? LoadingWidget()
+        : PDFViewer(
+            scrollDirection: Axis.vertical,
+            document: doc,
+            showPicker: false,
+          );
   }
 
   _initBook() async {

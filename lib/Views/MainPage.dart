@@ -1,7 +1,10 @@
+import 'dart:developer';
+
 import 'package:awrad/Views/SavedAwrad/SavedAwrad.dart';
 import 'package:awrad/Views/quran/QuranMainScreen.dart';
 import 'package:awrad/Views/services/MyServices.dart';
 import 'package:awrad/Views/welcome/WelcomeView.dart';
+import 'package:awrad/base/locator.dart';
 
 import 'package:awrad/widgets/BkScaffold.dart';
 import 'package:awrad/widgets/MyBtn.dart';
@@ -16,24 +19,56 @@ class MainPage extends StatefulWidget {
   _MainPageState createState() => _MainPageState();
 }
 
+class MainPageClass {
+  Widget widget;
+  GlobalKey globalKey = GlobalKey<NavigatorState>();
+
+  MainPageClass({this.widget});
+}
+
 class _MainPageState extends State<MainPage> {
   final bucket = PageStorageBucket();
-  List<Widget> pages = [
-    WelcomeScreed(key: PageStorageKey('WelcomeScreed')),
-    QuranMainScreen(key: PageStorageKey('QuranScreen')),
-    SavedAwrad(key: PageStorageKey('saved')),
-    AwradTypesScreen(key: PageStorageKey('AwradTypesScreen')),
-    MyServices(key: PageStorageKey('welcosme3')),
-  ];
-  List<GlobalKey> _keys = [
-    GlobalKey<NavigatorState>(),
-    GlobalKey<NavigatorState>(),
-    GlobalKey<NavigatorState>(),
-    GlobalKey<NavigatorState>(),
-    GlobalKey<NavigatorState>(),
+  List<MainPageClass> pages = [
+    MainPageClass(widget: WelcomeScreed(key: PageStorageKey('WelcomeScreed'))),
+    MainPageClass(
+        widget: QuranMainScreen(key: PageStorageKey('QuranMainScreen'))),
+    MainPageClass(widget: SavedAwrad(key: PageStorageKey('SavedAwrad'))),
+    MainPageClass(
+        widget: AwradTypesScreen(key: PageStorageKey('AwradTypesScreen'))),
+    MainPageClass(
+        widget: MyServices(
+      key: PageStorageKey('MyServices'),
+      goToSalat: false,
+    )),
   ];
   int index = 0;
   String route = "services";
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration.zero).then((_) {
+      selectedData.listen((value) {
+        log("messageAndroid$value");
+        if (value == "azan") return _goToSalat();
+      });
+      iosData.listen(
+        (value) {
+          if (value.payload == "azan") return _goToSalat();
+        },
+      );
+    });
+  }
+
+  _goToSalat() {
+    pages[4].widget = MyServices(
+      key: PageStorageKey('MyServices'),
+      goToSalat: true,
+    );
+    setState(() {
+      index = 4;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return BkScaffold(
@@ -46,7 +81,8 @@ class _MainPageState extends State<MainPage> {
                 setState(
                   () {
                     if (index == ind) {
-                      final k = (_keys[index] as GlobalKey<NavigatorState>);
+                      final k =
+                          (pages[index].globalKey as GlobalKey<NavigatorState>);
                       k.currentState.popUntil((route) => route.isFirst);
                     } else {
                       index = ind;
@@ -67,16 +103,16 @@ class _MainPageState extends State<MainPage> {
   _buildPage(int index) {
     return WillPopScope(
       onWillPop: () {
-        final k = (_keys[index] as GlobalKey<NavigatorState>);
+        final k = (pages[index].globalKey as GlobalKey<NavigatorState>);
         if (k.currentState.canPop())
           k.currentState.pop();
         else
           return Future.value(true);
       },
       child: Navigator(
-        onGenerateRoute: (sett) =>
-            MaterialPageRoute(builder: (_) => pages[index], settings: sett),
-        key: _keys[index],
+        onGenerateRoute: (sett) => MaterialPageRoute(
+            builder: (_) => pages[index].widget, settings: sett),
+        key: pages[index].globalKey,
       ),
     );
   }
@@ -93,11 +129,12 @@ class MyBottomAppBar extends StatefulWidget {
 }
 
 class _MyBottomAppBarState extends State<MyBottomAppBar> {
-  int currentIndex = 0;
   String currentKey = "main";
-
+  int currentIndex = 0;
   @override
   Widget build(BuildContext context) {
+    currentIndex = widget.selectedIndex;
+
     final media = MediaQuery.of(context).size;
     final activeWidth = media.width * 0.3;
     final iconWidth = (media.width - activeWidth) / 4;

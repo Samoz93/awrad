@@ -588,19 +588,18 @@ class _TestWidgetState extends State<TestWidget> {
     var bigTextStyleInformation = BigTextStyleInformation(
         'Lorem <i>ipsum dolor sit</i> amet, consectetur <b>adipiscing elit</b>, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
         htmlFormatBigText: true,
-        contentTitle: 'overridden <b>big</b> content title',
         htmlFormatContentTitle: true,
-        summaryText: 'summary <i>text</i>',
         htmlFormatSummaryText: true);
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
-        'big text channel id',
-        'big text channel name',
-        'big text channel description',
-        styleInformation: bigTextStyleInformation);
+      'big text channel id',
+      'big text channel name',
+      'big text channel description',
+      styleInformation: bigTextStyleInformation,
+    );
     var platformChannelSpecifics =
         NotificationDetails(androidPlatformChannelSpecifics, null);
     await flutterLocalNotificationsPlugin.show(
-        0, 'big text title', 'silent body', platformChannelSpecifics);
+        10, 'aaa', 'aa aa', platformChannelSpecifics);
   }
 
   Future<void> _showInboxNotification() async {
