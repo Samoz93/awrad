@@ -52,57 +52,142 @@ class NotificationService {
     return mainBox.get(azanType, defaultValue: "on");
   }
 
-  reshedule() {}
-  scheduleWrdNotification(ReminderModel rm) async {
-    await _cancelPreviousSchedule(rm.id);
+  // scheduleWrdNotification(ReminderModel rm) async {
+  //   await _cancelPreviousSchedule(rm.id);
 
-    for (var d = 0; d < rm.days.length; d++) {
-      for (var t = 0; t < rm.times.length; t++) {
-        log("dayInt${rm.days[d]}");
-        await _showWeeklyForWrd(rm, _dateDayToNotificationDate(rm.days[d]),
-            rm.times[t], lastSaveID);
-        await notificationBox.put(lastSaveID, rm.id);
-        await _increaseLastID();
-        // log("saved ${rm.id} next id will be $lastSaveID");
+  //   for (var d = 0; d < rm.days.length; d++) {
+  //     for (var t = 0; t < rm.times.length; t++) {
+  //       log("dayInt${rm.days[d]}");
+  //       await _showWeeklyForWrd(rm, _dateDayToNotificationDate(rm.days[d]),
+  //           rm.times[t], lastSaveID);
+  //       await notificationBox.put(lastSaveID, rm.id);
+  //       await _increaseLastID();
+  //       // log("saved ${rm.id} next id will be $lastSaveID");
+  //     }
+  //   }
+  // }
+
+  reshechduleAwrad() async {
+    int i = 10;
+
+    for (var d = 0; d < daysOfWeek2.length; d++) {
+      for (var t = 0; t < timesOfDay.length; t++) {
+        await _scheduleAwrad(d, t, i);
+        i++;
       }
     }
+  }
+
+  _scheduleAwrad(d, t, i) async {
+    await flutterLocalNotificationsPlugin.cancel(i);
+    final _rms = _getReminders(d, t);
+    String title = "";
+    String msg = "";
+    String msgHtml = "";
+    bool shouldScheduleForThisTime = true;
+    switch (_rms.length) {
+      case 0:
+        shouldScheduleForThisTime = false;
+        break;
+      case 1:
+        title = _rms.first.wrdName;
+        if (_rms.first.isAwrad) {
+          msgHtml = _rms.first.wrdText;
+          msg = "اضغط لمزيد من التفاصيل";
+        } else {
+          msg = "اضغظ لقراءة ورد القرآن";
+        }
+        break;
+      default:
+        title = "لديك ${_rms.length} اوراد محفوظة";
+        msg = "اضغط لقرآتهم الآن";
+    }
+    if (!shouldScheduleForThisTime) return;
+    final adanTimes = await _api.todayAdan;
+    final azanType = azanTimes[t].type;
+    final azanDate = adanTimes.timings.getTimingDateTime(azanType);
+    var timeNotification = azanDate.toNotificationTimeWithDelay();
+    var bigTextStyleInformation;
+    if (msgHtml.isNotEmpty)
+      bigTextStyleInformation = BigTextStyleInformation(
+        msgHtml,
+        htmlFormatBigText: true,
+        htmlFormatContentTitle: true,
+        htmlFormatSummaryText: true,
+      );
+
+    var androidPlatformChannelSpecifics;
+    if (msgHtml.isNotEmpty)
+      androidPlatformChannelSpecifics = AndroidNotificationDetails(
+        'wrdChannal',
+        'قناة الأوراد',
+        'هذه القناة مختصة لإظهار الاوراد المحفوظة',
+        styleInformation: bigTextStyleInformation,
+      );
+    else
+      androidPlatformChannelSpecifics = AndroidNotificationDetails(
+        'wrdChannal',
+        'قناة الأوراد',
+        'هذه القناة مختصة لإظهار الاوراد المحفوظة',
+      );
+
+    var iOSPlatformChannelSpecifics = IOSNotificationDetails();
+    var platformChannelSpecifics = NotificationDetails(
+        androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
+    await flutterLocalNotificationsPlugin.showWeeklyAtDayAndTime(
+      i,
+      title,
+      msg,
+      _dateDayToNotificationDate(d),
+      timeNotification,
+      platformChannelSpecifics,
+      payload: "awrad$t",
+    );
+  }
+
+  List<ReminderModel> _getReminders(d, t) {
+    return reminderBox.values
+        .where((e) => e.days.contains(d) && e.times.contains(t))
+        .toList();
   }
 
   Day _dateDayToNotificationDate(int dateTime) {
     return daysOfWeek2.firstWhere((e) => e.isTodayDate(dateTime)).notiDat;
   }
 
-  cancelSchedule(String uid) async {
-    await _cancelPreviousSchedule(uid);
-  }
+  // cancelSchedule(String uid) async {
+  //   await _cancelPreviousSchedule(uid);
+  // }
 
-  Future<void> _showWeeklyForWrd(
-      ReminderModel rm, Day day, int time, lastID) async {
-    //Remove the previously scheduled notification for this wrd + their keys in the box
-    final adanTimes = await _api.todayAdan;
-    final azanType = azanTimes[time].type;
-    final azanDate = adanTimes.timings.getTimingDateTime(azanType);
-    log("will save ${rm.id} of $day and time $azanType to id $lastSaveID");
+  // Future<void> _showWeeklyForWrd(
+  //     ReminderModel rm, Day day, int time, lastID) async {
+  //   //Remove the previously scheduled notification for this wrd + their keys in the box
+  //   final adanTimes = await _api.todayAdan;
+  //   final azanType = azanTimes[time].type;
+  //   final azanDate = adanTimes.timings.getTimingDateTime(azanType);
+  //   log("will save ${rm.id} of $day and time $azanType to id $lastSaveID");
 
-    var timeNotification = azanDate.toNotificationTimeWithDelay();
+  //   var timeNotification = azanDate.toNotificationTimeWithDelay();
 
-    var androidPlatformChannelSpecifics = AndroidNotificationDetails(
-        'wrdChannal',
-        'قناة الأوراد',
-        'هذه القناة مختصة لإظهار الاوراد المحفوظة');
-    var iOSPlatformChannelSpecifics = IOSNotificationDetails();
-    var platformChannelSpecifics = NotificationDetails(
-        androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
-    await flutterLocalNotificationsPlugin.showWeeklyAtDayAndTime(
-      lastID,
-      rm.wrdName,
-      rm.wrdText,
-      day,
-      timeNotification,
-      platformChannelSpecifics,
-      payload: rm.id,
-    );
-  }
+  //   var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+  //     'wrdChannal',
+  //     'قناة الأوراد',
+  //     'هذه القناة مختصة لإظهار الاوراد المحفوظة',
+  //     // styleInformation:
+  //   );
+  //   var iOSPlatformChannelSpecifics = IOSNotificationDetails();
+  //   var platformChannelSpecifics = NotificationDetails(
+  //       androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
+  //   await flutterLocalNotificationsPlugin.showWeeklyAtDayAndTime(
+  //     lastID,
+  //     rm.wrdName,
+  //     rm.wrdText,
+  //     day,
+  //     timeNotification,
+  //     platformChannelSpecifics,
+  //     payload: rm.id,
+  //   );
+  // }
 
   Future<void> _showDailyForAzan(
       DateTime azanTime, int azanIndex, AzanTimeClass azanClass,
@@ -140,26 +225,26 @@ class NotificationService {
     );
   }
 
-  _cancelPreviousSchedule(String uid) async {
-    final keys = notificationBox.keys;
-    for (var key in keys) {
-      if (notificationBox.get(key) == uid) {
-        log("$key , ${notificationBox.get(key)}");
+  // _cancelPreviousSchedule(String uid) async {
+  //   final keys = notificationBox.keys;
+  //   for (var key in keys) {
+  //     if (notificationBox.get(key) == uid) {
+  //       log("$key , ${notificationBox.get(key)}");
 
-        await notificationBox.delete(key);
-        await flutterLocalNotificationsPlugin.cancel(key);
-      }
-    }
-  }
+  //       await notificationBox.delete(key);
+  //       await flutterLocalNotificationsPlugin.cancel(key);
+  //     }
+  //   }
+  // }
 
   int get lastSaveID {
     return mainBox.get(LAST_SAVED_ID, defaultValue: 10);
   }
 
-  _increaseLastID() async {
-    final lastId = lastSaveID + 1;
-    await mainBox.put(LAST_SAVED_ID, lastId);
-  }
+  // _increaseLastID() async {
+  //   final lastId = lastSaveID + 1;
+  //   await mainBox.put(LAST_SAVED_ID, lastId);
+  // }
 }
 
 extension dateToTime on DateTime {

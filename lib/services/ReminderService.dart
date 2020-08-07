@@ -10,7 +10,7 @@ class ReminderService {
   saveReminder(ReminderModel rm) async {
     await deleteDuplicatedReminders(rm.id);
     await reminderBox.add(rm);
-    _notiSer.scheduleWrdNotification(rm);
+    _notiSer.reshechduleAwrad();
   }
 
   testDeleteAll() async {
@@ -65,7 +65,7 @@ class ReminderService {
       final index = vals.indexOf(item);
       await reminderBox.deleteAt(index);
     }
-    await _notiSer.cancelSchedule(uid);
+    await _notiSer.reshechduleAwrad();
     if (showNotification) {
       showSnackBar("تم", "تم حذف التنبيه");
     }
