@@ -41,8 +41,8 @@ class QuranMainScreen extends StatelessWidget {
                 'AzanChannel',
                 'قناة الأذان',
                 'هذه القناة مختصة للتنبيه بأوقات الصلاة',
-                // playSound: true,
-                // enableVibration: true,
+                playSound: true,
+                enableVibration: true,
                 sound: RawResourceAndroidNotificationSound("adan"),
               );
               final title = "وقت ";
