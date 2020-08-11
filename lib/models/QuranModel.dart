@@ -58,6 +58,9 @@ class Surahs {
   String englishNameTranslation;
   String revelationType;
   List<Ayahs> ayahs;
+  List<int> get listOfPages => ayahs.map((e) => e.page).toSet().toList();
+  int get firstPage => listOfPages.first;
+  int get lastPage => listOfPages.last;
 
   Surahs(
       {this.number,
@@ -109,6 +112,7 @@ class Ayahs {
   dynamic sajda;
   String get normalizeText =>
       text.replaceFirst("بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ", "");
+
   Ayahs(
       {this.number,
       this.audio,

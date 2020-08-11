@@ -23,8 +23,39 @@ class QuranNewVM extends BaseViewModel {
   void dispose() {
     super.dispose();
     player.dispose();
+    // _ctrl.removeListener(_pageListener);
   }
 
+  bool _isChangingSura = false;
+
+  goToNextSurah() {
+    if (_isChangingSura) return;
+    final index = surasString.indexOf(_selectedSurah.name);
+    if (index >= surasString.length - 1) return;
+    _isChangingSura = true;
+    selectedSurah = _quran.data.surahs[index + 1];
+    _ctrl.jumpToPage(0);
+    _unLock();
+  }
+
+  goToPreviousSurah() {
+    if (_isChangingSura) return;
+    final index = surasString.indexOf(_selectedSurah.name);
+    if (index <= 0) return;
+    _isChangingSura = true;
+    selectedSurah = _quran.data.surahs[index - 1];
+    final moveTo = selectedSurah.listOfPages.length - 1;
+    _ctrl.jumpToPage(moveTo);
+    _currentPageNumber = pagesNumber[moveTo];
+    _unLock();
+  }
+
+  _unLock() async {
+    notifyListeners();
+
+    await Future.delayed(Duration(milliseconds: 500))
+        .then((_) => _isChangingSura = false);
+  }
   // Future<bool> get isPlaying => player.isPlaying.first;
 
   // bool get shouldStopPlaying {
@@ -38,8 +69,13 @@ class QuranNewVM extends BaseViewModel {
   //   return firstPlaying != firstInList;
   // }
 
+  // _pageListener() {
+  //   log(_ctrl.position.activity.toString());
+  // }
+
   int get lastSavedSuraIndex => mainBox.get(LAST_SAVED_SURAH, defaultValue: 0);
   initData({String suraName = ""}) async {
+    // _ctrl.addListener(_pageListener);
     setBusy(true);
     if (_quran == null) _quran = await _ser.quran;
     if (suraName.isNotEmpty) {
@@ -51,13 +87,11 @@ class QuranNewVM extends BaseViewModel {
     setBusy(false);
   }
 
-  List<String> get surasString =>
-      _quran.data.surahs.map((e) => e.name).toList();
+  List<String> get surasString => suras.map((e) => e.name).toList();
 
   List<Surahs> get suras => _quran.data.surahs.map((e) => e).toList();
 
-  List<int> get pagesNumber =>
-      _selectedSurah.ayahs.map((e) => e.page).toSet().toList();
+  List<int> get pagesNumber => _selectedSurah.listOfPages;
 
   int _currentPageNumber;
   int get currentPageNumber => _currentPageNumber;
@@ -72,13 +106,13 @@ class QuranNewVM extends BaseViewModel {
     try {
       _selectedSurah = sura;
       _currentPageNumber = pagesNumber[0];
-
-      Future.delayed(Duration(milliseconds: 500)).then((_) {
+      if (_isChangingSura) return;
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
         final savedBookMark =
             mainBox.get(_selectedSurah.englishName, defaultValue: -1);
         int pageIndex = 0;
 
-        if (savedBookMark > -1) {
+        if (savedBookMark > 0) {
           pageIndex = indexOfPage(savedBookMark);
         }
         _ctrl.animateToPage(pageIndex,

@@ -62,10 +62,11 @@ class QuranFahras extends StatelessWidget {
                       viewModelBuilder: () => ExpansionVM(
                         isAwrad: false,
                         wrd: WrdModel(
-                            uid: sura.englishName,
-                            wrdDesc: "",
-                            wrdName: sura.name,
-                            wrdType: sura.revelationType),
+                          uid: sura.englishName,
+                          wrdDesc: "",
+                          wrdName: sura.name,
+                          wrdType: sura.revelationType,
+                        ),
                       ),
                       builder: (ctx, model, ch) => InkWell(
                         onTap: () {
@@ -97,21 +98,33 @@ class QuranFahras extends StatelessWidget {
                                   Flexible(
                                     flex: 1,
                                     fit: FlexFit.tight,
-                                    child: Row(
-                                      children: <Widget>[
-                                        IconButton(
-                                          icon: Icon(model.showAlaramOption
-                                              ? Icons.arrow_drop_up
-                                              : Icons.arrow_drop_down),
-                                          onPressed: () {
-                                            model.toggelAlarmOption();
-                                          },
-                                        ),
-                                        Text(
-                                          sura.name,
-                                          textAlign: TextAlign.center,
-                                        ),
-                                      ],
+                                    child: LayoutBuilder(
+                                      builder: (context, constraints) => Row(
+                                        children: <Widget>[
+                                          Container(
+                                            width: constraints.maxWidth * 0.3,
+                                            child: IconButton(
+                                              icon: Icon(model.showAlaramOption
+                                                  ? Icons.arrow_drop_up
+                                                  : Icons.arrow_drop_down),
+                                              onPressed: () {
+                                                model.toggelAlarmOption();
+                                              },
+                                            ),
+                                          ),
+                                          Container(
+                                            width: constraints.maxWidth * 0.7,
+                                            child: FittedBox(
+                                              fit: BoxFit.fitWidth,
+                                              child: Text(
+                                                sura.name,
+                                                style: TextStyle(fontSize: 18),
+                                                textAlign: TextAlign.center,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                   Flexible(

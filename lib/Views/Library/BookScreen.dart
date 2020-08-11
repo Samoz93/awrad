@@ -1,9 +1,9 @@
-import 'package:advance_pdf_viewer/advance_pdf_viewer.dart';
 import 'package:awrad/Views/Library/BookVM.dart';
 import 'package:awrad/models/BookModel.dart';
 import 'package:awrad/widgets/MyErrorWidget.dart';
 import 'package:awrad/widgets/MyScf.dart';
 import 'package:flutter/material.dart';
+import 'package:native_pdf_view/native_pdf_view.dart';
 import 'package:stacked/stacked.dart';
 
 class BookScreen extends StatelessWidget {
@@ -39,10 +39,8 @@ class BookScreen extends StatelessWidget {
                     )
                   : Stack(
                       children: <Widget>[
-                        PDFViewer(
-                          document: model.pdf,
-                          showPicker: false,
-                          controller: model.ctrl,
+                        PdfView(
+                          controller: model.pdfController,
                         ),
                         Align(
                           alignment: Alignment.bottomCenter,

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:awrad/Consts/ThemeCosts.dart';
 import 'package:awrad/Views/quran/QuranNewVM.dart';
@@ -41,42 +43,59 @@ class _QuranNewScreenState extends State<QuranNewScreen> {
                 Flexible(
                   flex: 20,
                   fit: FlexFit.tight,
-                  child: PageView.builder(
-                    controller: model.ctrl,
-                    itemCount: model.pagesNumber.length,
-                    onPageChanged: (page) {
-                      model.currentPageNumber = page;
+                  child: NotificationListener(
+                    onNotification: (Notification no) {
+                      if (no is OverscrollNotification) {
+                        if (no.dragDetails.primaryDelta > 0) {
+                          model.goToNextSurah();
+                        } else if (no.dragDetails.primaryDelta < 0) {
+                          model.goToPreviousSurah();
+                        }
+                      } else {
+                        log("Dont do shit");
+                      }
+                      return true;
                     },
-                    itemBuilder: (BuildContext context, int index) {
-                      int newIndex = model.pagesNumber[index] + 3;
-                      String dex = "";
-                      if (newIndex.toString().length == 1) dex = "000$newIndex";
-                      if (newIndex.toString().length == 2) dex = "00$newIndex";
-                      if (newIndex.toString().length == 3) dex = "0$newIndex";
-                      if (newIndex.toString().length == 4) dex = "$newIndex";
-                      return LayoutBuilder(
-                        builder: (context, constraints) => ExtendedImage.asset(
-                          "assets/L/$dex.png",
-                          fit: BoxFit.fill,
-                          width: constraints.maxWidth,
-                          height: constraints.maxHeight,
-                          mode: ExtendedImageMode.gesture,
-                          initGestureConfigHandler: (state) {
-                            return GestureConfig(
-                              minScale: 1,
-                              animationMinScale: 0.9,
-                              maxScale: 2.0,
-                              animationMaxScale: 2.1,
-                              speed: 1.0,
-                              inertialSpeed: 100.0,
-                              initialScale: 1.0,
-                              inPageView: true,
-                              initialAlignment: InitialAlignment.center,
-                            );
-                          },
-                        ),
-                      );
-                    },
+                    child: PageView.builder(
+                      controller: model.ctrl,
+                      itemCount: model.pagesNumber.length,
+                      onPageChanged: (page) {
+                        model.currentPageNumber = page;
+                      },
+                      itemBuilder: (BuildContext context, int index) {
+                        int newIndex = model.pagesNumber[index] + 3;
+                        String dex = "";
+                        if (newIndex.toString().length == 1)
+                          dex = "000$newIndex";
+                        if (newIndex.toString().length == 2)
+                          dex = "00$newIndex";
+                        if (newIndex.toString().length == 3) dex = "0$newIndex";
+                        if (newIndex.toString().length == 4) dex = "$newIndex";
+                        return LayoutBuilder(
+                          builder: (context, constraints) =>
+                              ExtendedImage.asset(
+                            "assets/L/$dex.png",
+                            fit: BoxFit.fill,
+                            width: constraints.maxWidth,
+                            height: constraints.maxHeight,
+                            mode: ExtendedImageMode.gesture,
+                            initGestureConfigHandler: (state) {
+                              return GestureConfig(
+                                minScale: 1,
+                                animationMinScale: 0.9,
+                                maxScale: 2.0,
+                                animationMaxScale: 2.1,
+                                speed: 1.0,
+                                inertialSpeed: 100.0,
+                                initialScale: 1.0,
+                                inPageView: true,
+                                initialAlignment: InitialAlignment.center,
+                              );
+                            },
+                          ),
+                        );
+                      },
+                    ),
                   ),
                 ),
               ],

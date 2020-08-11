@@ -1,19 +1,26 @@
 import 'package:awrad/Consts/ThemeCosts.dart';
 import 'package:awrad/Views/SavedAwrad/SavedAwradVM.dart';
+import 'package:awrad/widgets/LoadingWidget.dart';
 import 'package:awrad/widgets/ReminderWidget/ReminderWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:stacked/stacked.dart';
 
-class SavedAwrad extends StatelessWidget {
+class SavedAwrad extends StatefulWidget {
   SavedAwrad({Key key}) : super(key: key);
   static const route = "SavedAwrad";
-  // final vm = SavedAwradVM();
+
+  @override
+  _SavedAwradState createState() => _SavedAwradState();
+}
+
+class _SavedAwradState extends State<SavedAwrad> {
   @override
   Widget build(BuildContext context) {
     final media = MediaQuery.of(context).size;
     return ViewModelBuilder<SavedAwradVM>.reactive(
       // disposeViewModel: false,
+      createNewModelOnInsert: true,
       builder: (ctx, model, ch) => Container(
         height: media.height,
         child: Flex(
@@ -99,23 +106,28 @@ class SavedAwrad extends StatelessWidget {
         ),
       );
       lst.add(
-        SliverList(
-          delegate: SliverChildBuilderDelegate(
-            (context, index) {
-              return Container(
-                height: 100,
-                child: ReminderWidget(
-                  uid: model.awradData[index].id,
-                  deleteFunction: () {
-                    model.deleteNotification(model.awradData[index].id,
-                        showNotification: true);
+        model.isBusy
+            ? SliverToBoxAdapter(child: LoadingWidget())
+            : SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (context, index) {
+                    return Container(
+                      height: 100,
+                      child: ReminderWidget(
+                        uid: model.awradData[index].id,
+                        deleteFunction: () async {
+                          await model.deleteNotification(
+                            model.awradData[index].id,
+                            showNotification: true,
+                          );
+                          setState(() {});
+                        },
+                      ),
+                    );
                   },
+                  childCount: model.awradData.length,
                 ),
-              );
-            },
-            childCount: model.awradData.length,
-          ),
-        ),
+              ),
       );
     }
 
@@ -126,24 +138,28 @@ class SavedAwrad extends StatelessWidget {
         ),
       );
       lst.add(
-        SliverList(
-          delegate: SliverChildBuilderDelegate(
-            (context, index) {
-              final id = model.quranData[index].id;
-              return Container(
-                height: 100,
-                child: ReminderWidget(
-                  uid: id,
-                  deleteFunction: () {
-                    model.deleteNotification(model.quranData[index].id,
-                        showNotification: true);
+        model.isBusy
+            ? SliverToBoxAdapter(child: LoadingWidget())
+            : SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (context, index) {
+                    final id = model.quranData[index].id;
+                    return Container(
+                      height: 100,
+                      child: ReminderWidget(
+                        uid: id,
+                        deleteFunction: () async {
+                          await model.deleteNotification(
+                              model.quranData[index].id,
+                              showNotification: true);
+                          setState(() {});
+                        },
+                      ),
+                    );
                   },
+                  childCount: model.quranData.length,
                 ),
-              );
-            },
-            childCount: model.quranData.length,
-          ),
-        ),
+              ),
       );
     }
 

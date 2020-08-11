@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:typed_data';
 
 import 'package:awrad/Consts/ConstMethodes.dart';
 import 'package:awrad/Consts/DATABASECONST.dart';
@@ -10,7 +11,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 
 const adanLink = "adan";
-const adanLinkIos = "adan.m4r";
+const adanLinkIos = "ggg.aiff";
 
 class NotificationService {
   // final _mainBox = Hive.box(MAINBOX);
@@ -73,7 +74,7 @@ class NotificationService {
 
     for (var d = 0; d < daysOfWeek2.length; d++) {
       for (var t = 0; t < timesOfDay.length; t++) {
-        await _scheduleAwrad(d, t, i);
+        await _scheduleAwrad(daysOfWeek2[d].dateWeek, t, i);
         i++;
       }
     }
@@ -195,12 +196,24 @@ class NotificationService {
   Future<void> _showDailyForAzan(
       DateTime azanTime, int azanIndex, AzanTimeClass azanClass,
       {bool playSound = true, bool enableVibration = true}) async {
+    var vibrationPattern = Int64List(6);
+    vibrationPattern[0] = 100;
+    vibrationPattern[1] = 300;
+    vibrationPattern[2] = 100;
+    vibrationPattern[3] = 300;
+    vibrationPattern[4] = 100;
+    vibrationPattern[5] = 400;
+    var vibrationPatternEmoty = Int64List(1);
+    vibrationPattern[0] = 100;
+
     var time = azanTime.toNotificationTime;
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
       'AzanChannel',
       'قناة الأذان',
       'هذه القناة مختصة للتنبيه بأوقات الصلاة',
       playSound: playSound,
+      vibrationPattern:
+          enableVibration ? vibrationPattern : vibrationPatternEmoty,
       enableVibration: enableVibration,
       sound: RawResourceAndroidNotificationSound(adanLink),
     );

@@ -13,8 +13,9 @@ class SavedAwradVM extends BaseViewModel {
     _init();
   }
   _init() {
+    setBusy(true);
     _remindres = _ser.allReminders;
-    notifyListeners();
+    setBusy(false);
   }
 
   int _selectedTap = 0;
@@ -56,8 +57,10 @@ class SavedAwradVM extends BaseViewModel {
   }
 
   deleteNotification(String id, {showNotification = false}) async {
-    await _ser.deleteDuplicatedReminders(id,
-        showNotification: showNotification);
+    setBusy(true);
+    await _ser.deleteDuplicatedReminders(id, showNotification: false);
+    setBusy(false);
+
     _init();
   }
 }
