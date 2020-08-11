@@ -18,73 +18,51 @@ class QuranNewVM extends BaseViewModel {
   PageController get ctrl => _ctrl;
   final player = AssetsAudioPlayer.newPlayer();
   // final _api = Get.find<QuranApi>();
-
   @override
   void dispose() {
     super.dispose();
     player.dispose();
-    // _ctrl.removeListener(_pageListener);
   }
 
-  bool _isChangingSura = false;
-
-  goToNextSurah() {
-    if (_isChangingSura) return;
-    final index = surasString.indexOf(_selectedSurah.name);
-    if (index >= surasString.length - 1) return;
-    _isChangingSura = true;
-    selectedSurah = _quran.data.surahs[index + 1];
-    _ctrl.jumpToPage(0);
-    _unLock();
-  }
-
-  goToPreviousSurah() {
-    if (_isChangingSura) return;
-    final index = surasString.indexOf(_selectedSurah.name);
-    if (index <= 0) return;
-    _isChangingSura = true;
-    selectedSurah = _quran.data.surahs[index - 1];
-    final moveTo = selectedSurah.listOfPages.length - 1;
-    _ctrl.jumpToPage(moveTo);
-    _currentPageNumber = pagesNumber[moveTo];
-    _unLock();
-  }
-
-  _unLock() async {
-    notifyListeners();
-
-    await Future.delayed(Duration(milliseconds: 500))
-        .then((_) => _isChangingSura = false);
-  }
-  // Future<bool> get isPlaying => player.isPlaying.first;
-
-  // bool get shouldStopPlaying {
-  //   if (player == null || player.current == null) return false;
-  //   if (player.playlist.isNullOrBlank) return false;
-  //   final theSameSize = player.playlist.numberOfItems == ayahSounds.length;
-  //   if (!theSameSize) return true;
-  //   final firstPlaying = player.playlist.audios.first.path;
-  //   final firstInList =
-  //       getPath(ayahSounds.first.number, _api.deafultQuranReader);
-  //   return firstPlaying != firstInList;
-  // }
-
-  // _pageListener() {
-  //   log(_ctrl.position.activity.toString());
-  // }
+  int _selectedSuraIndex = 0;
+  int get selectedSuraIndex => _selectedSuraIndex;
+  set selectedSuraIndex(index) => _selectedSuraIndex = index;
 
   int get lastSavedSuraIndex => mainBox.get(LAST_SAVED_SURAH, defaultValue: 0);
   initData({String suraName = ""}) async {
     // _ctrl.addListener(_pageListener);
-    setBusy(true);
-    if (_quran == null) _quran = await _ser.quran;
-    if (suraName.isNotEmpty) {
-      final index = surasString.indexOf(suraName);
-      selectedSurah = _quran.data.surahs[index];
-    } else {
-      selectedSurah = _quran.data.surahs[lastSavedSuraIndex];
+    try {
+      setBusy(true);
+      if (_quran == null) _quran = await _ser.quran;
+      if (suraName.isNotEmpty) {
+        selectedSuraIndex = surasString.indexOf(suraName);
+        selectedSurah = _quran.data.surahs[selectedSuraIndex];
+        _jumpToFirstPage();
+      } else {
+        selectedSuraIndex = lastSavedSuraIndex;
+        selectedSurah = _quran.data.surahs[lastSavedSuraIndex];
+      }
+      setBusy(false);
+    } catch (e) {
+      log(e.toString());
     }
-    setBusy(false);
+  }
+
+  _jumpToFirstPage() {
+    WidgetsBinding.instance.addPostFrameCallback(
+      (timeStamp) {
+        final savedBookMark =
+            mainBox.get(_selectedSurah.englishName, defaultValue: -1);
+
+        if (savedBookMark < 1) {
+          ctrl.jumpToPage(indexOfPage(selectedSurah.firstPage));
+        } else {
+          final pageIndex = indexOfPage(savedBookMark);
+          _ctrl.animateToPage(pageIndex,
+              duration: Duration(milliseconds: 200), curve: Curves.easeIn);
+        }
+      },
+    );
   }
 
   List<String> get surasString => suras.map((e) => e.name).toList();
@@ -93,39 +71,39 @@ class QuranNewVM extends BaseViewModel {
 
   List<int> get pagesNumber => _selectedSurah.listOfPages;
 
-  int _currentPageNumber;
+  int _currentPageNumber = 1;
   int get currentPageNumber => _currentPageNumber;
-  set currentPageNumber(int number) {
-    _currentPageNumber = pagesNumber[number];
+  set currentPageNumber(int index) {
+    _currentPageNumber = quran.data.quranPages[index];
+    final suraIndex = suras.indexWhere((e) =>
+        (_currentPageNumber >= e.firstPage &&
+            _currentPageNumber <= e.lastPage));
+    selectedSurah = suras[suraIndex];
+    selectedSuraIndex = suraIndex;
     notifyListeners();
+  }
+
+  Surahs get nextSurah {
+    final nextIndex = selectedSuraIndex + 1;
+    if (nextIndex >= suras.length - 1) return null;
+    return suras[nextIndex];
+  }
+
+  Surahs get extraNextSurah {
+    final nextIndex = selectedSuraIndex + 2;
+    if (nextIndex >= suras.length - 1) return null;
+    return suras[nextIndex];
   }
 
   Surahs _selectedSurah;
   Surahs get selectedSurah => _selectedSurah;
   set selectedSurah(Surahs sura) {
-    try {
-      _selectedSurah = sura;
-      _currentPageNumber = pagesNumber[0];
-      if (_isChangingSura) return;
-      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-        final savedBookMark =
-            mainBox.get(_selectedSurah.englishName, defaultValue: -1);
-        int pageIndex = 0;
-
-        if (savedBookMark > 0) {
-          pageIndex = indexOfPage(savedBookMark);
-        }
-        _ctrl.animateToPage(pageIndex,
-            duration: Duration(milliseconds: 500), curve: Curves.easeIn);
-      });
-    } catch (e) {
-      log(e.toString());
-    }
+    _selectedSurah = sura;
+    notifyListeners();
   }
 
   saveSura() async {
     final x = suras.indexOf(_selectedSurah);
-    log(x.toString());
     await mainBox.put(LAST_SAVED_SURAH, x);
     notifyListeners();
   }
@@ -135,7 +113,7 @@ class QuranNewVM extends BaseViewModel {
       currentPageNumber;
 
   indexOfPage(int pg) {
-    return pagesNumber.indexOf(pg);
+    return quran.data.quranPages.indexOf(pg);
   }
 
   saveBookMark() async {
@@ -155,49 +133,4 @@ class QuranNewVM extends BaseViewModel {
         .toList();
     return x;
   }
-  // int ss = 1;
-  // void selectNextSurah() {
-  //   ss++;
-  //   selectedSurah = _quran.data.surahs[ss];
-  // }
 }
-
-// class QuranPage {
-//   String suraName;
-//   int pageNumer;
-//   List<Ayahs> text = [];
-//   QuranPage({
-//     this.suraName,
-//     this.pageNumer,
-//     this.text,
-//   });
-
-//   QuranPage copyWith({
-//     String suraName,
-//     int pageNumer,
-//     List<Ayahs> text,
-//   }) {
-//     return QuranPage(
-//       suraName: suraName ?? this.suraName,
-//       pageNumer: pageNumer ?? this.pageNumer,
-//       text: text ?? this.text,
-//     );
-//   }
-
-//   @override
-//   String toString() =>
-//       'QuranPage(suraName: $suraName, pageNumer: $pageNumer, text: $text)';
-
-//   @override
-//   bool operator ==(Object o) {
-//     if (identical(this, o)) return true;
-
-//     return o is QuranPage &&
-//         o.suraName == suraName &&
-//         o.pageNumer == pageNumer &&
-//         listEquals(o.text, text);
-//   }
-
-//   @override
-//   int get hashCode => suraName.hashCode ^ pageNumer.hashCode ^ text.hashCode;
-// }

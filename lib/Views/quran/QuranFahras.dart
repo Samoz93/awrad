@@ -73,9 +73,13 @@ class QuranFahras extends StatelessWidget {
                           mainModel.selectedSurah = sura;
                           mainModel.saveSura();
 
-                          Navigator.of(ctx).push(MaterialPageRoute(
-                            builder: (context) => QuranNewScreen(),
-                          ));
+                          Navigator.of(ctx).push(
+                            MaterialPageRoute(
+                              builder: (context) => QuranNewScreen(
+                                suraName: sura.name,
+                              ),
+                            ),
+                          );
                         },
                         child: Container(
                           decoration: BoxDecoration(
