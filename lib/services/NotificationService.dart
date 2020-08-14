@@ -189,29 +189,43 @@ class NotificationService {
     vibrationPattern[0] = 100;
 
     var time = azanTime.toNotificationTime;
-    var androidPlatformChannelSpecifics = AndroidNotificationDetails(
-      'AzanChannel',
-      'قناة الأذان',
-      'هذه القناة مختصة للتنبيه بأوقات الصلاة',
-      playSound: playSound,
-      vibrationPattern:
-          enableVibration ? vibrationPattern : vibrationPatternEmoty,
-      enableVibration: enableVibration,
-      sound: azanClass.isAdan
-          ? RawResourceAndroidNotificationSound(adanLink)
-          : null,
-    );
+    var androidPlatformChannelSpecifics;
+
     final title =
         azanClass.isAdan ? 'صلاة ${azanClass.name}' : "وقت ${azanClass.name}";
     final message = azanClass.isAdan
         ? 'حان الآن موعد صلاة ${azanClass.name}'
         : "حان الآن موعد وقت ${azanClass.name}";
 
-    var iOSPlatformChannelSpecifics = IOSNotificationDetails(
-      sound: adanLinkIos,
-      presentAlert: true,
-      presentSound: true,
-    );
+    var iOSPlatformChannelSpecifics;
+    if (azanClass.isAdan) {
+      iOSPlatformChannelSpecifics = IOSNotificationDetails(
+        sound: adanLinkIos,
+        presentAlert: true,
+        presentSound: true,
+      );
+      androidPlatformChannelSpecifics = AndroidNotificationDetails(
+        'AzanChannel',
+        'قناة الأذان',
+        'هذه القناة مختصة للتنبيه بأوقات الصلاة',
+        playSound: playSound,
+        vibrationPattern:
+            enableVibration ? vibrationPattern : vibrationPatternEmoty,
+        enableVibration: enableVibration,
+        sound: RawResourceAndroidNotificationSound(adanLink),
+      );
+    } else {
+      iOSPlatformChannelSpecifics = IOSNotificationDetails();
+      androidPlatformChannelSpecifics = AndroidNotificationDetails(
+        'AzanChannel',
+        'قناة الأذان',
+        'هذه القناة مختصة للتنبيه بأوقات الصلاة',
+        playSound: playSound,
+        vibrationPattern:
+            enableVibration ? vibrationPattern : vibrationPatternEmoty,
+        enableVibration: enableVibration,
+      );
+    }
     var platformChannelSpecifics = NotificationDetails(
         androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
     await flutterLocalNotificationsPlugin.showDailyAtTime(
