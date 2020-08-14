@@ -422,19 +422,21 @@ class _TestWidgetState extends State<TestWidget> {
     vibrationPattern[5] = 3000;
 
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
-        'your other channel id',
-        'your other channel name',
-        'your other channel description',
-        icon: 'secondary_icon',
-        sound: UriAndroidNotificationSound(
-            "http://soundbible.com/grab.php?id=2218&type=wav"),
-        largeIcon: DrawableResourceAndroidBitmap('sample_large_icon'),
-        vibrationPattern: vibrationPattern,
-        enableLights: true,
-        color: const Color.fromARGB(150, 35, 96, 0),
-        ledColor: const Color.fromARGB(150, 35, 96, 0),
-        ledOnMs: 1000,
-        ledOffMs: 500);
+      'your other channel id',
+      'your other channel name',
+      'your other channel description',
+      icon: 'secondary_icon',
+      sound: UriAndroidNotificationSound(
+        "http://soundbible.com/grab.php?id=2218&type=wav",
+      ),
+      largeIcon: DrawableResourceAndroidBitmap('sample_large_icon'),
+      vibrationPattern: vibrationPattern,
+      enableLights: true,
+      color: const Color.fromARGB(150, 35, 96, 0),
+      ledColor: const Color.fromARGB(150, 35, 96, 0),
+      ledOnMs: 1000,
+      ledOffMs: 500,
+    );
     var iOSPlatformChannelSpecifics =
         IOSNotificationDetails(sound: 'slow_spring_board.aiff');
     var platformChannelSpecifics = NotificationDetails(

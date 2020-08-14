@@ -14,9 +14,6 @@ const adanLink = "adan";
 const adanLinkIos = "ggg.aiff";
 
 class NotificationService {
-  // final _mainBox = Hive.box(MAINBOX);
-  // final _reminderBox = Hive.box(REMINDER_BOX);
-
   final _api = Get.find<AdhanApi>();
   testRemoveAll() async {
     await notificationBox.clear();
@@ -53,21 +50,6 @@ class NotificationService {
   String _getAzanReminderState(String azanType) {
     return mainBox.get(azanType, defaultValue: "on");
   }
-
-  // scheduleWrdNotification(ReminderModel rm) async {
-  //   await _cancelPreviousSchedule(rm.id);
-
-  //   for (var d = 0; d < rm.days.length; d++) {
-  //     for (var t = 0; t < rm.times.length; t++) {
-  //       log("dayInt${rm.days[d]}");
-  //       await _showWeeklyForWrd(rm, _dateDayToNotificationDate(rm.days[d]),
-  //           rm.times[t], lastSaveID);
-  //       await notificationBox.put(lastSaveID, rm.id);
-  //       await _increaseLastID();
-  //       // log("saved ${rm.id} next id will be $lastSaveID");
-  //     }
-  //   }
-  // }
 
   reshechduleAwrad() async {
     int i = 10;
@@ -215,7 +197,9 @@ class NotificationService {
       vibrationPattern:
           enableVibration ? vibrationPattern : vibrationPatternEmoty,
       enableVibration: enableVibration,
-      sound: RawResourceAndroidNotificationSound(adanLink),
+      sound: azanClass.isAdan
+          ? RawResourceAndroidNotificationSound(adanLink)
+          : null,
     );
     final title =
         azanClass.isAdan ? 'صلاة ${azanClass.name}' : "وقت ${azanClass.name}";
