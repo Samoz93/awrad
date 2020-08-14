@@ -189,7 +189,6 @@ class NotificationService {
     vibrationPattern[0] = 100;
 
     var time = azanTime.toNotificationTime;
-    var androidPlatformChannelSpecifics;
 
     final title =
         azanClass.isAdan ? 'صلاة ${azanClass.name}' : "وقت ${azanClass.name}";
@@ -198,6 +197,8 @@ class NotificationService {
         : "حان الآن موعد وقت ${azanClass.name}";
 
     var iOSPlatformChannelSpecifics;
+    var androidPlatformChannelSpecifics;
+
     if (azanClass.isAdan) {
       iOSPlatformChannelSpecifics = IOSNotificationDetails(
         sound: adanLinkIos,
