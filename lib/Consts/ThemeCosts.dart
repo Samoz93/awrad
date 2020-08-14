@@ -31,6 +31,8 @@ class AppThemes {
       begin: Alignment.topCenter,
       end: Alignment.bottomCenter);
   static const titleTextStyle = TextStyle(fontSize: 40, color: Colors.black);
+  static const miniFahrasTextStyle =
+      TextStyle(fontSize: 30, color: Colors.black);
   static final pageTitleStyle =
       TextStyle(fontSize: 30, color: AppColors.addColor);
   static const buttonTextStyle = TextStyle(fontSize: 30, color: Colors.white);

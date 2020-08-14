@@ -1,15 +1,15 @@
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:awrad/Consts/ConstMethodes.dart';
 import 'package:awrad/Consts/ThemeCosts.dart';
-import 'package:awrad/models/QuranModel.dart';
 import 'package:awrad/widgets/AudioPlayer/AudioVM.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
 class MyAudioPlayer extends StatefulWidget {
-  final List<Ayahs> lst;
+  final int pageNumber;
   final AssetsAudioPlayer player;
-  const MyAudioPlayer({Key key, @required this.lst, @required this.player})
+  const MyAudioPlayer(
+      {Key key, @required this.pageNumber, @required this.player})
       : super(key: key);
 
   @override
@@ -33,7 +33,7 @@ class _MyAudioPlayerState extends State<MyAudioPlayer>
   Widget build(BuildContext context) {
     return Material(
       child: ViewModelBuilder<AudiVM>.reactive(
-        viewModelBuilder: () => AudiVM(widget.lst, widget.player),
+        viewModelBuilder: () => AudiVM(widget.pageNumber, widget.player),
         builder: (ctx, model, child) => Container(
           child: Flex(
             direction: Axis.vertical,
@@ -46,7 +46,8 @@ class _MyAudioPlayerState extends State<MyAudioPlayer>
                     children: <Widget>[
                       Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Text("الآية رقم ${model.getAyahName}"),
+                        child: Text(
+                            " ${model.getSurahName} الآية  ${model.getAyahName}"),
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,

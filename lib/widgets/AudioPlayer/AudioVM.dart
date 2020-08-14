@@ -10,17 +10,25 @@ import 'package:get/get.dart';
 import 'package:stacked/stacked.dart';
 
 class AudiVM extends BaseViewModel {
-  List<Ayahs> data;
+  int pageNumber;
   QuranReader _readers;
+  List<Ayahs> data;
+  QuranModel _quran;
   final _api = Get.find<QuranApi>();
   final AssetsAudioPlayer player;
-  AudiVM(this.data, this.player) {
-    _getReaders();
+  AudiVM(this.pageNumber, this.player) {
     init();
   }
 
   _getReaders() async {
     _readers = await _api.readersList;
+    if (_quran == null) {
+      _quran = await _api.quran;
+    }
+    data = _quran.data.surahs.fold<List<Ayahs>>([], (p, element) {
+      final aya = element.ayahs.where((a) => a.page == pageNumber);
+      return p..addAll(aya);
+    }).toList();
     notifyListeners();
   }
 
@@ -36,13 +44,25 @@ class AudiVM extends BaseViewModel {
 
   init() async {
     try {
+      await _getReaders();
+      log(pageNumber.toString());
+
       if (_shouldStopPlaying) {
         await player.stop();
         final urlList =
             data.map((e) => Audio.network(getPath(e.number, reader))).toList();
 
-        player.open(Playlist(audios: urlList, startIndex: 0),
-            loopMode: LoopMode.playlist);
+        player.open(
+          Playlist(audios: urlList, startIndex: 0),
+          loopMode: LoopMode.playlist,
+          showNotification: false,
+          headPhoneStrategy: HeadPhoneStrategy.pauseOnUnplug,
+          // notificationSettings: NotificationSettings(
+          //   playPauseEnabled: true,
+          //   seekBarEnabled: true,
+          //   prevEnabled: true,
+          // ),
+        );
       } else {
         player.playOrPause();
       }
@@ -110,6 +130,14 @@ class AudiVM extends BaseViewModel {
     final index = player.readingPlaylist.currentIndex;
     final x = data[index];
     return x.numberInSurah.toString();
+  }
+
+  String get getSurahName {
+    final index = player.readingPlaylist.currentIndex;
+    final x = data[index];
+    final sura = _quran.data.surahs
+        .firstWhere((e) => e.ayahs.any((g) => g.audio == x.audio));
+    return sura.name;
   }
 
   _dis() async {

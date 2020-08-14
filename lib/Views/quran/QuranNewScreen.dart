@@ -1,8 +1,7 @@
-import 'dart:developer';
-
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:awrad/Consts/ThemeCosts.dart';
 import 'package:awrad/Views/quran/QuranNewVM.dart';
+import 'package:awrad/models/QuranModel.dart';
 import 'package:awrad/widgets/AudioPlayer/MyAudioPlayer.dart';
 import 'package:awrad/widgets/LoadingWidget.dart';
 import 'package:awrad/widgets/MyErrorWidget.dart';
@@ -43,59 +42,42 @@ class _QuranNewScreenState extends State<QuranNewScreen> {
                 Flexible(
                   flex: 20,
                   fit: FlexFit.tight,
-                  child: NotificationListener(
-                    onNotification: (Notification no) {
-                      if (no is OverscrollNotification) {
-                        if (no.dragDetails.primaryDelta > 0) {
-                          model.goToNextSurah();
-                        } else if (no.dragDetails.primaryDelta < 0) {
-                          model.goToPreviousSurah();
-                        }
-                      } else {
-                        log("Dont do shit");
-                      }
-                      return true;
+                  child: PageView.builder(
+                    controller: model.ctrl,
+                    itemCount: model.quran.data.pagesLength,
+                    onPageChanged: (index) {
+                      model.currentPageNumber = index;
                     },
-                    child: PageView.builder(
-                      controller: model.ctrl,
-                      itemCount: model.pagesNumber.length,
-                      onPageChanged: (page) {
-                        model.currentPageNumber = page;
-                      },
-                      itemBuilder: (BuildContext context, int index) {
-                        int newIndex = model.pagesNumber[index] + 3;
-                        String dex = "";
-                        if (newIndex.toString().length == 1)
-                          dex = "000$newIndex";
-                        if (newIndex.toString().length == 2)
-                          dex = "00$newIndex";
-                        if (newIndex.toString().length == 3) dex = "0$newIndex";
-                        if (newIndex.toString().length == 4) dex = "$newIndex";
-                        return LayoutBuilder(
-                          builder: (context, constraints) =>
-                              ExtendedImage.asset(
-                            "assets/L/$dex.png",
-                            fit: BoxFit.fill,
-                            width: constraints.maxWidth,
-                            height: constraints.maxHeight,
-                            mode: ExtendedImageMode.gesture,
-                            initGestureConfigHandler: (state) {
-                              return GestureConfig(
-                                minScale: 1,
-                                animationMinScale: 0.9,
-                                maxScale: 2.0,
-                                animationMaxScale: 2.1,
-                                speed: 1.0,
-                                inertialSpeed: 100.0,
-                                initialScale: 1.0,
-                                inPageView: true,
-                                initialAlignment: InitialAlignment.center,
-                              );
-                            },
-                          ),
-                        );
-                      },
-                    ),
+                    itemBuilder: (BuildContext context, int index) {
+                      int newIndex = model.quran.data.quranPages[index] + 3;
+                      String dex = "";
+                      if (newIndex.toString().length == 1) dex = "000$newIndex";
+                      if (newIndex.toString().length == 2) dex = "00$newIndex";
+                      if (newIndex.toString().length == 3) dex = "0$newIndex";
+                      if (newIndex.toString().length == 4) dex = "$newIndex";
+                      return LayoutBuilder(
+                        builder: (context, constraints) => ExtendedImage.asset(
+                          "assets/L/$dex.png",
+                          fit: BoxFit.fill,
+                          width: constraints.maxWidth,
+                          height: constraints.maxHeight,
+                          mode: ExtendedImageMode.gesture,
+                          initGestureConfigHandler: (state) {
+                            return GestureConfig(
+                              minScale: 1,
+                              animationMinScale: 0.9,
+                              maxScale: 2.0,
+                              animationMaxScale: 2.1,
+                              speed: 1.0,
+                              inertialSpeed: 100.0,
+                              initialScale: 1.0,
+                              inPageView: true,
+                              initialAlignment: InitialAlignment.center,
+                            );
+                          },
+                        ),
+                      );
+                    },
                   ),
                 ),
               ],
@@ -112,7 +94,7 @@ class _QuranNewScreenState extends State<QuranNewScreen> {
                         Container(
                           height: MediaQuery.of(context).size.height * 0.2,
                           child: MyAudioPlayer(
-                            lst: model.ayahSounds,
+                            pageNumber: model.currentPageNumber,
                             player: model.player,
                           ),
                         ),
@@ -169,24 +151,9 @@ class QuranBar extends ViewModelWidget<QuranNewVM> {
                   color: AppColors.adanNormal,
                   child: ListView(
                     children: <Widget>[
-                      ...model.pagesNumber.map(
-                        (e) => InkWell(
-                          onTap: () {
-                            model.ctrl.animateToPage(model.indexOfPage(e),
-                                duration: Duration(milliseconds: 200),
-                                curve: Curves.easeInCirc);
-
-                            Get.back();
-                          },
-                          child: SuraWidget(
-                            name: "الصفحة $e",
-                            info: model.selectedSurah.ayahs
-                                .where((g) => g.page == e)
-                                .length
-                                .toString(),
-                          ),
-                        ),
-                      ),
+                      ..._getData(model, model.selectedSurah, isCurrent: true),
+                      ..._getData(model, model.nextSurah, isCurrent: false),
+                      ..._getData(model, model.extraNextSurah),
                     ],
                   ),
                 ),
@@ -204,6 +171,37 @@ class QuranBar extends ViewModelWidget<QuranNewVM> {
             }),
       ],
     );
+  }
+
+  List<Widget> _getData(QuranNewVM model, Surahs sura,
+      {bool isCurrent = true}) {
+    // final text = isCurrent ? "السورة الحالية " : "السورة التالية ";
+    if (sura != null) {
+      return [
+        Text(
+          "${sura.name}",
+          style: AppThemes.miniFahrasTextStyle,
+          textAlign: TextAlign.center,
+        ),
+        ...sura.listOfPages.map(
+          (e) => InkWell(
+            onTap: () {
+              model.ctrl.animateToPage(model.indexOfPage(e),
+                  duration: Duration(milliseconds: 200),
+                  curve: Curves.easeInCirc);
+
+              Get.back();
+            },
+            child: SuraWidget(
+              name: "الصفحة $e",
+              info: sura.ayahs.where((g) => g.page == e).length.toString(),
+            ),
+          ),
+        ),
+      ];
+    }
+
+    return [SizedBox.shrink()];
   }
 
   _getTab(

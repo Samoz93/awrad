@@ -79,7 +79,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: 'أوراد وأذكار',
+      title: 'أذكار الصالحين',
       navigatorKey: _nab,
       theme: ThemeData(
         primaryColor: AppColors.mainColorSelected,

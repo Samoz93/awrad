@@ -25,7 +25,14 @@ class QuranModel {
 class Data {
   List<Surahs> surahs;
   Edition edition;
-
+  List<int> get quranPages => surahs
+      .fold<List<int>>(
+          [],
+          (previousValue, element) =>
+              previousValue..addAll(element.listOfPages))
+      .toSet()
+      .toList();
+  int get pagesLength => quranPages.length;
   Data({this.surahs, this.edition});
 
   Data.fromJson(Map<String, dynamic> json) {

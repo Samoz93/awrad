@@ -1,9 +1,9 @@
 PODS:
-  - advance_pdf_viewer (1.0.5):
-    - Flutter
   - assets_audio_player (0.0.1):
     - Flutter
   - assets_audio_player_web (0.0.1):
+    - Flutter
+  - device_info (0.0.1):
     - Flutter
   - Firebase/Analytics (6.27.0):
     - Firebase/Core
@@ -62,9 +62,6 @@ PODS:
     - Flutter
   - flutter_qiblah (0.0.1):
     - Flutter
-  - FMDB (2.7.5):
-    - FMDB/standard (= 2.7.5)
-  - FMDB/standard (2.7.5)
   - "geolocator (5.3.2+2)":
     - Flutter
   - google_api_availability (2.0.4):
@@ -110,6 +107,8 @@ PODS:
     - nanopb/encode (= 1.30905.0)
   - nanopb/decode (1.30905.0)
   - nanopb/encode (1.30905.0)
+  - native_pdf_renderer (1.0.0):
+    - Flutter
   - path_provider (0.0.1):
     - Flutter
   - path_provider_linux (0.0.1):
@@ -121,9 +120,6 @@ PODS:
   - PromisesObjC (1.2.9)
   - screen (0.0.1):
     - Flutter
-  - sqflite (0.0.1):
-    - Flutter
-    - FMDB (~> 2.7.2)
   - vibration (1.4.0):
     - Flutter
   - video_player (0.0.1):
@@ -138,9 +134,9 @@ PODS:
     - Flutter
 
 DEPENDENCIES:
-  - advance_pdf_viewer (from `.symlinks/plugins/advance_pdf_viewer/ios`)
   - assets_audio_player (from `.symlinks/plugins/assets_audio_player/ios`)
   - assets_audio_player_web (from `.symlinks/plugins/assets_audio_player_web/ios`)
+  - device_info (from `.symlinks/plugins/device_info/ios`)
   - firebase_analytics (from `.symlinks/plugins/firebase_analytics/ios`)
   - firebase_analytics_web (from `.symlinks/plugins/firebase_analytics_web/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
@@ -155,12 +151,12 @@ DEPENDENCIES:
   - location (from `.symlinks/plugins/location/ios`)
   - location_permissions (from `.symlinks/plugins/location_permissions/ios`)
   - location_web (from `.symlinks/plugins/location_web/ios`)
+  - native_pdf_renderer (from `.symlinks/plugins/native_pdf_renderer/ios`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
   - path_provider_linux (from `.symlinks/plugins/path_provider_linux/ios`)
   - path_provider_macos (from `.symlinks/plugins/path_provider_macos/ios`)
   - permission_handler (from `.symlinks/plugins/permission_handler/ios`)
   - screen (from `.symlinks/plugins/screen/ios`)
-  - sqflite (from `.symlinks/plugins/sqflite/ios`)
   - vibration (from `.symlinks/plugins/vibration/ios`)
   - video_player (from `.symlinks/plugins/video_player/ios`)
   - video_player_web (from `.symlinks/plugins/video_player_web/ios`)
@@ -176,7 +172,6 @@ SPEC REPOS:
     - FirebaseCoreDiagnostics
     - FirebaseDatabase
     - FirebaseInstallations
-    - FMDB
     - GoogleAppMeasurement
     - GoogleDataTransport
     - GoogleDataTransportCCTSupport
@@ -186,12 +181,12 @@ SPEC REPOS:
     - PromisesObjC
 
 EXTERNAL SOURCES:
-  advance_pdf_viewer:
-    :path: ".symlinks/plugins/advance_pdf_viewer/ios"
   assets_audio_player:
     :path: ".symlinks/plugins/assets_audio_player/ios"
   assets_audio_player_web:
     :path: ".symlinks/plugins/assets_audio_player_web/ios"
+  device_info:
+    :path: ".symlinks/plugins/device_info/ios"
   firebase_analytics:
     :path: ".symlinks/plugins/firebase_analytics/ios"
   firebase_analytics_web:
@@ -220,6 +215,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/location_permissions/ios"
   location_web:
     :path: ".symlinks/plugins/location_web/ios"
+  native_pdf_renderer:
+    :path: ".symlinks/plugins/native_pdf_renderer/ios"
   path_provider:
     :path: ".symlinks/plugins/path_provider/ios"
   path_provider_linux:
@@ -230,8 +227,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/permission_handler/ios"
   screen:
     :path: ".symlinks/plugins/screen/ios"
-  sqflite:
-    :path: ".symlinks/plugins/sqflite/ios"
   vibration:
     :path: ".symlinks/plugins/vibration/ios"
   video_player:
@@ -246,9 +241,9 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/workmanager/ios"
 
 SPEC CHECKSUMS:
-  advance_pdf_viewer: 5c832f382b4ca84fe735f893b7e91aa830c27d7b
   assets_audio_player: edee322b9cb625571b830b35872ead1a295fd917
   assets_audio_player_web: 19826380c44375761aa0b9053665c1e3fbc3b86b
+  device_info: d7d233b645a32c40dfdc212de5cf646ca482f175
   Firebase: fc4cbf6f1592636431821ef9a3c557e4dfd9f268
   firebase_analytics: 9118044ffb98bee71d84733fc594f5134fe4bc1b
   firebase_analytics_web: 7d539061ea4af07563a0e21044af89cab70efec0
@@ -264,7 +259,6 @@ SPEC CHECKSUMS:
   flutter_compass: cbbd285cea1584c7ac9c4e0c3e1f17cbea55e855
   flutter_local_notifications: 9e4738ce2471c5af910d961a6b7eadcf57c50186
   flutter_qiblah: f69eeb708d127a2634073ab1f27771c979928f50
-  FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   geolocator: f7622e0e7e2a24718285b73916d60c4a54b9f5b6
   google_api_availability: 15fa42a8cd83c0a6738507ffe6e87096f12abcb8
   GoogleAppMeasurement: 2fd5c5a56c069db635c8e7b92d4809a9591d0a69
@@ -276,13 +270,13 @@ SPEC CHECKSUMS:
   location_permissions: 7e0f9aa0f60deb8ff93ddf0e2a164c7e8197bc94
   location_web: b94e7433cfe28c0f7c8923c2ee482824b32e55a7
   nanopb: c43f40fadfe79e8b8db116583945847910cbabc9
+  native_pdf_renderer: fa374da660730abe059e7a178e79895dd202f007
   path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
   path_provider_linux: 4d630dc393e1f20364f3e3b4a2ff41d9674a84e4
   path_provider_macos: f760a3c5b04357c380e2fddb6f9db6f3015897e0
   permission_handler: eac8e15b4a1a3fba55b761d19f3f4e6b005d15b6
   PromisesObjC: b48e0338dbbac2207e611750777895f7a5811b75
   screen: abd91ca7bf3426e1cc3646d27e9b2358d6bf07b0
-  sqflite: 4001a31ff81d210346b500c55b17f4d6c7589dd0
   vibration: 2275f5e3ab5da73de1d948dc96c026799e08ff6d
   video_player: 9cc823b1d9da7e8427ee591e8438bfbcde500e6e
   video_player_web: da8cadb8274ed4f8dbee8d7171b420dedd437ce7
