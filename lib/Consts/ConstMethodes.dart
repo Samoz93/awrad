@@ -10,7 +10,7 @@ import 'package:intl/intl.dart' as intl;
 
 import 'package:awrad/Consts/ThemeCosts.dart';
 
-final bool isDev = true;
+final bool isDev = false;
 getSvgIcon(String name, {double size, Color color}) {
   return SvgPicture.asset(
     "assets/icons/$name.svg",
@@ -161,7 +161,9 @@ showSnackBar(title, message, {isErr = false}) {
       backgroundColor: isErr
           ? AppColors.deleteColor.withOpacity(0.3)
           : AppColors.addColor.withOpacity(0.3),
-      barBlur: 5);
+      barBlur: 5, onTap: (g) {
+    g.dismiss();
+  });
 }
 
 String getPath(int number, String reader) {

@@ -1,3 +1,4 @@
+import 'package:awrad/Consts/ConstMethodes.dart';
 import 'package:awrad/models/BookModel.dart';
 import 'package:awrad/services/BookService.dart';
 import 'package:flutter/cupertino.dart';
@@ -8,11 +9,7 @@ import 'package:stacked/stacked.dart';
 class BookVm extends BaseViewModel {
   final BookModel book;
   final _ser = Get.find<BookService>();
-  BookVm({@required this.book}) {
-    _ctrl = PageController(initialPage: _ser.getPage(book.uid).ceil());
-  }
-  PageController _ctrl;
-  PageController get ctrl => _ctrl;
+  BookVm({@required this.book}) {}
 
   PdfController pdfController;
 
@@ -23,12 +20,23 @@ class BookVm extends BaseViewModel {
     try {
       setBusy(true);
       final pth = await _ser.getBook(book);
+      final lstPage = _ser.getPage(book.uid);
       pdfController = PdfController(
         document: PdfDocument.openFile(pth),
+        initialPage: lstPage,
       );
 
       // _pdf = await PDFDocument.fromFile(File(pth));
       setBusy(false);
+      Future.delayed(
+        Duration(milliseconds: 1000),
+      ).then(
+        (_) => pdfController.jumpToPage(
+          lstPage,
+          // duration: Duration(milliseconds: 200),
+          // curve: Curves.easeInOutBack,
+        ),
+      );
     } catch (e) {
       setError(e);
     } finally {
@@ -36,7 +44,8 @@ class BookVm extends BaseViewModel {
     }
   }
 
-  void savePage(double page) {
-    _ser.savePage(book.uid, page);
+  Future<void> savePage() async {
+    await _ser.savePage(book.uid, pdfController.page);
+    showSnackBar("تم", "تم حفظ الصفحة  ${pdfController.page}");
   }
 }

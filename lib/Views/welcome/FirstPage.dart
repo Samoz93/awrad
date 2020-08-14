@@ -15,7 +15,7 @@ class FirstPage extends StatelessWidget {
       direction: Axis.vertical,
       children: [
         Expanded(
-          flex: 15,
+          flex: 13,
           child: Stack(
             children: <Widget>[
               ExtendedImage.network(
@@ -48,7 +48,7 @@ class FirstPage extends StatelessWidget {
         ),
         Expanded(child: SizedBox()),
         Expanded(
-          flex: 3,
+          flex: 5,
           child: InkWell(
             onTap: () async {
               final Email email = Email(
@@ -68,23 +68,23 @@ class FirstPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
                       "تم عمل هذا التطبيق تحت إشراف د. عمار العصير",
                       textAlign: TextAlign.center,
-                      style: TextStyle(color: Colors.black, fontFamily: "gg"),
+                      style: TextStyle(color: Colors.black),
                     ),
                     Text(
-                      "للاقتراحات والدعم الفني التواصل على الاميل الآتي",
+                      "للاقتراحات والدعم الفني التواصل على الايميل الآتي",
                       textAlign: TextAlign.center,
-                      style: TextStyle(color: Colors.black, fontFamily: "gg"),
+                      style: TextStyle(color: Colors.black),
                     ),
                     Text(
                       mailString,
                       textAlign: TextAlign.center,
-                      style: TextStyle(color: Colors.black, fontFamily: "gg"),
+                      style: TextStyle(color: Colors.black),
                     ),
                   ],
                 ),

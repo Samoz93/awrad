@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:awrad/Consts/DATABASECONST.dart';
 import 'package:awrad/models/AwradModel.dart';
 import 'package:awrad/models/AwradTypesModel.dart';
@@ -20,19 +22,23 @@ class AwradService {
   }
 
   Future<List<AwradTypesModel>> get awradType async {
-    // _types.clear();
-    if (_types.isNotEmpty) return _types;
-    _types.clear();
-    final d = (await _db.reference().child(AWRAD_TYPES).once()).value;
-    final m = Map<String, String>.from(d);
+    try {
+      if (_types.isNotEmpty) return _types;
+      _types.clear();
+      final d = (await _db.reference().child(AWRAD_TYPES).once()).value;
+      final m = Map<String, String>.from(d);
 
-    final x = m.keys.map(
-      (e) {
-        return AwradTypesModel(type: e, typeName: m[e]);
-      },
-    ).toList();
-    _types.addAll(x);
-    return _types;
+      final x = m.keys.map(
+        (e) {
+          return AwradTypesModel(type: e, typeName: m[e]);
+        },
+      ).toList();
+      _types.addAll(x);
+      return _types;
+    } catch (e) {
+      log(e.toString());
+    }
+    // _types.clear();
   }
 
   Future<WrdModel> getWrd(ReminderModel rmd) async {

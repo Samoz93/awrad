@@ -46,7 +46,7 @@ class BookScreen extends StatelessWidget {
                           alignment: Alignment.bottomCenter,
                           child: FloatingActionButton(
                             onPressed: () {
-                              model.savePage(model.ctrl.page);
+                              model.savePage();
                             },
                             child: Text("احفظ"),
                           ),

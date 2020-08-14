@@ -18,7 +18,7 @@ class WelcomeScreed extends StatelessWidget {
   Widget build(BuildContext context) {
     return ViewModelBuilder<SlideViewModel>.reactive(
       builder: (context, model, ch) {
-        if (model.hasError) return Text(model.modelError);
+        if (model.hasError) return Text("model.modelError.toString()");
         return model.isBusy
             ? Center(
                 child: LoadingWidget(),
@@ -72,7 +72,7 @@ class SlideView extends StatelessWidget {
         direction: Axis.vertical,
         children: <Widget>[
           Expanded(
-            flex: 15,
+            flex: 13,
             child: Stack(
               children: <Widget>[
                 ExtendedImage.network(
@@ -106,10 +106,13 @@ class SlideView extends StatelessWidget {
           ),
           Expanded(flex: 1, child: SizedBox()),
           Expanded(
-            flex: 3,
-            child: Text(
-              model.desc,
-              textAlign: TextAlign.center,
+            flex: 5,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                model.desc,
+                textAlign: TextAlign.center,
+              ),
             ),
           )
         ],

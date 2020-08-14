@@ -18,6 +18,7 @@ class BookService {
   bool hasActiveDownload = false;
   Future<List<BookModel>> get bookList async {
     final data = (await _db.reference().child(BOOKS).once()).value;
+    if (data == null) return [];
     final models =
         getMap(data).values.map((e) => BookModel.fromJson(getMap(e))).toList();
 
@@ -47,11 +48,11 @@ class BookService {
     return "${pth.path}/$uid.pdf";
   }
 
-  Future<void> savePage(String uid, double page) async {
+  Future<void> savePage(String uid, int page) async {
     await mainBox.put(uid, page);
   }
 
-  double getPage(String uid) {
-    return mainBox.get(uid, defaultValue: 0.0);
+  int getPage(String uid) {
+    return mainBox.get(uid, defaultValue: 1);
   }
 }

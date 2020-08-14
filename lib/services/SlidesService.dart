@@ -9,6 +9,7 @@ class SlidesService {
   Future<List<SlideModel>> get allSlides async {
     if (_slides.isNotEmpty) return _slides;
     final data = (await _db.reference().child(SLIDES).once()).value;
+    if (data == null) return _slides;
     final map = getMap(data);
     final allSlides = map.values.map((e) => SlideModel.fromJson(getMap(e)));
     _slides.addAll(allSlides);
