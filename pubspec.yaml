@@ -40,7 +40,7 @@ dependencies:
   retrofit: any
   logger: any  #for logging purpose
   dio: ^3.0.9
-  flutter_svg: 
+  flutter_svg: ^0.18.0
   expansion_tile_card: ^1.0.3
   flutter_local_notifications: ^1.4.4+2
   flutter_animation_progress_bar: ^1.0.0
@@ -54,6 +54,7 @@ dependencies:
   rxdart: ^0.24.1
   workmanager: ^0.2.3
   vibration: ^1.4.0
+  flutter_email_sender: ^3.0.1
 
 dev_dependencies:
   flutter_test:
@@ -104,15 +105,238 @@ flutter:
       fonts:
         - asset: assets/gg.otf
           weight: 700
-    - family: mad
-      fonts:
-        - asset: assets/mad.ttf
+    - family: lotus
+      fonts: 
+        - asset: assets/fonts/lotus.ttf
           weight: 700
-    - family: uth
-      fonts:
-        - asset: assets/uth.ttf
+    - family: QCF_BSML
+      fonts: 
+        - asset: assets/fonts/QCF_BSML.ttf
           weight: 700
-
+    - family: QCF2BSML
+      fonts: 
+        - asset: assets/fonts/QCF2BSML.ttf
+          weight: 700
+    - family: QCF2176
+      fonts: 
+        - asset: assets/fonts/QCF2176.ttf
+          weight: 700
+    - family: QCF2066
+      fonts: 
+        - asset: assets/fonts/QCF2066.ttf
+          weight: 700
+    - family: QCF2285
+      fonts: 
+        - asset: assets/fonts/QCF2285.ttf
+          weight: 700
+    - family: QCF2484
+      fonts: 
+        - asset: assets/fonts/QCF2484.ttf
+          weight: 700
+    - family: QCF2138
+      fonts: 
+        - asset: assets/fonts/QCF2138.ttf
+          weight: 700
+    - family: QCF2458
+      fonts: 
+        - asset: assets/fonts/QCF2458.ttf
+          weight: 700
+    - family: QCF2256
+      fonts: 
+        - asset: assets/fonts/QCF2256.ttf
+          weight: 700
+    - family: QCF2002
+      fonts: 
+        - asset: assets/fonts/QCF2002.ttf
+          weight: 700
+    - family: QCF2558
+      fonts: 
+        - asset: assets/fonts/QCF2558.ttf
+          weight: 700
+    - family: QCF2472
+      fonts: 
+        - asset: assets/fonts/QCF2472.ttf
+          weight: 700
+    - family: QCF2365
+      fonts: 
+        - asset: assets/fonts/QCF2365.ttf
+          weight: 700
+    - family: QCF2452
+      fonts: 
+        - asset: assets/fonts/QCF2452.ttf
+          weight: 700
+    - family: QCF2596
+      fonts: 
+        - asset: assets/fonts/QCF2596.ttf
+          weight: 700
+    - family: QCF2290
+      fonts: 
+        - asset: assets/fonts/QCF2290.ttf
+          weight: 700
+    - family: QCF2564
+      fonts: 
+        - asset: assets/fonts/QCF2564.ttf
+          weight: 700
+    - family: QCF2150
+      fonts: 
+        - asset: assets/fonts/QCF2150.ttf
+          weight: 700
+    - family: QCF2053
+      fonts: 
+        - asset: assets/fonts/QCF2053.ttf
+          weight: 700
+    - family: QCF2294
+      fonts: 
+        - asset: assets/fonts/QCF2294.ttf
+          weight: 700
+    - family: QCF2485
+      fonts: 
+        - asset: assets/fonts/QCF2485.ttf
+          weight: 700
+    - family: QCF2532
+      fonts: 
+        - asset: assets/fonts/QCF2532.ttf
+          weight: 700
+    - family: QCF2483
+      fonts: 
+        - asset: assets/fonts/QCF2483.ttf
+          weight: 700
+    - family: QCF_P119
+      fonts: 
+        - asset: assets/fonts/QCF_P119.ttf
+          weight: 700
+    - family: QCF2119
+      fonts: 
+        - asset: assets/fonts/QCF2119.ttf
+          weight: 700
+    - family: QCF2001
+      fonts: 
+        - asset: assets/fonts/QCF2001.ttf
+          weight: 700
+    - family: QCF2024
+      fonts: 
+        - asset: assets/fonts/QCF2024.ttf
+          weight: 700
+    - family: QCF2511
+      fonts: 
+        - asset: assets/fonts/QCF2511.ttf
+          weight: 700
+    - family: QCF2602
+      fonts: 
+        - asset: assets/fonts/QCF2602.ttf
+          weight: 700
+    - family: QCF2165
+      fonts: 
+        - asset: assets/fonts/QCF2165.ttf
+          weight: 700
+    - family: QCF2018
+      fonts: 
+        - asset: assets/fonts/QCF2018.ttf
+          weight: 700
+    - family: QCF2090
+      fonts: 
+        - asset: assets/fonts/QCF2090.ttf
+          weight: 700
+    - family: QCF2582
+      fonts: 
+        - asset: assets/fonts/QCF2582.ttf
+          weight: 700
+    - family: QCF2117
+      fonts: 
+        - asset: assets/fonts/QCF2117.ttf
+          weight: 700
+    - family: QCF2603
+      fonts: 
+        - asset: assets/fonts/QCF2603.ttf
+          weight: 700
+    - family: QCF2474
+      fonts: 
+        - asset: assets/fonts/QCF2474.ttf
+          weight: 700
+    - family: QCF2312
+      fonts: 
+        - asset: assets/fonts/QCF2312.ttf
+          weight: 700
+    - family: QCF2377
+      fonts: 
+        - asset: assets/fonts/QCF2377.ttf
+          weight: 700
+    - family: QCF2440
+      fonts: 
+        - asset: assets/fonts/QCF2440.ttf
+          weight: 700
+    - family: QCF2305
+      fonts: 
+        - asset: assets/fonts/QCF2305.ttf
+          weight: 700
+    - family: QCF2208
+      fonts: 
+        - asset: assets/fonts/QCF2208.ttf
+          weight: 700
+    - family: QCF2367
+      fonts: 
+        - asset: assets/fonts/QCF2367.ttf
+          weight: 700
+    - family: QCF2187
+      fonts: 
+        - asset: assets/fonts/QCF2187.ttf
+          weight: 700
+    - family: QCF2467
+      fonts: 
+        - asset: assets/fonts/QCF2467.ttf
+          weight: 700
+    - family: QCF2590
+      fonts: 
+        - asset: assets/fonts/QCF2590.ttf
+          weight: 700
+    - family: QCF2243
+      fonts: 
+        - asset: assets/fonts/QCF2243.ttf
+          weight: 700
+    - family: QCF2072
+      fonts: 
+        - asset: assets/fonts/QCF2072.ttf
+          weight: 700
+    - family: QCF2453
+      fonts: 
+        - asset: assets/fonts/QCF2453.ttf
+          weight: 700
+    - family: QCF2249
+      fonts: 
+        - asset: assets/fonts/QCF2249.ttf
+          weight: 700
+    - family: QCF2151
+      fonts: 
+        - asset: assets/fonts/QCF2151.ttf
+          weight: 700
+    - family: QCF2518
+      fonts: 
+        - asset: assets/fonts/QCF2518.ttf
+          weight: 700
+    - family: QCF2316
+      fonts: 
+        - asset: assets/fonts/QCF2316.ttf
+          weight: 700
+    - family: QCF2042
+      fonts: 
+        - asset: assets/fonts/QCF2042.ttf
+          weight: 700
+    - family: QCF2207
+      fonts: 
+        - asset: assets/fonts/QCF2207.ttf
+          weight: 700
+    - family: QCF2451
+      fonts: 
+        - asset: assets/fonts/QCF2451.ttf
+          weight: 700
+    - family: QCF2329
+      fonts: 
+        - asset: assets/fonts/QCF2329.ttf
+          weight: 700
+    - family: QCF2052
+      fonts: 
+        - asset: assets/fonts/QCF2052.ttf
+          weight: 700
   #   - family: Trajan Pro
   #     fonts:
   #       - asset: fonts/TrajanPro.ttf

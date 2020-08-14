@@ -1,6 +1,7 @@
 import 'package:awrad/Consts/DATABASECONST.dart';
 import 'package:awrad/Consts/ThemeCosts.dart';
 import 'package:awrad/Views/MainPage.dart';
+import 'package:awrad/Views/welcome/FirstPage.dart';
 
 import 'package:awrad/models/ReminderModel.dart';
 import 'package:awrad/services/NotificationService.dart';

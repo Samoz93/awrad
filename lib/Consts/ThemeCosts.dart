@@ -17,8 +17,8 @@ class AppThemes {
   static const deleteInfoTextStyle =
       TextStyle(fontSize: 20, color: Colors.white);
 
-  static const linearTitle = LinearGradient(
-      colors: [Colors.transparent, Colors.white],
+  static final linearTitle = LinearGradient(
+      colors: [Colors.white.withOpacity(0.05), Colors.white],
       begin: Alignment.topCenter,
       end: Alignment.bottomCenter);
   static final linearPointer = LinearGradient(

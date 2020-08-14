@@ -1,4 +1,5 @@
 import 'package:awrad/Consts/ThemeCosts.dart';
+import 'package:awrad/Views/welcome/FirstPage.dart';
 
 import 'package:awrad/Views/welcome/SlidesViewMode.dart';
 import 'package:awrad/models/SlideModel.dart';
@@ -10,8 +11,8 @@ import 'package:stacked/stacked.dart';
 
 class WelcomeScreed extends StatelessWidget {
   WelcomeScreed({Key key}) : super(key: key);
-  final noneActiveSize = 10.0;
-  final activeSize = 20.0;
+  // final noneActiveSize = 10.0;
+  // final activeSize = 20.0;
   final _ctrl = PageController(initialPage: 0);
   @override
   Widget build(BuildContext context) {
@@ -26,16 +27,14 @@ class WelcomeScreed extends StatelessWidget {
                 direction: Axis.vertical,
                 children: <Widget>[
                   Flexible(
-                    flex: 10,
+                    flex: 15,
                     child: PageView.builder(
                       controller: _ctrl,
-                      itemCount: model.data.length,
+                      itemCount: model.data.length + 1,
                       itemBuilder: (BuildContext context, int index) {
-                        return Padding(
-                          padding: const EdgeInsets.all(8),
-                          child: SlideView(
-                            model: model.data[index],
-                          ),
+                        if (index == 0) return FirstPage();
+                        return SlideView(
+                          model: model.data[index - 1],
                         );
                       },
                     ),
@@ -45,7 +44,7 @@ class WelcomeScreed extends StatelessWidget {
                     child: Center(
                       child: SmoothPageIndicator(
                         controller: _ctrl,
-                        count: model.data.length,
+                        count: model.data.length + 1,
                         effect: WormEffect(
                             dotColor: AppColors.mainColor,
                             activeDotColor: AppColors.mainColorSelected),
