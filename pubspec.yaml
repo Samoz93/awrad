@@ -55,6 +55,7 @@ dependencies:
   workmanager: ^0.2.3
   vibration: ^1.4.0
   flutter_email_sender: ^3.0.1
+  provider:
 
 dev_dependencies:
   flutter_test:
@@ -88,6 +89,7 @@ flutter:
     - assets/compass/
     - assets/json/
     - assets/L/
+    - assets/mainPage/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
@@ -109,6 +111,10 @@ flutter:
       fonts: 
         - asset: assets/fonts/lotus.ttf
           weight: 700
+    - family: ara
+      fonts: 
+        - asset: assets/fonts/aga.ttf
+          weight: 400
     - family: QCF_BSML
       fonts: 
         - asset: assets/fonts/QCF_BSML.ttf

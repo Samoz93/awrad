@@ -37,6 +37,7 @@ class AwradService {
       return _types;
     } catch (e) {
       log(e.toString());
+      return [];
     }
     // _types.clear();
   }

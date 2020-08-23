@@ -214,7 +214,7 @@ class QuranFahras extends StatelessWidget {
                                             children: <Widget>[
                                               IconButton(
                                                 icon: Icon(
-                                                  Icons.alarm_add,
+                                                  Icons.check_circle,
                                                   color: AppColors.addColor,
                                                 ),
                                                 onPressed: () {
@@ -222,7 +222,16 @@ class QuranFahras extends StatelessWidget {
                                                 },
                                               ),
                                               IconButton(
-                                                icon: Icon(Icons.alarm_off,
+                                                icon: Icon(
+                                                  Icons.cancel,
+                                                  color: AppColors.deleteColor,
+                                                ),
+                                                onPressed: () {
+                                                  model.toggelAlarmOption();
+                                                },
+                                              ),
+                                              IconButton(
+                                                icon: Icon(Icons.delete,
                                                     color: !model.hasReminder
                                                         ? Colors.grey
                                                         : AppColors

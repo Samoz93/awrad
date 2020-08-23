@@ -4,7 +4,7 @@ import 'package:awrad/Consts/ConstMethodes.dart';
 import 'package:intl/intl.dart';
 
 class AdanModel {
-  int code;
+  dynamic code;
   String status;
   List<AdanData> data;
 
@@ -277,9 +277,7 @@ class Gregorian {
 
 class NormalWeekday {
   String en;
-
   NormalWeekday({this.en});
-
   NormalWeekday.fromJson(Map<String, dynamic> json) {
     en = json['en'];
   }
@@ -292,7 +290,7 @@ class NormalWeekday {
 }
 
 class NormalMonth {
-  int number;
+  dynamic number;
   String en;
 
   NormalMonth({this.number, this.en});
@@ -409,7 +407,7 @@ class HijriWeekday {
 }
 
 class HijriMonth {
-  int number;
+  dynamic number;
   String en;
   String ar;
 
@@ -431,8 +429,8 @@ class HijriMonth {
 }
 
 class Meta {
-  double latitude;
-  double longitude;
+  dynamic latitude;
+  dynamic longitude;
   String timezone;
   Method method;
   String latitudeAdjustmentMethod;
@@ -482,7 +480,7 @@ class Meta {
 }
 
 class Method {
-  int id;
+  dynamic id;
   String name;
   Params params;
 
@@ -507,8 +505,8 @@ class Method {
 }
 
 class Params {
-  int fajr;
-  int isha;
+  dynamic fajr;
+  dynamic isha;
 
   Params({this.fajr, this.isha});
 
@@ -526,15 +524,15 @@ class Params {
 }
 
 class Offset {
-  int imsak;
-  int fajr;
-  int sunrise;
-  int dhuhr;
-  int asr;
-  int maghrib;
-  int sunset;
-  int isha;
-  int midnight;
+  dynamic imsak;
+  dynamic fajr;
+  dynamic sunrise;
+  dynamic dhuhr;
+  dynamic asr;
+  dynamic maghrib;
+  dynamic sunset;
+  dynamic isha;
+  dynamic midnight;
 
   Offset(
       {this.imsak,

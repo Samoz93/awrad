@@ -9,7 +9,7 @@ import 'package:stacked/stacked.dart';
 class BookVm extends BaseViewModel {
   final BookModel book;
   final _ser = Get.find<BookService>();
-  BookVm({@required this.book}) {}
+  BookVm({@required this.book});
 
   PdfController pdfController;
 

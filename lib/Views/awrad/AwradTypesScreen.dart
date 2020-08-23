@@ -23,39 +23,39 @@ class AwradTypesScreen extends StatelessWidget {
               shrinkWrap: true,
               itemCount: snapshot.data.length + 1,
               itemBuilder: (BuildContext context, int index) {
-                if (index == 0) {
+                if (index >= snapshot.data.length)
                   return Column(
                     children: <Widget>[
+                      Divider(
+                        thickness: 2,
+                      ),
                       AwradBtn(
                         txt: "مكتبة التصوف",
-                        // icon: Image.asset(
-                        //   "assets/icons/book.png",
-                        //   width: 30,
-                        //   color: Colors.white,
-                        // ),
                         onPressed: () {
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                                builder: (context) => MyLibrary()),
+                              builder: (context) => MyLibrary(),
+                            ),
                           );
                         },
                       ),
                       Divider(
                         thickness: 2,
-                      )
+                      ),
                     ],
                   );
-                }
                 return Column(
                   children: <Widget>[
                     AwradBtn(
-                      txt: snapshot.data[index - 1].typeName,
+                      txt: snapshot.data[index].typeName,
                       onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => AwradListScreen(
-                            type: snapshot.data[index - 1],
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => AwradListScreen(
+                              type: snapshot.data[index],
+                            ),
                           ),
-                        ));
+                        );
                       },
                     ),
                   ],
