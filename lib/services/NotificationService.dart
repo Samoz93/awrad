@@ -94,7 +94,7 @@ class NotificationService {
     final azanDate = adanTimes.timings.getTimingDateTime(azanType);
     var timeNotification = azanDate.toNotificationTimeWithDelay();
     var bigTextStyleInformation;
-    if (msgHtml.isNotEmpty)
+    if (msgHtml != null && msgHtml.isNotEmpty)
       bigTextStyleInformation = BigTextStyleInformation(
         msgHtml,
         htmlFormatBigText: true,
@@ -103,7 +103,7 @@ class NotificationService {
       );
 
     var androidPlatformChannelSpecifics;
-    if (msgHtml.isNotEmpty)
+    if (msgHtml != null && msgHtml.isNotEmpty)
       androidPlatformChannelSpecifics = AndroidNotificationDetails(
         'wrdChannal',
         'قناة الأوراد',

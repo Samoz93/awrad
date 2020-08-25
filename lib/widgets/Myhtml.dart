@@ -17,13 +17,14 @@ class MyHtml extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Html(
-        data: html,
+        data: newHtml,
         onLinkTap: (url) {},
         style: {
-          "*": Style(fontFamily: "lotus"),
+          "*": Style(fontFamily: "lotus", fontSize: FontSize(20)),
           '[style*="QCF_BSML"]': Style(fontFamily: "QCF_BSML"),
           '[style*="QCF2BSML"]': Style(fontFamily: "QCF2BSML"),
           '[style*="QCF2176"]': Style(fontFamily: "QCF2176"),
+          '[style*="AGA"]': Style(fontFamily: "ara", color: Colors.red),
           '[style*="QCF2066"]': Style(fontFamily: "QCF2066"),
           '[style*="QCF2285"]': Style(fontFamily: "QCF2285"),
           '[style*="QCF2484"]': Style(fontFamily: "QCF2484"),
