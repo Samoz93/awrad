@@ -10,7 +10,7 @@ import 'package:intl/intl.dart' as intl;
 
 import 'package:awrad/Consts/ThemeCosts.dart';
 
-final bool isDev = true;
+final bool isDev = false;
 getSvgIcon(String name, {double size, Color color}) {
   return SvgPicture.asset(
     "assets/icons/$name.svg",
