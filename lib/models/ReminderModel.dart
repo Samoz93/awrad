@@ -27,18 +27,21 @@ class ReminderModel {
   String link;
   @HiveField(9)
   bool hasSound;
-  ReminderModel({
-    this.id,
-    this.isAwrad,
-    this.days,
-    this.times,
-    this.type,
-    this.wrdName,
-    this.wrdText,
-    this.notifId,
-    this.link,
-    this.hasSound,
-  });
+  @HiveField(10)
+  List<String> daysNew;
+
+  ReminderModel(
+      {this.id,
+      this.isAwrad,
+      this.days,
+      this.times,
+      this.type,
+      this.wrdName,
+      this.wrdText,
+      this.notifId,
+      this.link,
+      this.hasSound,
+      this.daysNew});
 
   bool get hasValidData => days.isNotEmpty && times.isNotEmpty;
 
