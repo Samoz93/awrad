@@ -3,23 +3,23 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>247776385623-t6m3m0kdeh8vb8cvb0d6v19olg8eusmj.apps.googleusercontent.com</string>
+	<string>90131554824-cod22gqfuqp18rrttglkhnaultkrofcp.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.247776385623-t6m3m0kdeh8vb8cvb0d6v19olg8eusmj</string>
+	<string>com.googleusercontent.apps.90131554824-cod22gqfuqp18rrttglkhnaultkrofcp</string>
 	<key>ANDROID_CLIENT_ID</key>
-	<string>247776385623-du3ieeclv1tnfecnq96cvcm315ojgfff.apps.googleusercontent.com</string>
+	<string>90131554824-7ejq0qmdtr2rmhge0u44dmj2ms572la9.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
-	<string>AIzaSyCK64t_yHoD2dHR7IbUx2ww5dFEX4VOfDM</string>
+	<string>AIzaSyDTbUxbCITIO1rGULRrS_SERwqws8U_YqQ</string>
 	<key>GCM_SENDER_ID</key>
-	<string>247776385623</string>
+	<string>90131554824</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.samozstudio.awrad</string>
 	<key>PROJECT_ID</key>
-	<string>azankhaled-18847</string>
+	<string>awrad-ed86c</string>
 	<key>STORAGE_BUCKET</key>
-	<string>azankhaled-18847.appspot.com</string>
+	<string>awrad-ed86c.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -31,8 +31,8 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:247776385623:ios:935f34b822f5c29ceb6112</string>
+	<string>1:90131554824:ios:3042ec971f5bcbb376e7bd</string>
 	<key>DATABASE_URL</key>
-	<string>https://azankhaled-18847.firebaseio.com</string>
+	<string>https://awrad-ed86c.firebaseio.com</string>
 </dict>
 </plist>
