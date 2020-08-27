@@ -26,6 +26,7 @@ class ReminderService {
       isAwrad: isAwrad,
       days: [],
       times: [],
+      daysNew: daysOfWeek2.map((e) => '').toList(),
       hasSound: wrd.hasSound,
       link: wrd.link,
     );

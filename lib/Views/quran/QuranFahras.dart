@@ -6,6 +6,7 @@ import 'package:awrad/models/AwradModel.dart';
 import 'package:awrad/widgets/AlarmOption/ExpansionVM.dart';
 import 'package:awrad/widgets/LoadingWidget.dart';
 import 'package:awrad/widgets/MyErrorWidget.dart';
+import 'package:awrad/widgets/Schedular2/Schedular2.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -169,81 +170,142 @@ class QuranFahras extends StatelessWidget {
                               ),
                               AnimatedContainer(
                                 duration: Duration(milliseconds: 200),
-                                height: model.showAlaramOption ? 150 : 0,
+                                height: model.showAlaramOption ? 180 : 0,
                                 child: SingleChildScrollView(
                                   scrollDirection: Axis.horizontal,
                                   child: SingleChildScrollView(
                                     scrollDirection: Axis.vertical,
-                                    child: Column(
-                                      children: <Widget>[
-                                        ToggleButtons(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                          children: <Widget>[
-                                            ...daysOfWeek2.map(
-                                              (e) => Text(e.name),
-                                            ),
-                                          ],
-                                          isSelected: model.selectionBool,
-                                          onPressed: (index) {
-                                            model.addDay(index);
-                                          },
-                                          color: Colors.red,
-                                        ),
-                                        ToggleButtons(
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                          children: <Widget>[
-                                            ...timesOfDay.map(
-                                              (e) => Text(e.toString()),
-                                            ),
-                                          ],
-                                          isSelected: model.selectionBoolTimes,
-                                          onPressed: (index) {
-                                            model.addTime(index);
-                                          },
-                                          color: Colors.red,
-                                        ),
-                                        SizedBox(height: 5),
-                                        Container(
-                                          width:
-                                              MediaQuery.of(context).size.width,
-                                          child: Row(
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width,
+                                      padding: EdgeInsets.all(20),
+                                      child: Column(
+                                        children: <Widget>[
+                                          Flex(
+                                            direction: Axis.horizontal,
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceEvenly,
-                                            children: <Widget>[
-                                              IconButton(
-                                                icon: Icon(
-                                                  Icons.check_circle,
-                                                  color: AppColors.addColor,
+                                            children: [
+                                              ...daysOfWeek2.map(
+                                                (e) => Flexible(
+                                                  flex: 1,
+                                                  fit: FlexFit.tight,
+                                                  child: InkWell(
+                                                    onTap: () {
+                                                      model.selectedDay =
+                                                          e.dateWeek;
+                                                    },
+                                                    child: CheckButton(
+                                                      isSelected:
+                                                          model.selectedDay ==
+                                                              e.dateWeek,
+                                                      text: e.name,
+                                                      perc: model.getPercentage(
+                                                          e.dateWeek),
+                                                    ),
+                                                  ),
                                                 ),
-                                                onPressed: () {
-                                                  model.saveDate();
-                                                },
-                                              ),
-                                              IconButton(
-                                                icon: Icon(
-                                                  Icons.cancel,
-                                                  color: AppColors.deleteColor,
-                                                ),
-                                                onPressed: () {
-                                                  model.toggelAlarmOption();
-                                                },
-                                              ),
-                                              IconButton(
-                                                icon: Icon(Icons.delete,
-                                                    color: !model.hasReminder
-                                                        ? Colors.grey
-                                                        : AppColors
-                                                            .deleteColor),
-                                                onPressed: !model.hasReminder
-                                                    ? null
-                                                    : model.deleteThisReminder,
                                               ),
                                             ],
                                           ),
-                                        )
-                                      ],
+                                          Flex(
+                                            direction: Axis.horizontal,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              ...azanTimes.map(
+                                                (e) => Flexible(
+                                                  flex: 1,
+                                                  fit: FlexFit.tight,
+                                                  child: InkWell(
+                                                    onTap: () {
+                                                      model.addTimes(e.type);
+                                                    },
+                                                    child: CheckButton(
+                                                      isSelected:
+                                                          model.isTimeSelected(
+                                                              e.type),
+                                                      text: e.name,
+                                                      hasPerc: false,
+                                                      perc: 0,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+
+                                          // ToggleButtons(
+                                          //   borderRadius:
+                                          //       BorderRadius.circular(8),
+                                          //   children: <Widget>[
+                                          //     ...daysOfWeek2.map(
+                                          //       (e) => Text(e.name),
+                                          //     ),
+                                          //   ],
+                                          //   isSelected: model.selectionBool,
+                                          //   onPressed: (index) {
+                                          //     model.addDay(index);
+                                          //   },
+                                          //   color: Colors.red,
+                                          // ),
+                                          // ToggleButtons(
+                                          //   borderRadius:
+                                          //       BorderRadius.circular(8),
+                                          //   children: <Widget>[
+                                          //     ...timesOfDay.map(
+                                          //       (e) => Text(e.toString()),
+                                          //     ),
+                                          //   ],
+                                          //   isSelected: model.selectionBoolTimes,
+                                          //   onPressed: (index) {
+                                          //     model.addTime(index);
+                                          //   },
+                                          //   color: Colors.red,
+                                          // ),
+                                          SizedBox(height: 5),
+                                          Container(
+                                            width: MediaQuery.of(context)
+                                                .size
+                                                .width,
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceEvenly,
+                                              children: <Widget>[
+                                                IconButton(
+                                                  icon: Icon(
+                                                    Icons.check_circle,
+                                                    color: AppColors.addColor,
+                                                  ),
+                                                  onPressed: () {
+                                                    model.saveDate();
+                                                  },
+                                                ),
+                                                IconButton(
+                                                  icon: Icon(
+                                                    Icons.cancel,
+                                                    color:
+                                                        AppColors.deleteColor,
+                                                  ),
+                                                  onPressed: () {
+                                                    model.toggelAlarmOption();
+                                                  },
+                                                ),
+                                                IconButton(
+                                                  icon: Icon(Icons.delete,
+                                                      color: !model.hasReminder
+                                                          ? Colors.grey
+                                                          : AppColors
+                                                              .deleteColor),
+                                                  onPressed: !model.hasReminder
+                                                      ? null
+                                                      : model
+                                                          .deleteThisReminder,
+                                                ),
+                                              ],
+                                            ),
+                                          )
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),

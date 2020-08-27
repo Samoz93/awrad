@@ -128,12 +128,12 @@ class _ReminderWidgetState extends State<ReminderWidget> {
                                   "سيتم التذكير في : ${model.daysString}",
                                 ),
                               ),
-                              FittedBox(
-                                fit: BoxFit.scaleDown,
-                                child: Text(
-                                  "سيتم تذكيرك بعد : ${model.timeString}",
-                                ),
-                              ),
+                              // FittedBox(
+                              //   fit: BoxFit.scaleDown,
+                              //   child: Text(
+                              //     "سيتم تذكيرك بعد : ${model.timeString}",
+                              //   ),
+                              // ),
                             ],
                           ),
                         ),

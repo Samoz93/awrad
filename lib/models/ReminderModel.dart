@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:awrad/Consts/ConstMethodes.dart';
+import 'package:awrad/services/DayReminderService.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 
@@ -27,20 +29,52 @@ class ReminderModel {
   String link;
   @HiveField(9)
   bool hasSound;
-  ReminderModel({
-    this.id,
-    this.isAwrad,
-    this.days,
-    this.times,
-    this.type,
-    this.wrdName,
-    this.wrdText,
-    this.notifId,
-    this.link,
-    this.hasSound,
-  });
+  @HiveField(10)
+  List<String> daysNew;
 
-  bool get hasValidData => days.isNotEmpty && times.isNotEmpty;
+  List<MyWeekDays> get nDay {
+    final lst = DayReminderService.convertToListOfList(daysNew);
+    final List<MyWeekDays> dayList = [];
+
+    for (var i = 0; i < lst.length; i++) {
+      if (lst[i].isNotEmpty) dayList.add(daysOfWeek2[i]);
+    }
+    return dayList;
+  }
+
+  isInToday(int dateWeek) {
+    return nDay.where((element) => element.dateWeek == dateWeek).isNotEmpty;
+  }
+
+  List<AzanTimeClass> getTimeForDay(int index) {
+    final List<String> lst =
+        DayReminderService.convertToListOfList(daysNew)[index];
+    return lst
+        .map((e) =>
+            azanTimes.firstWhere((element) => e.trim().contains(element.type)))
+        .toList();
+  }
+
+  ReminderModel(
+      {this.id,
+      this.isAwrad,
+      this.days,
+      this.times,
+      this.type,
+      this.wrdName,
+      this.wrdText,
+      this.notifId,
+      this.link,
+      this.hasSound,
+      this.daysNew});
+
+  bool get hasValidData {
+    bool isValid = false;
+    daysNew.forEach((element) {
+      if (element.isNotEmpty) isValid = true;
+    });
+    return isValid;
+  }
 
   ReminderModel copyWith({
     String id,

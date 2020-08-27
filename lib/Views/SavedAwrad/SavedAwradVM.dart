@@ -37,7 +37,7 @@ class SavedAwradVM extends BaseViewModel {
 
   List<ReminderModel> get _todaysReminder {
     return _remindres
-        .where((element) => element.days.contains(_todayNumber))
+        .where((element) => element.isInToday(_todayNumber))
         .toList();
   }
 

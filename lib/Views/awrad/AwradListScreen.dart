@@ -1,9 +1,6 @@
-import 'dart:developer';
-
 import 'package:awrad/Views/awrad/AwradVM.dart';
 import 'package:awrad/widgets/AlarmOption/AlarmOptions.dart';
 import 'package:awrad/widgets/AlarmOption/ExpansionVM.dart';
-import 'package:awrad/base/locator.dart';
 import 'package:awrad/models/AwradTypesModel.dart';
 import 'package:awrad/widgets/InstaAudioPlay/InstaAudioPlay.dart';
 import 'package:awrad/widgets/LoadingWidget.dart';
@@ -42,13 +39,13 @@ class AwradListScreen extends StatelessWidget {
                       onExpansionChanged: (v) async {
                         // final _ser = Get.find<NotificationService>();
                         // await _ser.testRemoveAll();
-                        final pending = await flutterLocalNotificationsPlugin
-                            .pendingNotificationRequests();
-                        log(pending.length.toString());
-                        log(pending
-                            .map((e) =>
-                                "${e.body} ${e.id} ${e.payload} ${e.title}\n")
-                            .toString());
+                        // final pending = await flutterLocalNotificationsPlugin
+                        //     .pendingNotificationRequests();
+                        // log(pending.length.toString());
+                        // log(pending
+                        //     .map((e) =>
+                        //         "${e.body} ${e.id} ${e.payload} ${e.title}\n")
+                        //     .toString());
                       },
                       initiallyExpanded: false,
                       subtitle: Align(

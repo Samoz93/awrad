@@ -27,6 +27,7 @@ class ReminderModelAdapter extends TypeAdapter<ReminderModel> {
       notifId: fields[7] as int,
       link: fields[8] as String,
       hasSound: fields[9] as bool,
+      daysNew: (fields[10] as List)?.cast<String>(),
     );
   }
 
@@ -53,7 +54,9 @@ class ReminderModelAdapter extends TypeAdapter<ReminderModel> {
       ..writeByte(8)
       ..write(obj.link)
       ..writeByte(9)
-      ..write(obj.hasSound);
+      ..write(obj.hasSound)
+      ..writeByte(10)
+      ..write(obj.daysNew);
   }
 
   @override

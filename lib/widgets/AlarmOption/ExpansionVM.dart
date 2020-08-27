@@ -1,23 +1,55 @@
 import 'package:awrad/Consts/ConstMethodes.dart';
 import 'package:awrad/models/AwradModel.dart';
 import 'package:awrad/models/ReminderModel.dart';
+import 'package:awrad/services/DayReminderService.dart';
 import 'package:awrad/services/ReminderService.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stacked/stacked.dart';
 
 class ExpansionVM extends BaseViewModel {
-  final WrdModel wrd;
-  final isAwrad;
-  final _ser = Get.find<ReminderService>();
-  ReminderModel _rm;
   ExpansionVM({@required this.wrd, this.isAwrad = true}) {
     _init();
   }
   _init() {
     _rm = _ser.getReminder(wrd, isAwrad: isAwrad);
+    _allList = DayReminderService.convertToListOfList(_rm.daysNew);
     notifyListeners();
   }
+
+  int _selectedDay = 1;
+  int get selectedDay => _selectedDay;
+  int get selectedIndex => _selectedDay - 1;
+
+  set selectedDay(val) {
+    _selectedDay = val;
+    notifyListeners();
+  }
+
+  List<bool> get selectionBoolTimes =>
+      azanTimes.map((e) => _allList[selectedIndex].contains(e.type)).toList();
+  addTimes(String time) {
+    _allList[selectedIndex].contains(time)
+        ? _allList[selectedIndex].remove(time)
+        : _allList[selectedIndex].add(time);
+    notifyListeners();
+  }
+
+  isTimeSelected(String type) {
+    return _allList[selectedIndex].contains(type);
+  }
+
+  getPercentage(int day) {
+    final index = day - 1;
+    return _allList[index].length / azanTimes.length;
+  }
+
+  final WrdModel wrd;
+  final isAwrad;
+  final _ser = Get.find<ReminderService>();
+  ReminderModel _rm;
+
+  List<List<dynamic>> _allList;
 
   bool get hasReminder => _ser.hasReminder(_rm.id);
   ReminderModel get reminder => _rm;
@@ -35,24 +67,24 @@ class ExpansionVM extends BaseViewModel {
         .toList();
   }
 
-  List<bool> get selectionBoolTimes {
-    return timesOfDayInt
-        .map((e) => _rm == null ? false : _rm.times.contains(e))
-        .toList();
-  }
-
   // String getDasyName(int day) {
   //   return daysOfWeek[day];
   // }
 
   saveDate() async {
     try {
-      if (!_rm.hasValidData) {
+      bool isValid = false;
+      _allList.forEach((element) {
+        if (element.isNotEmpty) isValid = true;
+      });
+
+      if (!isValid) {
         showSnackBar("لايمكن المتابعة",
             "يرجى اختيار يوم واحد وتاريخ واحد على الاقل لكي يتم حفظ التنبيه",
             isErr: true);
         return;
       }
+      _rm.daysNew = DayReminderService.convertToListOfString(_allList);
       await _ser.saveReminder(_rm);
       toggelAlarmOption();
       showSnackBar("تم", "تم حفظ الإعدادات");
