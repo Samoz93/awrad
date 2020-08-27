@@ -1,15 +1,22 @@
 import 'dart:developer';
 
+import 'package:awrad/Consts/ConstMethodes.dart';
+
 class DayReminderService {
-  List<String> convertListToString(List<List<int>> list) {
-    return list.map((e) {
-      final x = e.toString();
-      log(x);
-      return x;
-    }).toList();
+  static convertToListOfString(List<List<dynamic>> _allList) {
+    final List<String> lst = _allList
+        .map((e) => e.toString().replaceAll("[", "").replaceAll("]", ""))
+        .toList();
+    return lst;
   }
 
-  List<List<int>> convertStringToList(List<String> list) {
-    return list.map((e) => e.split(",").map((e) => int.parse(e))).toList();
+  static List<List<dynamic>> convertToListOfList(List<String> lst) {
+    if (lst == null) return daysOfWeek2.map((e) => []).toList();
+    final newLst = lst.map((e) {
+      if (e.isEmpty) return [];
+      return e.split(",").map((e) => e.replaceAll(" ", '')).toList();
+    }).toList();
+    log(newLst.toString());
+    return newLst;
   }
 }

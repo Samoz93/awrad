@@ -2,6 +2,7 @@ import 'package:awrad/Consts/ConstMethodes.dart';
 import 'package:awrad/Consts/ThemeCosts.dart';
 import 'package:awrad/models/AwradModel.dart';
 import 'package:awrad/widgets/AlarmOption/ExpansionVM.dart';
+import 'package:awrad/widgets/Schedular2/Schedular2.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
@@ -83,35 +84,59 @@ class AlarmOptions extends ViewModelWidget<ExpansionVM> {
                     scrollDirection: Axis.horizontal,
                     child: SingleChildScrollView(
                       scrollDirection: Axis.vertical,
-                      child: Column(
-                        children: <Widget>[
-                          ToggleButtons(
-                            borderRadius: BorderRadius.circular(8),
-                            children: <Widget>[
-                              ...daysOfWeek2.map(
-                                (e) => Text(e.name),
-                              ),
-                            ],
-                            isSelected: exVm.selectionBool,
-                            onPressed: (index) {
-                              exVm.addDay(index);
-                            },
-                            color: Colors.red,
-                          ),
-                          ToggleButtons(
-                            borderRadius: BorderRadius.circular(8),
-                            children: <Widget>[
-                              ...timesOfDay.map(
-                                (e) => Text(e.toString()),
-                              ),
-                            ],
-                            isSelected: exVm.selectionBoolTimes,
-                            onPressed: (index) {
-                              exVm.addTime(index);
-                            },
-                            color: Colors.red,
-                          ),
-                        ],
+                      child: Container(
+                        width: media.width,
+                        padding: EdgeInsets.all(20),
+                        child: Column(
+                          children: [
+                            Flex(
+                              direction: Axis.horizontal,
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                ...daysOfWeek2.map(
+                                  (e) => Flexible(
+                                    flex: 1,
+                                    fit: FlexFit.tight,
+                                    child: InkWell(
+                                      onTap: () {
+                                        exVm.selectedDay = e.dateWeek;
+                                      },
+                                      child: CheckButton(
+                                        isSelected:
+                                            exVm.selectedDay == e.dateWeek,
+                                        text: e.name,
+                                        perc: exVm.getPercentage(e.dateWeek),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Flex(
+                              direction: Axis.horizontal,
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                ...azanTimes.map(
+                                  (e) => Flexible(
+                                    flex: 1,
+                                    fit: FlexFit.tight,
+                                    child: InkWell(
+                                      onTap: () {
+                                        exVm.addTimes(e.type);
+                                      },
+                                      child: CheckButton(
+                                        isSelected: exVm.isTimeSelected(e.type),
+                                        text: e.name,
+                                        hasPerc: false,
+                                        perc: 0,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),

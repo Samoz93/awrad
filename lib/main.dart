@@ -4,14 +4,11 @@ import 'package:awrad/Views/MainPage.dart';
 
 import 'package:awrad/models/ReminderModel.dart';
 import 'package:awrad/services/NotificationService.dart';
-import 'package:awrad/services/signService.dart';
-import 'package:awrad/widgets/Scheduler/SchedularWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:provider/provider.dart';
 
 import 'base/locator.dart';
 
@@ -91,13 +88,9 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: FutureProvider<Map<String, dynamic>>(
-        create: (context) => SignService().symbols,
-        initialData: {"t": "ﷺ"},
-        builder: (context, child) => Directionality(
-          textDirection: TextDirection.rtl,
-          child: SchedularWidget(),
-        ),
+      home: Directionality(
+        textDirection: TextDirection.rtl,
+        child: MainPage(),
       ),
     );
   }

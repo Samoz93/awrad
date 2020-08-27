@@ -56,7 +56,7 @@ class NotificationService {
 
     for (var d = 0; d < daysOfWeek2.length; d++) {
       for (var t = 0; t < timesOfDay.length; t++) {
-        await _scheduleAwrad(daysOfWeek2[d].dateWeek, t, i);
+        await _scheduleAwrad(daysOfWeek2[d], azanTimes[t], i);
         i++;
       }
     }
@@ -64,7 +64,7 @@ class NotificationService {
     mainBox.put(LAST_AWRAD_SCHEDULE, DateTime.now().millisecondsSinceEpoch);
   }
 
-  _scheduleAwrad(d, t, i) async {
+  _scheduleAwrad(MyWeekDays d, AzanTimeClass t, int i) async {
     await flutterLocalNotificationsPlugin.cancel(i);
     final _rms = _getReminders(d, t);
     String title = "";
@@ -90,7 +90,7 @@ class NotificationService {
     }
     if (!shouldScheduleForThisTime) return;
     final adanTimes = await _api.todayAdan;
-    final azanType = azanTimes[t].type;
+    final azanType = t.type;
     final azanDate = adanTimes.timings.getTimingDateTime(azanType);
     var timeNotification = azanDate.toNotificationTimeWithDelay();
     var bigTextStyleInformation;
@@ -124,22 +124,24 @@ class NotificationService {
       i,
       title,
       msg,
-      _dateDayToNotificationDate(d),
+      d.notiDat,
       timeNotification,
       platformChannelSpecifics,
       payload: "awrad$t",
     );
   }
 
-  List<ReminderModel> _getReminders(d, t) {
+  List<ReminderModel> _getReminders(MyWeekDays d, AzanTimeClass t) {
     return reminderBox.values
-        .where((e) => e.days.contains(d) && e.times.contains(t))
+        .where((e) =>
+            e.nDay.map((e) => e.dateWeek).contains(d.dateWeek) &&
+            e.getTimeForDay(d.dateWeek - 1).map((e) => e.type).contains(t.type))
         .toList();
   }
 
-  Day _dateDayToNotificationDate(int dateTime) {
-    return daysOfWeek2.firstWhere((e) => e.isTodayDate(dateTime)).notiDat;
-  }
+  // Day _dateDayToNotificationDate(int dateTime) {
+  //   return daysOfWeek2.firstWhere((e) => e.isTodayDate(dateTime)).notiDat;
+  // }
 
   // cancelSchedule(String uid) async {
   //   await _cancelPreviousSchedule(uid);
