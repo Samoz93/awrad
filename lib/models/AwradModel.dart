@@ -5,6 +5,8 @@ class WrdModel {
   String wrdType;
   bool hasSound;
   String link;
+  String pdfLink;
+  bool isPDF;
 
   WrdModel({this.uid, this.wrdDesc, this.wrdName, this.wrdType});
 
@@ -15,6 +17,8 @@ class WrdModel {
     wrdType = json['wrdType'];
     hasSound = json['hasSound'] ?? false;
     link = json['link'] ?? "";
+    pdfLink = json['pdfLink'] ?? "";
+    isPDF = json['isPDF'] ?? false;
   }
 
   Map<String, dynamic> toJson() {

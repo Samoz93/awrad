@@ -1,9 +1,10 @@
 import 'dart:convert';
 
-import 'package:awrad/Consts/ConstMethodes.dart';
-import 'package:awrad/services/DayReminderService.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
+
+import 'package:awrad/Consts/ConstMethodes.dart';
+import 'package:awrad/services/DayReminderService.dart';
 
 part 'ReminderModel.g.dart';
 
@@ -14,23 +15,36 @@ class ReminderModel {
   @HiveField(1)
   bool isAwrad;
   @HiveField(2)
-  List<int> days;
-  @HiveField(3)
-  List<int> times;
-  @HiveField(4)
   String type;
-  @HiveField(5)
+  @HiveField(3)
   String wrdName;
-  @HiveField(6)
+  @HiveField(4)
   String wrdText;
-  @HiveField(7)
+  @HiveField(5)
   int notifId;
-  @HiveField(8)
+  @HiveField(6)
   String link;
-  @HiveField(9)
+  @HiveField(7)
   bool hasSound;
-  @HiveField(10)
+  @HiveField(8)
   List<String> daysNew;
+  @HiveField(9)
+  bool isPdf;
+  @HiveField(10)
+  String pdfLink;
+  ReminderModel({
+    this.id,
+    this.isAwrad,
+    this.type,
+    this.wrdName,
+    this.wrdText,
+    this.notifId,
+    this.link,
+    this.hasSound,
+    this.daysNew,
+    this.isPdf,
+    this.pdfLink,
+  });
 
   List<MyWeekDays> get nDay {
     final lst = DayReminderService.convertToListOfList(daysNew);
@@ -55,50 +69,31 @@ class ReminderModel {
         .toList();
   }
 
-  ReminderModel(
-      {this.id,
-      this.isAwrad,
-      this.days,
-      this.times,
-      this.type,
-      this.wrdName,
-      this.wrdText,
-      this.notifId,
-      this.link,
-      this.hasSound,
-      this.daysNew});
-
-  bool get hasValidData {
-    bool isValid = false;
-    daysNew.forEach((element) {
-      if (element.isNotEmpty) isValid = true;
-    });
-    return isValid;
-  }
-
   ReminderModel copyWith({
     String id,
     bool isAwrad,
-    List<int> days,
-    List<int> times,
     String type,
     String wrdName,
     String wrdText,
     int notifId,
     String link,
     bool hasSound,
+    List<String> daysNew,
+    bool isPdf,
+    String pdfLink,
   }) {
     return ReminderModel(
       id: id ?? this.id,
       isAwrad: isAwrad ?? this.isAwrad,
-      days: days ?? this.days,
-      times: times ?? this.times,
       type: type ?? this.type,
       wrdName: wrdName ?? this.wrdName,
       wrdText: wrdText ?? this.wrdText,
       notifId: notifId ?? this.notifId,
       link: link ?? this.link,
       hasSound: hasSound ?? this.hasSound,
+      daysNew: daysNew ?? this.daysNew,
+      isPdf: isPdf ?? this.isPdf,
+      pdfLink: pdfLink ?? this.pdfLink,
     );
   }
 
@@ -106,41 +101,44 @@ class ReminderModel {
     return {
       'id': id,
       'isAwrad': isAwrad,
-      'days': days,
-      'times': times,
       'type': type,
       'wrdName': wrdName,
       'wrdText': wrdText,
       'notifId': notifId,
       'link': link,
       'hasSound': hasSound,
+      'daysNew': daysNew,
+      'isPdf': isPdf,
+      'pdfLink': pdfLink,
     };
   }
 
-  static ReminderModel fromMap(Map<String, dynamic> map) {
+  factory ReminderModel.fromMap(Map<String, dynamic> map) {
     if (map == null) return null;
 
     return ReminderModel(
       id: map['id'],
       isAwrad: map['isAwrad'],
-      days: List<int>.from(map['days']),
-      times: List<int>.from(map['times']),
       type: map['type'],
       wrdName: map['wrdName'],
       wrdText: map['wrdText'],
       notifId: map['notifId'],
       link: map['link'],
       hasSound: map['hasSound'],
+      daysNew: List<String>.from(map['daysNew']),
+      isPdf: map['isPdf'],
+      pdfLink: map['pdfLink'],
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  static ReminderModel fromJson(String source) => fromMap(json.decode(source));
+  factory ReminderModel.fromJson(String source) =>
+      ReminderModel.fromMap(json.decode(source));
 
   @override
   String toString() {
-    return 'ReminderModel(id: $id, isAwrad: $isAwrad, days: $days, times: $times, type: $type, wrdName: $wrdName, wrdText: $wrdText, notifId: $notifId, link: $link, hasSound: $hasSound)';
+    return 'ReminderModel(id: $id, isAwrad: $isAwrad, type: $type, wrdName: $wrdName, wrdText: $wrdText, notifId: $notifId, link: $link, hasSound: $hasSound, daysNew: $daysNew, isPdf: $isPdf, pdfLink: $pdfLink)';
   }
 
   @override
@@ -150,27 +148,29 @@ class ReminderModel {
     return o is ReminderModel &&
         o.id == id &&
         o.isAwrad == isAwrad &&
-        listEquals(o.days, days) &&
-        listEquals(o.times, times) &&
         o.type == type &&
         o.wrdName == wrdName &&
         o.wrdText == wrdText &&
         o.notifId == notifId &&
         o.link == link &&
-        o.hasSound == hasSound;
+        o.hasSound == hasSound &&
+        listEquals(o.daysNew, daysNew) &&
+        o.isPdf == isPdf &&
+        o.pdfLink == pdfLink;
   }
 
   @override
   int get hashCode {
     return id.hashCode ^
         isAwrad.hashCode ^
-        days.hashCode ^
-        times.hashCode ^
         type.hashCode ^
         wrdName.hashCode ^
         wrdText.hashCode ^
         notifId.hashCode ^
         link.hashCode ^
-        hasSound.hashCode;
+        hasSound.hashCode ^
+        daysNew.hashCode ^
+        isPdf.hashCode ^
+        pdfLink.hashCode;
   }
 }

@@ -61,11 +61,11 @@ class ExpansionVM extends BaseViewModel {
     notifyListeners();
   }
 
-  List<bool> get selectionBool {
-    return daysOfWeek2
-        .map((e) => _rm == null ? false : _rm.days.contains(e.dateWeek))
-        .toList();
-  }
+  // List<bool> get selectionBool {
+  //   return daysOfWeek2
+  //       .map((e) => _rm == null ? false : _rm.days.contains(e.dateWeek))
+  //       .toList();
+  // }
 
   // String getDasyName(int day) {
   //   return daysOfWeek[day];
@@ -93,24 +93,24 @@ class ExpansionVM extends BaseViewModel {
     }
   }
 
-  void addDay(int index) {
-    final day = daysOfWeek2[index];
-    if (_rm.days.contains(day.dateWeek)) {
-      _rm.days.remove(day.dateWeek);
-    } else {
-      _rm.days.add(day.dateWeek);
-    }
-    notifyListeners();
-  }
+  // void addDay(int index) {
+  //   final day = daysOfWeek2[index];
+  //   if (_rm.days.contains(day.dateWeek)) {
+  //     _rm.days.remove(day.dateWeek);
+  //   } else {
+  //     _rm.days.add(day.dateWeek);
+  //   }
+  //   notifyListeners();
+  // }
 
-  void addTime(int index) {
-    if (_rm.times.contains(index)) {
-      _rm.times.remove(index);
-    } else {
-      _rm.times.add(index);
-    }
-    notifyListeners();
-  }
+  // void addTime(int index) {
+  //   if (_rm.times.contains(index)) {
+  //     _rm.times.remove(index);
+  //   } else {
+  //     _rm.times.add(index);
+  //   }
+  //   notifyListeners();
+  // }
 
   _handleError(e) {
     showSnackBar("خطأ", "$e", isErr: true);

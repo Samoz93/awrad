@@ -43,6 +43,21 @@ class BookService {
     return pth;
   }
 
+  Future<String> downloadBook(String uid, String link) async {
+    final pth = await _getBookPath(uid);
+    final file = File(pth);
+    if (file.existsSync()) {
+      _progress.add(1.0);
+      return pth;
+    }
+    await dio.download(
+      link,
+      pth,
+      onReceiveProgress: (count, total) => _progress.sink.add(count / total),
+    );
+    return pth;
+  }
+
   Future<String> _getBookPath(String uid) async {
     final Directory pth = await getTemporaryDirectory();
     return "${pth.path}/$uid.pdf";

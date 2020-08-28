@@ -24,11 +24,11 @@ class ReminderService {
       wrdName: wrd.wrdName,
       wrdText: wrd.wrdDesc,
       isAwrad: isAwrad,
-      days: [],
-      times: [],
       daysNew: daysOfWeek2.map((e) => '').toList(),
       hasSound: wrd.hasSound,
       link: wrd.link,
+      isPdf: wrd.isPDF,
+      pdfLink: wrd.pdfLink,
     );
 
     try {

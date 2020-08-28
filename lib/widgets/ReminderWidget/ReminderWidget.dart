@@ -5,6 +5,7 @@ import 'package:awrad/Views/quran/QuranNewScreen.dart';
 import 'package:awrad/widgets/InstaAudioPlay/InstaAudioPlay.dart';
 import 'package:awrad/widgets/LoadingWidget.dart';
 import 'package:awrad/widgets/Myhtml.dart';
+import 'package:awrad/widgets/PdfPage/PdfPage.dart';
 import 'package:awrad/widgets/ReminderWidget/ReminderWidgetVM.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -37,7 +38,17 @@ class _ReminderWidgetState extends State<ReminderWidget> {
             ? LoadingWidget()
             : InkWell(
                 onTap: () {
-                  if (model.reminder.isAwrad)
+                  if (model.reminder.isAwrad) {
+                    if (model.reminder.isPdf) {
+                      return Navigator.of(context, rootNavigator: true)
+                          .push(MaterialPageRoute(
+                        builder: (context) => PdfPage(
+                          link: model.reminder.pdfLink,
+                          name: model.reminder.wrdName,
+                          uid: model.reminder.id,
+                        ),
+                      ));
+                    }
                     Get.dialog(
                       Dialog(
                         child: SingleChildScrollView(
@@ -69,7 +80,7 @@ class _ReminderWidgetState extends State<ReminderWidget> {
                         ),
                       ),
                     );
-                  else
+                  } else
                     Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => QuranNewScreen(
                         suraName: model.reminder.wrdName,
@@ -118,9 +129,21 @@ class _ReminderWidgetState extends State<ReminderWidget> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              Text(
-                                model.reminder.wrdName,
-                                style: AppThemes.wrdTitleTextStyle,
+                              Row(
+                                children: <Widget>[
+                                  Padding(
+                                    padding: const EdgeInsets.all(4.0),
+                                    child: Icon(model.reminder.isAwrad
+                                        ? model.reminder.isPdf
+                                            ? Icons.book
+                                            : Icons.text_format
+                                        : Icons.library_books),
+                                  ),
+                                  Text(
+                                    model.reminder.wrdName,
+                                    style: AppThemes.wrdTitleTextStyle,
+                                  ),
+                                ],
                               ),
                               FittedBox(
                                 fit: BoxFit.scaleDown,

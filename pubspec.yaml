@@ -40,7 +40,7 @@ dependencies:
   retrofit: any
   logger: any  #for logging purpose
   dio: ^3.0.9
-  flutter_svg: ^0.18.0
+  flutter_svg: 
   expansion_tile_card: ^1.0.3
   flutter_local_notifications: ^1.4.4+2
   flutter_animation_progress_bar: ^1.0.0

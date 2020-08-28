@@ -7,6 +7,7 @@ import 'package:awrad/widgets/LoadingWidget.dart';
 import 'package:awrad/widgets/MyErrorWidget.dart';
 import 'package:awrad/widgets/MyScf.dart';
 import 'package:awrad/widgets/Myhtml.dart';
+import 'package:awrad/widgets/PdfPage/PdfPage.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
@@ -36,6 +37,9 @@ class AwradListScreen extends StatelessWidget {
                         err: exVm.modelError,
                       );
                     return ExpansionTile(
+                      leading: wrd.isPDF
+                          ? Icon(Icons.book)
+                          : Icon(Icons.text_format),
                       onExpansionChanged: (v) async {
                         // final _ser = Get.find<NotificationService>();
                         // await _ser.testRemoveAll();
@@ -56,7 +60,25 @@ class AwradListScreen extends StatelessWidget {
                         Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                            MyHtml(html: wrd.wrdDesc),
+                            wrd.isPDF
+                                ? InkWell(
+                                    onTap: () {
+                                      Navigator.of(context, rootNavigator: true)
+                                          .push(MaterialPageRoute(
+                                        builder: (context) => PdfPage(
+                                          link: wrd.pdfLink,
+                                          name: wrd.wrdName,
+                                          uid: wrd.uid,
+                                        ),
+                                      ));
+                                    },
+                                    child: Image.asset(
+                                      "assets/book.png",
+                                      width: 50,
+                                      height: 50,
+                                    ),
+                                  )
+                                : MyHtml(html: wrd.wrdDesc),
                             SizedBox(height: 20),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
