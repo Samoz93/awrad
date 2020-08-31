@@ -34,6 +34,9 @@ class PdfPage extends StatelessWidget {
                     onPageChanged: (page) {
                       model.setPage(page);
                     },
+                    onDocumentLoaded: (s) {
+                      model.notifyListeners();
+                    },
                     controller: model.ctrl,
                     scrollDirection: Axis.vertical,
                   ),
