@@ -2,6 +2,7 @@ import 'package:awrad/Views/Library/BookVM.dart';
 import 'package:awrad/models/BookModel.dart';
 import 'package:awrad/widgets/MyErrorWidget.dart';
 import 'package:awrad/widgets/MyScf.dart';
+import 'package:awrad/widgets/ShareWidget.dart/ShareWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:native_pdf_view/native_pdf_view.dart';
 import 'package:stacked/stacked.dart';
@@ -13,6 +14,13 @@ class BookScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return MyScaffold(
       title: book.bookName,
+      extraWidget: ShareWidget(
+        html: "",
+        isPdf: true,
+        link: book.bookLink,
+        name: book.bookName,
+        uid: book.uid,
+      ),
       child: Center(
         child: ViewModelBuilder<BookVm>.reactive(
           builder: (context, model, ch) => model.hasError

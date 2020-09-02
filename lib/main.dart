@@ -81,6 +81,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'أذكار الصالحين',
       navigatorKey: _nab,
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primaryColor: AppColors.mainColorSelected,
         accentColor: AppColors.mainColor,

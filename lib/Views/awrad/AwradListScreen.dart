@@ -1,4 +1,5 @@
 import 'package:awrad/Views/awrad/AwradVM.dart';
+import 'package:awrad/models/AwradModel.dart';
 import 'package:awrad/widgets/AlarmOption/AlarmOptions.dart';
 import 'package:awrad/widgets/AlarmOption/ExpansionVM.dart';
 import 'package:awrad/models/AwradTypesModel.dart';
@@ -8,6 +9,7 @@ import 'package:awrad/widgets/MyErrorWidget.dart';
 import 'package:awrad/widgets/MyScf.dart';
 import 'package:awrad/widgets/Myhtml.dart';
 import 'package:awrad/widgets/PdfPage/PdfPage.dart';
+import 'package:awrad/widgets/ShareWidget.dart/ShareWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
@@ -85,14 +87,19 @@ class AwradListScreen extends StatelessWidget {
                               children: <Widget>[
                                 AlarmOptions(wrd: wrd),
                                 wrd.hasSound && !exVm.showAlaramOption
-                                    ? Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: InstaAudioPlay(
-                                          url: wrd.link,
-                                          player: model.player,
-                                        ),
+                                    ? Row(
+                                        children: <Widget>[
+                                          Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: InstaAudioPlay(
+                                              url: wrd.link,
+                                              player: model.player,
+                                            ),
+                                          ),
+                                          _getShareWidget(wrd)
+                                        ],
                                       )
-                                    : SizedBox(),
+                                    : _getShareWidget(wrd)
                               ],
                             ),
                           ],
@@ -109,6 +116,16 @@ class AwradListScreen extends StatelessWidget {
         onModelReady: (vv) => vv.fetchData(type.type),
         viewModelBuilder: () => AwradVM(),
       ),
+    );
+  }
+
+  _getShareWidget(WrdModel wrd) {
+    return ShareWidget(
+      name: wrd.wrdName,
+      html: wrd.wrdDesc,
+      isPdf: wrd.isPDF,
+      link: wrd.pdfLink,
+      uid: wrd.uid,
     );
   }
 }

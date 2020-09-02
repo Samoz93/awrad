@@ -13,43 +13,60 @@ class PdfPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(name),
-      ),
-      body: ViewModelBuilder<PdfVm>.reactive(
-        onModelReady: (v) => v.initBook(),
-        viewModelBuilder: () => PdfVm(link: link, uid: uid),
-        builder: (ctx, model, ch) => model.isBusy
-            ? Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text("جاري تحميل الورد"),
-                  LoadingWidget(),
-                ],
+    return ViewModelBuilder<PdfVm>.reactive(
+      onModelReady: (v) => v.initBook(),
+      viewModelBuilder: () => PdfVm(link: link, uid: uid, name: name),
+      builder: (ctx, model, ch) => Scaffold(
+        appBar: AppBar(
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text(name),
+              InkWell(
+                onTap: () {
+                  model.share();
+                },
+                child: model.isBusy
+                    ? SizedBox()
+                    : Icon(
+                        Icons.share,
+                      ),
               )
-            : Stack(
-                children: <Widget>[
-                  PdfView(
-                    onPageChanged: (page) {
-                      model.setPage(page);
-                    },
-                    onDocumentLoaded: (s) {
-                      model.notifyListeners();
-                    },
-                    controller: model.ctrl,
-                    scrollDirection: Axis.vertical,
-                  ),
-                  Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Text(
-                      "${model.page}/${model.ctrl.pagesCount}",
-                      style:
-                          TextStyle(fontSize: 20, color: AppColors.mainColor),
-                    ),
+            ],
+          ),
+        ),
+        body: model.hasError
+            ? Text(model.modelError)
+            : model.isBusy
+                ? Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text("جاري تحميل الورد"),
+                      LoadingWidget(),
+                    ],
                   )
-                ],
-              ),
+                : Stack(
+                    children: <Widget>[
+                      PdfView(
+                        onPageChanged: (page) {
+                          model.setPage(page);
+                        },
+                        onDocumentLoaded: (s) {
+                          model.notifyListeners();
+                        },
+                        controller: model.ctrl,
+                        scrollDirection: Axis.vertical,
+                      ),
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Text(
+                          "${model.page}/${model.ctrl.pagesCount}",
+                          style: TextStyle(
+                              fontSize: 20, color: AppColors.mainColor),
+                        ),
+                      )
+                    ],
+                  ),
       ),
     );
   }

@@ -14,7 +14,7 @@ class BookService {
   final dio = Dio();
   final StreamController<double> _progress =
       StreamController<double>.broadcast();
-  Stream get progress => _progress.stream;
+  Stream<double> get progress => _progress.stream;
   bool hasActiveDownload = false;
   Future<List<BookModel>> get bookList async {
     final data =
