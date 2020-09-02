@@ -57,6 +57,11 @@ dependencies:
   flutter_email_sender: ^3.0.1
   provider:
 
+
+dependency_overrides:
+  image: ^2.1.14
+
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
