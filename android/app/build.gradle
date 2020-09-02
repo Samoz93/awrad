@@ -42,8 +42,8 @@ android {
         applicationId "com.samozstudio.awrad"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 3
-        versionName "v2.5"
+        versionCode 4
+        versionName "v4"
     }
     signingConfigs {
         release {
@@ -68,6 +68,6 @@ flutter {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'com.google.firebase:firebase-analytics:17.4.4'
+    implementation 'com.google.firebase:firebase-analytics:17.5.0'
 }
 apply plugin: 'com.google.gms.google-services'
