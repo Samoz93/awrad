@@ -4,6 +4,7 @@ class BookModel {
   String bookLink;
   String bookName;
   String uid;
+  num createDate;
 
   BookModel(
       {this.bookAuthor,
@@ -18,6 +19,7 @@ class BookModel {
     bookLink = json['bookLink'];
     bookName = json['bookName'];
     uid = json['uid'];
+    createDate = json['createDate'];
   }
 
   Map<String, dynamic> toJson() {

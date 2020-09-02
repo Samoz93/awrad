@@ -142,7 +142,9 @@ class FirstPage extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            Text(_getText(i)),
+                            FittedBox(
+                                fit: BoxFit.fitWidth,
+                                child: Center(child: Text(_getText(i)))),
                             Align(
                                 alignment: Alignment.center,
                                 child: Icon(Icons.email)),
@@ -150,8 +152,14 @@ class FirstPage extends StatelessWidget {
                         ),
                       )
                     : Center(
-                        child: Text(_getText(i)),
-                      )
+                        child: Padding(
+                          padding: const EdgeInsets.all(20.0),
+                          child: FittedBox(
+                            fit: BoxFit.fitWidth,
+                            child: Text(_getText(i)),
+                          ),
+                        ),
+                      ),
               ],
             ),
           ),
@@ -167,7 +175,7 @@ class FirstPage extends StatelessWidget {
         return "تم عمل هذا التطبيق تحت إشراف د. عمار العصير";
         break;
       case 2:
-        return "تمت برمجة هذا التطبيق من قبل SamozKhalCode";
+        return " تمت برمجة هذا التطبيق من قبل سامح زوعة, خالد العصير,عواد العصير ";
 
         break;
       case 3:

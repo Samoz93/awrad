@@ -8,11 +8,18 @@ class SlidesService {
   List<SlideModel> _slides = [];
   Future<List<SlideModel>> get allSlides async {
     if (_slides.isNotEmpty) return _slides;
-    final data = (await _db.reference().child(SLIDES).once()).value;
+    final data =
+        (await _db.reference().child(SLIDES).orderByChild("createDate").once())
+            .value;
     if (data == null) return _slides;
     final map = getMap(data);
     final allSlides = map.values.map((e) => SlideModel.fromJson(getMap(e)));
     _slides.addAll(allSlides);
-    return _slides;
+    return _slides..sort(_sort);
+  }
+
+  int _sort(SlideModel cr, SlideModel cr2) {
+    if (cr.createDate == null) return 0;
+    return cr.createDate.compareTo(cr2.createDate);
   }
 }

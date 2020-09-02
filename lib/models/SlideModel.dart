@@ -3,6 +3,7 @@ class SlideModel {
   String img;
   String name;
   String uid;
+  num createDate;
 
   SlideModel({this.desc, this.img, this.name, this.uid});
 
@@ -11,6 +12,7 @@ class SlideModel {
     img = json['img'];
     name = json['name'];
     uid = json['uid'];
+    createDate = json['createDate'];
   }
 
   Map<String, dynamic> toJson() {

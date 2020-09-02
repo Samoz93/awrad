@@ -1,5 +1,7 @@
 const String AWRAD = "awrad";
 const String AWRAD_TYPES = "awradTypes";
+const AWRAD_TYPES_Sorting = "awradTypesSoritng";
+
 const String SLIDES = "slides";
 
 const REMINDERS = "reminders";

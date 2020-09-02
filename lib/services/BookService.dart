@@ -17,12 +17,19 @@ class BookService {
   Stream get progress => _progress.stream;
   bool hasActiveDownload = false;
   Future<List<BookModel>> get bookList async {
-    final data = (await _db.reference().child(BOOKS).once()).value;
+    final data =
+        (await _db.reference().child(BOOKS).orderByChild("createDate").once())
+            .value;
     if (data == null) return [];
     final models =
         getMap(data).values.map((e) => BookModel.fromJson(getMap(e))).toList();
 
-    return models;
+    return models..sort(_sort);
+  }
+
+  int _sort(BookModel cr, BookModel cr2) {
+    if (cr.createDate == null) return 0;
+    return cr.createDate.compareTo(cr2.createDate);
   }
 
   Future<String> getBook(BookModel book) async {

@@ -11,14 +11,23 @@ class AwradService {
 
   final List<AwradTypesModel> _types = [];
   Future<List<WrdModel>> allAwrad(String wrdType) async {
-    final data = await _db.reference().child('$AWRAD/$wrdType').once();
+    final data = await _db
+        .reference()
+        .child('$AWRAD/$wrdType')
+        .orderByChild("createDate")
+        .once();
     if (data.value == null) return [];
     final m = Map<String, dynamic>.from(data.value);
 
     final x =
         m.values.map((e) => WrdModel.fromJson(Map<String, dynamic>.from(e)));
 
-    return x.toList();
+    return x.toList()..sort(_sort);
+  }
+
+  int _sort(WrdModel cr, WrdModel cr2) {
+    if (cr.createDate == null) return 0;
+    return cr.createDate.compareTo(cr2.createDate);
   }
 
   Future<List<AwradTypesModel>> get awradType async {
@@ -26,6 +35,9 @@ class AwradService {
       if (_types.isNotEmpty) return _types;
       _types.clear();
       final d = (await _db.reference().child(AWRAD_TYPES).once()).value;
+      final sorting =
+          (await _db.reference().child(AWRAD_TYPES_Sorting).once()).value;
+
       final m = Map<String, String>.from(d);
 
       final x = m.keys.map(
@@ -34,7 +46,13 @@ class AwradService {
         },
       ).toList();
       _types.addAll(x);
-      return _types;
+      return _types
+        ..sort((a, b) {
+          final aS = sorting[a.type] ?? 0;
+          final bS = sorting[b.type] ?? 0;
+
+          return aS - bS;
+        });
     } catch (e) {
       log(e.toString());
       return [];

@@ -7,7 +7,7 @@ class WrdModel {
   String link;
   String pdfLink;
   bool isPDF;
-
+  num createDate;
   WrdModel({this.uid, this.wrdDesc, this.wrdName, this.wrdType});
 
   WrdModel.fromJson(Map<String, dynamic> json) {
@@ -19,6 +19,7 @@ class WrdModel {
     link = json['link'] ?? "";
     pdfLink = json['pdfLink'] ?? "";
     isPDF = json['isPDF'] ?? false;
+    createDate = json['createDate'] ?? false;
   }
 
   Map<String, dynamic> toJson() {
