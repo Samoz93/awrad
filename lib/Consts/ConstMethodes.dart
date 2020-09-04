@@ -1,4 +1,5 @@
 import 'package:assets_audio_player/assets_audio_player.dart';
+import 'package:awrad/services/BookService.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -221,4 +222,26 @@ double getProgress(RealtimePlayingInfos info) {
       : info.current == null
           ? 0.0
           : info.currentPosition.inSeconds / info.duration.inSeconds;
+}
+
+canCloseTheWindow() {
+  final isDownloading = Get.find<BookService>().isDownloading;
+  if (isDownloading) {
+    Get.dialog(
+      AlertDialog(
+        title: Text("تحميل ...."),
+        content: Text("يرجى الانتظار حتى انتهاء تحميل الورد الحالي !"),
+        actions: <Widget>[
+          FlatButton(
+            child: Text("تمام"),
+            onPressed: () {
+              Get.back();
+            },
+          )
+        ],
+      ),
+    );
+    return false;
+  }
+  return true;
 }

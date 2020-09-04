@@ -32,7 +32,7 @@ class WelcomeScreed extends StatelessWidget {
                       controller: _ctrl,
                       itemCount: model.data.length + 1,
                       itemBuilder: (BuildContext context, int index) {
-                        if (index == model.data.length - 1) return FirstPage();
+                        if (index == model.data.length) return FirstPage();
                         return SlideView(
                           model: model.data[index],
                         );
@@ -78,7 +78,7 @@ class SlideView extends StatelessWidget {
                 ExtendedImage.network(
                   model.img,
                   height: double.infinity,
-                  fit: BoxFit.cover,
+                  fit: BoxFit.fill,
                 ),
                 Align(
                   alignment: Alignment.bottomCenter,

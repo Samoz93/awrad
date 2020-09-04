@@ -1,4 +1,5 @@
 import 'package:awrad/services/BookService.dart';
+import 'package:get/get.dart';
 import 'package:native_pdf_view/native_pdf_view.dart';
 import 'package:share/share.dart';
 import 'package:stacked/stacked.dart';
@@ -7,12 +8,13 @@ class PdfVm extends BaseViewModel {
   final String uid;
   final String link;
   final String name;
-  final _ser = BookService();
+  final _ser = Get.find<BookService>();
   PdfVm({this.uid, this.link, this.name});
 
   PdfController get ctrl => _ctrl;
   PdfController _ctrl;
   String _pth;
+  Stream get progress => _ser.progress;
   initBook() async {
     try {
       setBusy(true);

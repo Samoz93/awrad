@@ -16,6 +16,7 @@ class BookService {
       StreamController<double>.broadcast();
   Stream<double> get progress => _progress.stream;
   bool hasActiveDownload = false;
+  bool get isDownloading => hasActiveDownload;
   Future<List<BookModel>> get bookList async {
     final data =
         (await _db.reference().child(BOOKS).orderByChild("createDate").once())
@@ -33,36 +34,50 @@ class BookService {
   }
 
   Future<String> getBook(BookModel book) async {
-    final pth = await _getBookPath(book.uid);
-    final file = File(pth);
-    if (file.existsSync()) {
-      _progress.add(1.0);
+    try {
+      final pth = await _getBookPath(book.uid);
+      final file = File(pth);
+      if (file.existsSync()) {
+        _progress.add(1.0);
+        return pth;
+      }
+      if (hasActiveDownload) throw Exception(['يتم الان تحميل كتاب اخر']);
+      hasActiveDownload = true;
+      await dio.download(
+        book.bookLink,
+        pth,
+        onReceiveProgress: (count, total) => _progress.sink.add(count / total),
+      );
       return pth;
+    } catch (e) {
+      return '';
+    } finally {
+      hasActiveDownload = false;
     }
-    if (hasActiveDownload) throw Exception(['يتم الان تحميل كتاب اخر']);
-    hasActiveDownload = true;
-    await dio.download(
-      book.bookLink,
-      pth,
-      onReceiveProgress: (count, total) => _progress.sink.add(count / total),
-    );
-    hasActiveDownload = false;
-    return pth;
   }
 
   Future<String> downloadBook(String uid, String link) async {
-    final pth = await _getBookPath(uid);
-    final file = File(pth);
-    if (file.existsSync()) {
-      _progress.add(1.0);
+    try {
+      final pth = await _getBookPath(uid);
+      final file = File(pth);
+      if (file.existsSync()) {
+        _progress.add(1.0);
+        return pth;
+      }
+      hasActiveDownload = true;
+
+      await dio.download(
+        link,
+        pth,
+        onReceiveProgress: (count, total) => _progress.sink.add(count / total),
+      );
+
       return pth;
+    } catch (e) {
+      return '';
+    } finally {
+      hasActiveDownload = false;
     }
-    await dio.download(
-      link,
-      pth,
-      onReceiveProgress: (count, total) => _progress.sink.add(count / total),
-    );
-    return pth;
   }
 
   Future<String> _getBookPath(String uid) async {

@@ -58,8 +58,8 @@ dependencies:
   share: ^0.6.5
 
 
-dependency_overrides:
-  image: ^2.1.14
+# dependency_overrides:
+#   image: ^2.1.14
 
 
 dev_dependencies:
