@@ -32,9 +32,9 @@ class WelcomeScreed extends StatelessWidget {
                       controller: _ctrl,
                       itemCount: model.data.length + 1,
                       itemBuilder: (BuildContext context, int index) {
-                        if (index == 0) return FirstPage();
+                        if (index == model.data.length - 1) return FirstPage();
                         return SlideView(
-                          model: model.data[index - 1],
+                          model: model.data[index],
                         );
                       },
                     ),
