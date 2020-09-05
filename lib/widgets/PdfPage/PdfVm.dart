@@ -18,7 +18,7 @@ class PdfVm extends BaseViewModel {
   initBook() async {
     try {
       setBusy(true);
-      _pth = await _ser.downloadBook(uid, link);
+      _pth = await _ser.downloadBook(uid: uid, link: link);
       _ctrl = PdfController(document: PdfDocument.openFile(_pth));
       setBusy(false);
     } catch (e) {

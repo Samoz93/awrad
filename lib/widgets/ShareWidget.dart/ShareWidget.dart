@@ -1,5 +1,4 @@
 import 'package:awrad/Consts/ThemeCosts.dart';
-import 'package:awrad/models/AwradModel.dart';
 import 'package:awrad/widgets/ShareWidget.dart/ShareVM.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';

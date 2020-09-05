@@ -1,6 +1,7 @@
 import 'package:awrad/Consts/ConstMethodes.dart';
 import 'package:awrad/Consts/ThemeCosts.dart';
 import 'package:awrad/widgets/PdfPage/PdfVm.dart';
+import 'package:awrad/widgets/ShareWidget.dart/ShareWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:native_pdf_view/native_pdf_view.dart';
 import 'package:stacked/stacked.dart';
@@ -27,15 +28,18 @@ class PdfPage extends StatelessWidget {
               children: <Widget>[
                 Text(name),
                 InkWell(
-                  onTap: () {
-                    model.share();
-                  },
-                  child: model.isBusy
-                      ? SizedBox()
-                      : Icon(
-                          Icons.share,
-                        ),
-                )
+                    onTap: () {
+                      model.share();
+                    },
+                    child: model.isBusy
+                        ? SizedBox()
+                        : ShareWidget(
+                            html: '',
+                            isPdf: true,
+                            link: link,
+                            name: name,
+                            uid: uid,
+                          ))
               ],
             ),
           ),

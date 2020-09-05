@@ -21,12 +21,11 @@ class ShareVm extends BaseViewModel {
   shareWrd() async {
     setBusy(true);
     if (isPdf) {
-      final pth = await _ser.downloadBook(uid, link);
+      final _pth = await _ser.downloadBook(uid: uid, link: link);
       Share.shareFiles(
-        [pth],
+        [_pth],
         subject: name,
         text: html,
-        mimeTypes: ["application/pdf"],
       );
     } else {
       Share.share(removeAllHtmlTags(html), subject: name);

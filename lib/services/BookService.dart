@@ -56,7 +56,7 @@ class BookService {
     }
   }
 
-  Future<String> downloadBook(String uid, String link) async {
+  Future<String> downloadBook({String uid, String link}) async {
     try {
       final pth = await _getBookPath(uid);
       final file = File(pth);
