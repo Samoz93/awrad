@@ -27,19 +27,15 @@ class PdfPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Text(name),
-                InkWell(
-                    onTap: () {
-                      model.share();
-                    },
-                    child: model.isBusy
-                        ? SizedBox()
-                        : ShareWidget(
-                            html: '',
-                            isPdf: true,
-                            link: link,
-                            name: name,
-                            uid: uid,
-                          ))
+                // model.isBusy
+                //     ? SizedBox()
+                //     : ShareWidget(
+                //         html: '',
+                //         isPdf: true,
+                //         link: link,
+                //         name: name,
+                //         uid: uid,
+                //       )
               ],
             ),
           ),
