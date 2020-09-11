@@ -1,6 +1,6 @@
 import 'package:awrad/Consts/ConstMethodes.dart';
 import 'package:awrad/Views/Library/BookVM.dart';
-import 'package:awrad/models/BookModel.dart';
+import 'package:awrad/models/FolderModel.dart';
 import 'package:awrad/widgets/MyErrorWidget.dart';
 import 'package:awrad/widgets/MyScf.dart';
 import 'package:awrad/widgets/ShareWidget.dart/ShareWidget.dart';
@@ -9,7 +9,7 @@ import 'package:native_pdf_view/native_pdf_view.dart';
 import 'package:stacked/stacked.dart';
 
 class BookScreen extends StatelessWidget {
-  final BookModel book;
+  final FBookModel book;
   BookScreen({Key key, this.book}) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -18,12 +18,12 @@ class BookScreen extends StatelessWidget {
         return canCloseTheWindow();
       },
       child: MyScaffold(
-        title: book.bookName,
+        title: book.name,
         extraWidget: ShareWidget(
           html: "",
           isPdf: true,
           link: book.bookLink,
-          name: book.bookName,
+          name: book.name,
           uid: book.uid,
         ),
         child: Center(

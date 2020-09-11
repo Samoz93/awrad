@@ -143,8 +143,14 @@ class FirstPage extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             FittedBox(
-                                fit: BoxFit.fitWidth,
-                                child: Center(child: Text(_getText(i)))),
+                              fit: BoxFit.fitWidth,
+                              child: Center(
+                                child: Text(
+                                  _getText(i),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ),
                             Align(
                                 alignment: Alignment.center,
                                 child: Icon(Icons.email)),
@@ -172,10 +178,10 @@ class FirstPage extends StatelessWidget {
   String _getText(int i) {
     switch (i) {
       case 1:
-        return "تم عمل هذا التطبيق تحت إشراف د. عمار العصير";
+        return "تم عمل هذا التطبيق  بإشراف د.عمار العصير ";
         break;
       case 2:
-        return " تمت برمجة هذا التطبيق من قبل سامح زوعة, خالد العصير,عواد العصير ";
+        return "  تمت برمجة هذا التطبيق من قبل سامح زوعة, خالد العصير,عواد العصير \n حقوق النشر محفوظة للدكتور عمار العصير";
 
         break;
       case 3:

@@ -1,5 +1,5 @@
 import 'package:awrad/Consts/ConstMethodes.dart';
-import 'package:awrad/models/BookModel.dart';
+import 'package:awrad/models/FolderModel.dart';
 import 'package:awrad/services/BookService.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
@@ -7,7 +7,7 @@ import 'package:native_pdf_view/native_pdf_view.dart';
 import 'package:stacked/stacked.dart';
 
 class BookVm extends BaseViewModel {
-  final BookModel book;
+  final FBookModel book;
   final _ser = Get.find<BookService>();
   BookVm({@required this.book});
 

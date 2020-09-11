@@ -8,7 +8,7 @@ class BkScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: SafeArea(child: child),
+      child: child,
       decoration: BoxDecoration(
         image: DecorationImage(
           image: AssetImage(

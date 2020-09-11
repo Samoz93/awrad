@@ -22,18 +22,19 @@ class MyServices extends StatelessWidget {
   }
 
   final route = [
-    {"route": MyQubla(), "name": "البوصلة"},
-    {"route": MySalat(), "name": "اوقات الصلاة"},
-    {"route": MyMasbaha(), "name": "المسبحة"},
+    {"route": MyQubla(), "name": "البوصلة", "svg": "MyQubla"},
+    {"route": MySalat(), "name": "اوقات الصلاة", "svg": "MySalat"},
+    {"route": MyMasbaha(), "name": "المسبحة", "svg": "MyMasbaha"},
   ];
 
   _getCard(data, BuildContext context) {
-    final svgName = data['route'];
+    final route = data['route'];
+    final svgName = data['svg'];
     return AwradBtn(
       onPressed: () {
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => data['route'],
+            builder: (context) => route,
           ),
         );
       },

@@ -92,8 +92,14 @@ class _MyQublaState extends State<MyQubla> {
   }
 }
 
-class QiblahCompassWidget extends StatelessWidget {
+class QiblahCompassWidget extends StatefulWidget {
+  @override
+  _QiblahCompassWidgetState createState() => _QiblahCompassWidgetState();
+}
+
+class _QiblahCompassWidgetState extends State<QiblahCompassWidget> {
   final _compassSvg = Image.asset('assets/compass/world.png');
+
   final _needleSvg = SvgPicture.asset(
     'assets/compass/needle.svg',
     fit: BoxFit.contain,

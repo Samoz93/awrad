@@ -13,7 +13,11 @@ class AppThemes {
   static const timeTimerTextStyle =
       TextStyle(fontSize: 15, color: Colors.white);
 
-  static const wrdTitleTextStyle = TextStyle(fontSize: 20);
+  static const wrdTitleTextStyle = TextStyle(fontSize: 20, fontFamily: "gg");
+  static const wrdTitleTextStyle2 =
+      TextStyle(fontSize: 17, fontFamily: "gg", color: Colors.black);
+  static const wrdTitleTextStyle3 =
+      TextStyle(fontSize: 17, fontFamily: "ff", color: Colors.black);
   static const deleteInfoTextStyle =
       TextStyle(fontSize: 20, color: Colors.white);
 

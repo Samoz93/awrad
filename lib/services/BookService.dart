@@ -5,6 +5,7 @@ import 'package:awrad/Consts/ConstMethodes.dart';
 import 'package:awrad/Consts/DATABASECONST.dart';
 import 'package:awrad/main.dart';
 import 'package:awrad/models/BookModel.dart';
+import 'package:awrad/models/FolderModel.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:path_provider/path_provider.dart';
@@ -28,12 +29,25 @@ class BookService {
     return models..sort(_sort);
   }
 
-  int _sort(BookModel cr, BookModel cr2) {
-    if (cr.createDate == null) return 0;
-    return cr.createDate.compareTo(cr2.createDate);
+  Future<List<FolderModel>> get folderList async {
+    final data =
+        (await _db.reference().child(Folder).orderByChild("createDate").once())
+            .value;
+    if (data == null) return [];
+    final models = getMap(data)
+        .values
+        .map((e) => FolderModel.fromJson(getMap(e)))
+        .toList();
+
+    return models..sort(_sort);
   }
 
-  Future<String> getBook(BookModel book) async {
+  int _sort(dynamic cr, dynamic cr2) {
+    if (cr.createDate == null) return 0;
+    return cr['createDate'].compareTo(cr2['createDate']);
+  }
+
+  Future<String> getBook(FBookModel book) async {
     try {
       final pth = await _getBookPath(book.uid);
       final file = File(pth);

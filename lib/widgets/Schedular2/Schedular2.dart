@@ -1,4 +1,5 @@
 import 'package:awrad/Consts/ConstMethodes.dart';
+import 'package:awrad/Consts/ThemeCosts.dart';
 import 'package:awrad/widgets/Schedular2/SchedularVM.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
@@ -90,7 +91,11 @@ class CheckButton extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, constraints) => Container(
         decoration: BoxDecoration(
-          color: isSelected ? Colors.blue.withOpacity(0.2) : Colors.transparent,
+          color: isSelected
+              ? Colors.blue.withOpacity(0.2)
+              : perc > 0
+                  ? AppColors.mainColor.withOpacity(0.3)
+                  : Colors.transparent,
           border: Border.all(
               color: Colors.grey, style: BorderStyle.solid, width: 0.1),
         ),
@@ -98,6 +103,7 @@ class CheckButton extends StatelessWidget {
         child: hasPerc
             ? Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Center(
                     child: Text(
@@ -116,8 +122,9 @@ class CheckButton extends StatelessWidget {
             : Center(
                 child: Text(
                   text,
-                  style:
-                      TextStyle(color: isSelected ? Colors.blue : Colors.red),
+                  style: TextStyle(
+                    color: isSelected ? Colors.blue : Colors.red,
+                  ),
                 ),
               ),
       ),

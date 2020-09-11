@@ -16,45 +16,48 @@ class WelcomeScreed extends StatelessWidget {
   final _ctrl = PageController(initialPage: 0);
   @override
   Widget build(BuildContext context) {
-    return ViewModelBuilder<SlideViewModel>.reactive(
-      builder: (context, model, ch) {
-        if (model.hasError) return Text("model.modelError.toString()");
-        return model.isBusy
-            ? Center(
-                child: LoadingWidget(),
-              )
-            : Flex(
-                direction: Axis.vertical,
-                children: <Widget>[
-                  Flexible(
-                    flex: 15,
-                    child: PageView.builder(
-                      controller: _ctrl,
-                      itemCount: model.data.length + 1,
-                      itemBuilder: (BuildContext context, int index) {
-                        if (index == model.data.length) return FirstPage();
-                        return SlideView(
-                          model: model.data[index],
-                        );
-                      },
-                    ),
-                  ),
-                  Flexible(
-                    flex: 1,
-                    child: Center(
-                      child: SmoothPageIndicator(
+    return Directionality(
+      textDirection: TextDirection.ltr,
+      child: ViewModelBuilder<SlideViewModel>.reactive(
+        builder: (context, model, ch) {
+          if (model.hasError) return Text("model.modelError.toString()");
+          return model.isBusy
+              ? Center(
+                  child: LoadingWidget(),
+                )
+              : Flex(
+                  direction: Axis.vertical,
+                  children: <Widget>[
+                    Flexible(
+                      flex: 15,
+                      child: PageView.builder(
                         controller: _ctrl,
-                        count: model.data.length + 1,
-                        effect: WormEffect(
-                            dotColor: AppColors.mainColor,
-                            activeDotColor: AppColors.mainColorSelected),
+                        itemCount: model.data.length + 1,
+                        itemBuilder: (BuildContext context, int index) {
+                          if (index == model.data.length) return FirstPage();
+                          return SlideView(
+                            model: model.data[index],
+                          );
+                        },
                       ),
                     ),
-                  ),
-                ],
-              );
-      },
-      viewModelBuilder: () => SlideViewModel(),
+                    Flexible(
+                      flex: 1,
+                      child: Center(
+                        child: SmoothPageIndicator(
+                          controller: _ctrl,
+                          count: model.data.length + 1,
+                          effect: WormEffect(
+                              dotColor: AppColors.mainColor,
+                              activeDotColor: AppColors.mainColorSelected),
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+        },
+        viewModelBuilder: () => SlideViewModel(),
+      ),
     );
   }
 }

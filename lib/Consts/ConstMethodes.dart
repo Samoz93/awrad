@@ -89,7 +89,7 @@ List<int> get timesOfDayInt {
 final List<AzanTimeClass> _times = [
   AzanTimeClass("ثلث الليل", "Midnight", false),
   AzanTimeClass("الفجر", "Fajr", true),
-  AzanTimeClass("الضحى", "Sunrise", false),
+  AzanTimeClass("الشروق", "Sunrise", false),
   AzanTimeClass("الظهر", "Dhuhr", true),
   AzanTimeClass("العصر", "Asr", true),
   AzanTimeClass("المغرب", "Maghrib", true),

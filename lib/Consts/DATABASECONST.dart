@@ -11,6 +11,7 @@ const NOTIFICATIONBOX = "notificationBox";
 const REMINDER_BOX = "reminderBox";
 const QURAN_BOX = "Quran";
 const BOOKS = "books";
+const Folder = "book2";
 const LAST_SAVED_ID = "lastSavedId";
 const ADAN_DATA = "adan_data";
 const LAST_SAVED_SURAH = "LAST_SAVED_SURAH";

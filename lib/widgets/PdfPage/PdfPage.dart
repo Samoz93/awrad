@@ -1,7 +1,6 @@
 import 'package:awrad/Consts/ConstMethodes.dart';
 import 'package:awrad/Consts/ThemeCosts.dart';
 import 'package:awrad/widgets/PdfPage/PdfVm.dart';
-import 'package:awrad/widgets/ShareWidget.dart/ShareWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:native_pdf_view/native_pdf_view.dart';
 import 'package:stacked/stacked.dart';
