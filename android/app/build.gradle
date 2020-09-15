@@ -42,8 +42,8 @@ android {
         applicationId "com.samozstudio.awrad"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 4
-        versionName "v4"
+        versionCode 20
+        versionName "v2.1"
     }
     signingConfigs {
         release {

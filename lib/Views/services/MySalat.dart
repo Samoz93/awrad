@@ -174,6 +174,7 @@ class AdanTimesWidget extends ViewModelWidget<AdanVm> {
                         Text(
                           viewModel.adanData.timings
                               .getTIimingLocalString(e.type),
+                          style: AppThemes.azanTimeStyle,
                         ),
                         InkWell(
                           onTap: () {

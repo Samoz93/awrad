@@ -17,7 +17,8 @@ class ReminderService {
     await reminderBox.clear();
   }
 
-  ReminderModel getReminder(WrdModel wrd, {bool isAwrad = true}) {
+  ReminderModel getReminder(WrdModel wrd,
+      {bool isAwrad = true, bool isJuz = false, int juzPage = 0}) {
     ReminderModel rm = ReminderModel(
       id: wrd.uid,
       type: wrd.wrdType,
@@ -29,6 +30,8 @@ class ReminderService {
       link: wrd.link,
       isPdf: wrd.isPDF,
       pdfLink: wrd.pdfLink,
+      isJuz: isJuz,
+      juzPage: juzPage,
     );
 
     try {

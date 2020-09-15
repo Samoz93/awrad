@@ -7,8 +7,15 @@ import 'package:stacked/stacked.dart';
 
 class InstaAudioPlay extends StatefulWidget {
   final String url;
+  final String wrdName;
+  final String wrdType;
   final AssetsAudioPlayer player;
-  const InstaAudioPlay({Key key, @required this.url, @required this.player})
+  const InstaAudioPlay(
+      {Key key,
+      @required this.url,
+      @required this.player,
+      @required this.wrdType,
+      @required this.wrdName})
       : super(key: key);
 
   @override
@@ -39,7 +46,8 @@ class _InstaAudioPlayState extends State<InstaAudioPlay>
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<InstaAudioVM>.reactive(
-      viewModelBuilder: () => InstaAudioVM(widget.url, widget.player),
+      viewModelBuilder: () => InstaAudioVM(
+          widget.url, widget.player, widget.wrdName, widget.wrdType),
       disposeViewModel: true,
       builder: (ctx, model, ch) {
         return model.hasError

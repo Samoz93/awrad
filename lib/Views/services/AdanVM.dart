@@ -4,6 +4,7 @@ import 'package:awrad/services/ReminderService.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:stacked/stacked.dart';
+import 'package:vibration/vibration.dart';
 
 class AdanVm extends BaseViewModel {
   final _ser = Get.find<AdhanApi>();
@@ -15,7 +16,7 @@ class AdanVm extends BaseViewModel {
     return _allData.getAdan(_selectedDate);
   }
 
-  String get selectedDate => DateFormat.yMEd('ar').format(_selectedDate);
+  String get selectedDate => DateFormat.yMd('en').format(_selectedDate);
 
   nextDate() {
     if (!canSetNext) return;
@@ -50,6 +51,7 @@ class AdanVm extends BaseViewModel {
   }
 
   Future<void> toggleState(String type) async {
+    Vibration.vibrate(duration: 500);
     await _reminderSer.toggleAzanState(type);
     notifyListeners();
   }

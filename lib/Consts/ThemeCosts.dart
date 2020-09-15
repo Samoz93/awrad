@@ -2,8 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class AppThemes {
+  static const azanTimeStyle =
+      TextStyle(fontSize: 15, color: Colors.black, fontFamily: "ff");
+
   static const todayTimeTextStyle =
-      TextStyle(fontSize: 20, color: Colors.white);
+      TextStyle(fontSize: 20, color: Colors.white, fontFamily: "ff");
   static const navTextStyle = TextStyle(fontSize: 15, color: Colors.white);
   static const quranFahrasTitleTextStyle =
       TextStyle(fontSize: 20, color: Colors.white);
@@ -11,7 +14,7 @@ class AppThemes {
   static const azanTimeTitleTextStyle =
       TextStyle(fontSize: 25, color: Colors.white);
   static const timeTimerTextStyle =
-      TextStyle(fontSize: 15, color: Colors.white);
+      TextStyle(fontSize: 15, color: Colors.white, fontFamily: "ff");
 
   static const wrdTitleTextStyle = TextStyle(fontSize: 20, fontFamily: "gg");
   static const wrdTitleTextStyle2 =
@@ -40,7 +43,8 @@ class AppThemes {
   static final pageTitleStyle =
       TextStyle(fontSize: 30, color: AppColors.addColor);
   static const buttonTextStyle = TextStyle(fontSize: 30, color: Colors.white);
-  static const counterTextStyle = TextStyle(fontSize: 40, color: Colors.white);
+  static const counterTextStyle =
+      TextStyle(fontSize: 40, color: Colors.white, fontFamily: "ff");
 }
 
 class AppColors {

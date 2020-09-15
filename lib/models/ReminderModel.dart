@@ -32,6 +32,10 @@ class ReminderModel {
   bool isPdf;
   @HiveField(10)
   String pdfLink;
+  @HiveField(11)
+  bool isJuz;
+  @HiveField(12)
+  int juzPage;
   ReminderModel({
     this.id,
     this.isAwrad,
@@ -44,7 +48,14 @@ class ReminderModel {
     this.daysNew,
     this.isPdf,
     this.pdfLink,
+    this.isJuz,
+    this.juzPage,
   });
+
+  int get juzNumber {
+    if (isJuz) return int.parse(id.replaceAll("J", ""));
+    return -1;
+  }
 
   List<MyWeekDays> get nDay {
     final lst = DayReminderService.convertToListOfList(daysNew);
@@ -81,6 +92,8 @@ class ReminderModel {
     List<String> daysNew,
     bool isPdf,
     String pdfLink,
+    bool isJuz,
+    int juzPage,
   }) {
     return ReminderModel(
       id: id ?? this.id,
@@ -94,6 +107,8 @@ class ReminderModel {
       daysNew: daysNew ?? this.daysNew,
       isPdf: isPdf ?? this.isPdf,
       pdfLink: pdfLink ?? this.pdfLink,
+      isJuz: isJuz ?? this.isJuz,
+      juzPage: juzPage ?? this.juzPage,
     );
   }
 
@@ -110,6 +125,8 @@ class ReminderModel {
       'daysNew': daysNew,
       'isPdf': isPdf,
       'pdfLink': pdfLink,
+      'isJuz': isJuz,
+      'juzPage': juzPage,
     };
   }
 
@@ -128,6 +145,8 @@ class ReminderModel {
       daysNew: List<String>.from(map['daysNew']),
       isPdf: map['isPdf'],
       pdfLink: map['pdfLink'],
+      isJuz: map['isJuz'],
+      juzPage: map['juzPage'],
     );
   }
 
@@ -138,7 +157,7 @@ class ReminderModel {
 
   @override
   String toString() {
-    return 'ReminderModel(id: $id, isAwrad: $isAwrad, type: $type, wrdName: $wrdName, wrdText: $wrdText, notifId: $notifId, link: $link, hasSound: $hasSound, daysNew: $daysNew, isPdf: $isPdf, pdfLink: $pdfLink)';
+    return 'ReminderModel(id: $id, isAwrad: $isAwrad, type: $type, wrdName: $wrdName, wrdText: $wrdText, notifId: $notifId, link: $link, hasSound: $hasSound, daysNew: $daysNew, isPdf: $isPdf, pdfLink: $pdfLink, isJuz: $isJuz, juzPage: $juzPage)';
   }
 
   @override
@@ -156,7 +175,9 @@ class ReminderModel {
         o.hasSound == hasSound &&
         listEquals(o.daysNew, daysNew) &&
         o.isPdf == isPdf &&
-        o.pdfLink == pdfLink;
+        o.pdfLink == pdfLink &&
+        o.isJuz == isJuz &&
+        o.juzPage == juzPage;
   }
 
   @override
@@ -171,6 +192,8 @@ class ReminderModel {
         hasSound.hashCode ^
         daysNew.hashCode ^
         isPdf.hashCode ^
-        pdfLink.hashCode;
+        pdfLink.hashCode ^
+        isJuz.hashCode ^
+        juzPage.hashCode;
   }
 }

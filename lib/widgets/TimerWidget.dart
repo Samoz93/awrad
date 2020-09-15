@@ -16,12 +16,12 @@ class _TimerWidgetState extends State<TimerWidget> {
   String time = "";
   @override
   void initState() {
-    time = DateFormat.jms("ar").format(DateTime.now());
+    time = DateFormat.jms("en").format(DateTime.now());
 
     super.initState();
     timer = Timer.periodic(Duration(seconds: 1), (timer) {
       setState(() {
-        time = DateFormat.jms("ar").format(DateTime.now());
+        time = DateFormat.jms("en").format(DateTime.now());
       });
     });
   }

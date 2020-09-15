@@ -216,7 +216,10 @@ class _MyMasbahaState extends State<MyMasbaha>
                 child: Image.asset("assets/mas.png")),
             Align(
                 alignment: Alignment.center,
-                child: Text(correctedIndex != 2 ? "" : "${index - 2}"))
+                child: Text(
+                  correctedIndex != 2 ? "" : "${index - 2}",
+                  style: AppThemes.azanTimeStyle,
+                ))
           ],
         )),
       ),

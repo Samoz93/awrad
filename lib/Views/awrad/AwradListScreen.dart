@@ -34,6 +34,8 @@ class AwradListScreen extends StatelessWidget {
               final wrd = model.awrad[index];
               return ViewModelBuilder<ExpansionVM>.reactive(
                 viewModelBuilder: () => ExpansionVM(wrd: wrd),
+                onModelReady: (v) =>
+                    v.init(isAwrad: true, isJuz: false, juzPage: -1),
                 builder: (ctx, exVm, ch) {
                   if (exVm.hasError)
                     return MyErrorWidget(
@@ -93,6 +95,8 @@ class AwradListScreen extends StatelessWidget {
                                           padding: const EdgeInsets.all(8.0),
                                           child: InstaAudioPlay(
                                             url: wrd.link,
+                                            wrdType: type.typeName,
+                                            wrdName: wrd.wrdName,
                                             player: model.player,
                                           ),
                                         ),

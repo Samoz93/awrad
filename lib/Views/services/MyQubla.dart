@@ -136,7 +136,8 @@ class _QiblahCompassWidgetState extends State<QiblahCompassWidget> {
             ),
             Text(
               "${qiblahDirection.offset.toStringAsFixed(3)}°",
-              style: TextStyle(color: AppColors.addColor, fontSize: 20),
+              style: TextStyle(
+                  color: AppColors.addColor, fontSize: 35, fontFamily: "ff"),
             )
           ],
         );

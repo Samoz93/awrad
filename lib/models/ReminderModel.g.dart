@@ -26,15 +26,17 @@ class ReminderModelAdapter extends TypeAdapter<ReminderModel> {
       link: fields[6] as String,
       hasSound: fields[7] as bool,
       daysNew: (fields[8] as List)?.cast<String>(),
-    )
-      ..isPdf = fields[9] as bool
-      ..pdfLink = fields[10] as String;
+      isPdf: fields[9] as bool,
+      pdfLink: fields[10] as String,
+      isJuz: fields[11] as bool,
+      juzPage: fields[12] as int,
+    );
   }
 
   @override
   void write(BinaryWriter writer, ReminderModel obj) {
     writer
-      ..writeByte(11)
+      ..writeByte(13)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -56,7 +58,11 @@ class ReminderModelAdapter extends TypeAdapter<ReminderModel> {
       ..writeByte(9)
       ..write(obj.isPdf)
       ..writeByte(10)
-      ..write(obj.pdfLink);
+      ..write(obj.pdfLink)
+      ..writeByte(11)
+      ..write(obj.isJuz)
+      ..writeByte(12)
+      ..write(obj.juzPage);
   }
 
   @override

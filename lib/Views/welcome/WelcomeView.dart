@@ -71,53 +71,33 @@ class SlideView extends StatelessWidget {
     final media = MediaQuery.of(context).size;
     return Container(
       height: media.height,
-      child: Flex(
-        direction: Axis.vertical,
+      child: Stack(
         children: <Widget>[
-          Expanded(
-            flex: 13,
-            child: Stack(
-              children: <Widget>[
-                ExtendedImage.network(
-                  model.img,
-                  height: double.infinity,
-                  fit: BoxFit.fill,
-                ),
-                Align(
+          ExtendedImage.network(
+            model.img,
+            height: double.infinity,
+            fit: BoxFit.fill,
+          ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: LayoutBuilder(
+              builder: (context, constraints) => Container(
+                height: constraints.maxHeight * 0.3,
+                width: constraints.maxWidth,
+                child: Align(
                   alignment: Alignment.bottomCenter,
-                  child: LayoutBuilder(
-                    builder: (context, constraints) => Container(
-                      height: constraints.maxHeight * 0.3,
-                      width: constraints.maxWidth,
-                      child: Align(
-                        alignment: Alignment.bottomCenter,
-                        child: Padding(
-                          padding: const EdgeInsets.all(20.0),
-                          child: Text(
-                            model.name,
-                            style: AppThemes.titleTextStyle,
-                          ),
-                        ),
-                      ),
-                      decoration:
-                          BoxDecoration(gradient: AppThemes.linearTitle),
+                  child: Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Text(
+                      model.name,
+                      style: AppThemes.titleTextStyle,
                     ),
                   ),
-                )
-              ],
-            ),
-          ),
-          Expanded(flex: 1, child: SizedBox()),
-          Expanded(
-            flex: 5,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                model.desc,
-                textAlign: TextAlign.center,
+                ),
+                decoration: BoxDecoration(gradient: AppThemes.linearTitle),
               ),
             ),
-          )
+          ),
         ],
       ),
     );

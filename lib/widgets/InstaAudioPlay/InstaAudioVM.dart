@@ -6,9 +6,11 @@ import 'package:stacked/stacked.dart';
 
 class InstaAudioVM extends BaseViewModel {
   final String url;
+  final String wrdName;
+  final String wrdType;
   final AssetsAudioPlayer player;
 
-  InstaAudioVM(this.url, this.player);
+  InstaAudioVM(this.url, this.player, this.wrdName, this.wrdType);
 
   Widget playingWidget(AnimationController ctrl) {
     return player.builderRealtimePlayingInfos(
@@ -79,7 +81,22 @@ class InstaAudioVM extends BaseViewModel {
   open() async {
     try {
       setBusy(true);
-      await this.player.open(Audio.network(url));
+      await this.player.open(
+            Audio.network(
+              url,
+              metas: Metas(
+                artist: wrdType,
+                title: wrdName,
+                image: MetasImage.network(
+                    "https://www.i7lm.com/wp-content/uploads/2019/08/1-6.jpg"),
+              ),
+            ),
+            showNotification: true,
+            notificationSettings: NotificationSettings(
+              nextEnabled: false,
+              prevEnabled: false,
+            ),
+          );
       setBusy(false);
     } catch (e) {
       setError(e.toString());

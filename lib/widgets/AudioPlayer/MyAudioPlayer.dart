@@ -34,120 +34,137 @@ class _MyAudioPlayerState extends State<MyAudioPlayer>
     return Material(
       child: ViewModelBuilder<AudiVM>.reactive(
         viewModelBuilder: () => AudiVM(widget.pageNumber, widget.player),
-        builder: (ctx, model, child) => Container(
-          child: Flex(
-            direction: Axis.vertical,
-            children: <Widget>[
-              model.player.builderCurrent(
-                builder: (context, playing) {
-                  if (playing == null) return Text("");
-                  return Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                            " ${model.getSurahName} الآية  ${model.getAyahName}"),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: <Widget>[
-                          DropdownButton(
-                            items: model.items,
-                            value: model.reader,
-                            isDense: true,
-                            icon: Icon(Icons.arrow_drop_up),
-                            onChanged: model.changeReader,
-                          ),
-                          Text("بصوت"),
-                        ],
-                      )
-                    ],
-                  );
-                },
-              ),
-              Flexible(
-                flex: 2,
-                fit: FlexFit.tight,
-                child: Container(
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      IconButton(
-                        icon: Icon(Icons.skip_previous),
-                        onPressed: model.prev,
-                      ),
-                      IconButton(
-                        icon: Icon(Icons.fast_rewind),
-                        onPressed: model.slower,
-                      ),
-                      model.player.builderPlayerState(
-                        builder: (context, data) {
-                          final isPlaying = data == PlayerState.play;
-                          _animate(isPlaying);
-                          return AnimatedBuilder(
-                            animation: _anim,
-                            builder: (context, child) => InkWell(
-                              onTap: () {
-                                model.player.playOrPause();
-                              },
-                              child: AnimatedIcon(
-                                size: 40,
-                                icon: AnimatedIcons.play_pause,
-                                progress: _anim,
+        builder: (ctx, model, child) => model.isBusy
+            ? Center(child: CircularProgressIndicator())
+            : Container(
+                child: Flex(
+                  direction: Axis.vertical,
+                  children: <Widget>[
+                    model.player.builderCurrent(
+                      builder: (context, playing) {
+                        if (playing == null) return Text("");
+                        return Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Text(
+                                    "${model.getAyahName} ",
+                                    style: TextStyle(fontFamily: "Ff"),
+                                  ),
+                                  Text(" ${model.getSurahName}  الآية  "),
+                                ],
                               ),
                             ),
-                          );
-                        },
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: <Widget>[
+                                DropdownButton(
+                                  items: model.items,
+                                  value: model.reader,
+                                  isDense: true,
+                                  icon: Icon(Icons.arrow_drop_up),
+                                  onChanged: model.changeReader,
+                                ),
+                                Text("بصوت"),
+                              ],
+                            )
+                          ],
+                        );
+                      },
+                    ),
+                    Flexible(
+                      flex: 2,
+                      fit: FlexFit.tight,
+                      child: Container(
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: <Widget>[
+                            IconButton(
+                              icon: Icon(Icons.skip_previous),
+                              onPressed: model.prev,
+                            ),
+                            IconButton(
+                              icon: Icon(Icons.fast_rewind),
+                              onPressed: model.slower,
+                            ),
+                            model.player.builderPlayerState(
+                              builder: (context, data) {
+                                final isPlaying = data == PlayerState.play;
+                                _animate(isPlaying);
+                                return AnimatedBuilder(
+                                  animation: _anim,
+                                  builder: (context, child) => InkWell(
+                                    onTap: () {
+                                      model.player.playOrPause();
+                                    },
+                                    child: AnimatedIcon(
+                                      size: 40,
+                                      icon: AnimatedIcons.play_pause,
+                                      progress: _anim,
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                            RotatedBox(
+                                quarterTurns: 2,
+                                child: IconButton(
+                                  icon: Icon(Icons.fast_rewind),
+                                  onPressed: model.faster,
+                                )),
+                            IconButton(
+                              icon: Icon(Icons.skip_next),
+                              onPressed: model.next,
+                            )
+                          ],
+                        ),
                       ),
-                      RotatedBox(
-                          quarterTurns: 2,
-                          child: IconButton(
-                            icon: Icon(Icons.fast_rewind),
-                            onPressed: model.faster,
-                          )),
-                      IconButton(
-                        icon: Icon(Icons.skip_next),
-                        onPressed: model.next,
-                      )
-                    ],
-                  ),
+                    ),
+                    Flexible(
+                      flex: 1,
+                      fit: FlexFit.tight,
+                      child: Container(
+                        child: model.player.builderRealtimePlayingInfos(
+                          builder: (context, data) {
+                            double pre = getProgress(data);
+                            return Column(
+                              children: <Widget>[
+                                LinearProgressIndicator(
+                                  backgroundColor: AppColors.adanActive,
+                                  value: data == null ? 0.0 : pre,
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: <Widget>[
+                                    Text(
+                                      data == null
+                                          ? "00:00"
+                                          : _formatedDate(data.currentPosition),
+                                      style: TextStyle(fontFamily: "ff"),
+                                    ),
+                                    Text(
+                                      data == null
+                                          ? "00:00"
+                                          : _formatedDate(data.duration),
+                                      style: TextStyle(fontFamily: "ff"),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              Flexible(
-                flex: 1,
-                fit: FlexFit.tight,
-                child: Container(
-                  child: model.player.builderRealtimePlayingInfos(
-                    builder: (context, data) {
-                      double pre = getProgress(data);
-                      return Column(
-                        children: <Widget>[
-                          LinearProgressIndicator(
-                            backgroundColor: AppColors.adanActive,
-                            value: data == null ? 0.0 : pre,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: <Widget>[
-                              Text(data == null
-                                  ? "00:00"
-                                  : _formatedDate(data.currentPosition)),
-                              Text(data == null
-                                  ? "00:00"
-                                  : _formatedDate(data.duration)),
-                            ],
-                          ),
-                        ],
-                      );
-                    },
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
       ),
     );
   }

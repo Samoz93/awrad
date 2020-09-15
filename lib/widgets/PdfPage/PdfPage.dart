@@ -76,7 +76,9 @@ class PdfPage extends StatelessWidget {
                           child: Text(
                             "${model.page}/${model.ctrl.pagesCount}",
                             style: TextStyle(
-                                fontSize: 20, color: AppColors.mainColor),
+                                fontSize: 20,
+                                color: AppColors.mainColor,
+                                fontFamily: "ff"),
                           ),
                         )
                       ],

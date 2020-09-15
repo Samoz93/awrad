@@ -16,20 +16,59 @@ class AudiVM extends BaseViewModel {
   QuranModel _quran;
   final _api = Get.find<QuranApi>();
   final AssetsAudioPlayer player;
+  String wantedSura;
   AudiVM(this.pageNumber, this.player) {
     init();
   }
 
   _getReaders() async {
+    setBusy(true);
     _readers = await _api.readersList;
     if (_quran == null) {
       _quran = await _api.quran;
     }
+    final availableSura =
+        _quran.data.surahs.fold<Set<String>>(Set(), (p, element) {
+      final aya = element.ayahs.where((a) => a.page == pageNumber);
+      if (aya.isNotEmpty) return p..add(element.name);
+      return p;
+    }).toList();
+    final _playingSound = await _playingSura;
+    if (availableSura.length > 1) {
+      if (_playingSound.isNotEmpty) {
+        wantedSura = _playingSound;
+      } else {
+        wantedSura = await Get.dialog(
+          Directionality(
+            textDirection: TextDirection.rtl,
+            child: AlertDialog(
+              title: Text("اختر سورة"),
+              content: Text(
+                  "يوجد اكثر من سورة في الصفحة الحالية , اي السور تود سماعها ؟"),
+              actions: <Widget>[
+                ...availableSura.map((e) => FlatButton(
+                      child: Text(e),
+                      onPressed: () {
+                        Get.back(result: e);
+                      },
+                    ))
+              ],
+            ),
+          ),
+        );
+        if (wantedSura == null || wantedSura.isEmpty)
+          wantedSura = availableSura.first;
+      }
+    } else {
+      wantedSura = availableSura.first;
+    }
+
     data = _quran.data.surahs.fold<List<Ayahs>>([], (p, element) {
       final aya = element.ayahs.where((a) => a.page == pageNumber);
-      return p..addAll(aya);
+      if (element.name == wantedSura) return p..addAll(aya);
+      return p;
     }).toList();
-    notifyListeners();
+    setBusy(false);
   }
 
   bool get _shouldStopPlaying {
@@ -42,20 +81,52 @@ class AudiVM extends BaseViewModel {
     return firstPlaying != firstInList;
   }
 
+  Future<String> get _playingSura async {
+    if (player == null || player.current == null) return "";
+    if (player.playlist.isNullOrBlank) return "";
+    final firstPlaying = (await player.realtimePlayingInfos.first).current;
+    if (firstPlaying == null) return "";
+    final runningAudio = firstPlaying.audio.audio.path;
+    final ayaNumber = runningAudio.substring(
+        runningAudio.lastIndexOf("/") + 1, runningAudio.length);
+    final g = _quran.data.surahs
+        .where((element) =>
+            element.ayahs.where((n) => n.page == pageNumber).isNotEmpty)
+        .toList();
+    final aya = g.firstWhere(
+        (element) => element.ayahs.where((x) {
+              return x.number.toString() == ayaNumber;
+            }).isNotEmpty,
+        orElse: () => null);
+    final isPlaying = (await player.playerState.first) == PlayerState.play;
+    if (!isPlaying) return "";
+    return aya == null ? "" : aya.name;
+  }
+
   init() async {
     try {
       await _getReaders();
-      log(pageNumber.toString());
-
       if (_shouldStopPlaying) {
         await player.stop();
-        final urlList =
-            data.map((e) => Audio.network(getPath(e.number, reader))).toList();
+        final urlList = data
+            .map(
+              (e) => Audio.network(
+                getPath(e.number, reader),
+                metas: Metas(
+                    artist: wantedSura,
+                    album: readerAr,
+                    image: MetasImage.network(
+                        "https://www.alislam.org/wp-content/uploads/2018/04/quran.jpg"),
+                    title: "الاية ${e.numberInSurah}"),
+              ),
+            )
+            .toList();
 
         player.open(
           Playlist(audios: urlList, startIndex: 0),
           loopMode: LoopMode.playlist,
-          showNotification: false,
+          showNotification: true,
+
           headPhoneStrategy: HeadPhoneStrategy.pauseOnUnplug,
           // notificationSettings: NotificationSettings(
           //   playPauseEnabled: true,
@@ -92,8 +163,10 @@ class AudiVM extends BaseViewModel {
       .toList();
 
   changeReader(val) async {
+    setBusy(true);
     await _api.setReader(val);
-    init();
+    await init();
+    setBusy(false);
   }
 
   faster() async {

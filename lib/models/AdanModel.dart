@@ -158,7 +158,7 @@ class Timings {
 
   getTIimingLocalString(String timing) {
     try {
-      return DateFormat.jm("ar").format(getTimingDateTime(timing));
+      return DateFormat.jm("en").format(getTimingDateTime(timing));
     } catch (e) {
       log(e.toString());
     }

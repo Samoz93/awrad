@@ -8,11 +8,10 @@ import 'package:get/get.dart';
 import 'package:stacked/stacked.dart';
 
 class ExpansionVM extends BaseViewModel {
-  ExpansionVM({@required this.wrd, this.isAwrad = true}) {
-    _init();
-  }
-  _init() {
-    _rm = _ser.getReminder(wrd, isAwrad: isAwrad);
+  ExpansionVM({@required this.wrd});
+  init({isAwrad = true, bool isJuz = false, int juzPage = -1}) {
+    _rm =
+        _ser.getReminder(wrd, isAwrad: isAwrad, isJuz: isJuz, juzPage: juzPage);
     _allList = DayReminderService.convertToListOfList(_rm.daysNew);
     notifyListeners();
   }
@@ -45,7 +44,6 @@ class ExpansionVM extends BaseViewModel {
   }
 
   final WrdModel wrd;
-  final isAwrad;
   final _ser = Get.find<ReminderService>();
   ReminderModel _rm;
 
@@ -93,25 +91,6 @@ class ExpansionVM extends BaseViewModel {
     }
   }
 
-  // void addDay(int index) {
-  //   final day = daysOfWeek2[index];
-  //   if (_rm.days.contains(day.dateWeek)) {
-  //     _rm.days.remove(day.dateWeek);
-  //   } else {
-  //     _rm.days.add(day.dateWeek);
-  //   }
-  //   notifyListeners();
-  // }
-
-  // void addTime(int index) {
-  //   if (_rm.times.contains(index)) {
-  //     _rm.times.remove(index);
-  //   } else {
-  //     _rm.times.add(index);
-  //   }
-  //   notifyListeners();
-  // }
-
   _handleError(e) {
     showSnackBar("خطأ", "$e", isErr: true);
   }
@@ -124,7 +103,7 @@ class ExpansionVM extends BaseViewModel {
   Future<void> deleteNotification(String uid, {bool showNotification}) async {
     try {
       await _ser.deleteDuplicatedReminders(uid, showNotification: true);
-      _init();
+      init();
     } catch (e) {
       _handleError(e);
     }

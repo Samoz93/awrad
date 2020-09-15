@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:awrad/Consts/ThemeCosts.dart';
 import 'package:awrad/Views/quran/QuranNewVM.dart';
@@ -12,7 +14,9 @@ import 'package:stacked/stacked.dart';
 
 class QuranNewScreen extends StatefulWidget {
   final String suraName;
-  const QuranNewScreen({Key key, this.suraName = ""}) : super(key: key);
+  final int juzNumber;
+  const QuranNewScreen({Key key, this.suraName = "", this.juzNumber = -1})
+      : super(key: key);
   static const route = "QuranNewScreen";
 
   @override
@@ -47,6 +51,7 @@ class _QuranNewScreenState extends State<QuranNewScreen> {
                     itemCount: model.quran.data.pagesLength,
                     onPageChanged: (index) {
                       model.currentPageNumber = index;
+                      log(model.selectedSurah.name);
                     },
                     itemBuilder: (BuildContext context, int index) {
                       int newIndex = model.quran.data.quranPages[index] + 3;
@@ -114,7 +119,8 @@ class _QuranNewScreenState extends State<QuranNewScreen> {
         );
       },
       viewModelBuilder: () => QuranNewVM(),
-      onModelReady: (vv) => vv.initData(suraName: widget.suraName),
+      onModelReady: (vv) =>
+          vv.initData(suraName: widget.suraName, juzNumber: widget.juzNumber),
       disposeViewModel: true,
     );
   }
@@ -138,8 +144,9 @@ class QuranBar extends ViewModelWidget<QuranNewVM> {
           },
         ),
         _getTab(
-          txt: "الصفحة ${model.currentPageNumber}",
+          txt: "الصفحة",
           img: "dd.png",
+          pageNumber: model.currentPageNumber,
           isMiddle: true,
           onTap: () {
             Get.bottomSheet(
@@ -149,13 +156,26 @@ class QuranBar extends ViewModelWidget<QuranNewVM> {
                     topRight: Radius.circular(20)),
                 child: Container(
                   color: AppColors.adanNormal,
-                  child: ListView(
-                    children: <Widget>[
-                      ..._getData(model, model.selectedSurah, isCurrent: true),
-                      ..._getData(model, model.nextSurah, isCurrent: false),
-                      ..._getData(model, model.extraNextSurah),
-                    ],
-                  ),
+                  child: model.isJuz
+                      ? ListView(
+                          children: <Widget>[
+                            ..._getJuzData(model, model.currentJuzNumber,
+                                isCurrent: true),
+                            ..._getJuzData(model, model.nextJuz,
+                                isCurrent: true),
+                            ..._getJuzData(model, model.extraNexJuz,
+                                isCurrent: true),
+                          ],
+                        )
+                      : ListView(
+                          children: <Widget>[
+                            ..._getData(model, model.selectedSurah,
+                                isCurrent: true),
+                            ..._getData(model, model.nextSurah,
+                                isCurrent: false),
+                            ..._getData(model, model.extraNextSurah),
+                          ],
+                        ),
                 ),
               ),
             );
@@ -204,13 +224,41 @@ class QuranBar extends ViewModelWidget<QuranNewVM> {
     return [SizedBox.shrink()];
   }
 
+  List<Widget> _getJuzData(QuranNewVM model, int juzNumber,
+      {bool isCurrent = true}) {
+    // final text = isCurrent ? "السورة الحالية " : "السورة التالية ";
+    return [
+      Text(
+        "الجزء $juzNumber",
+        style: AppThemes.miniFahrasTextStyle,
+        textAlign: TextAlign.center,
+      ),
+      ...model.getJuzPages(juzNumber).map(
+            (e) => InkWell(
+              onTap: () {
+                model.ctrl.animateToPage(model.indexOfPage(e),
+                    duration: Duration(milliseconds: 200),
+                    curve: Curves.easeInCirc);
+
+                Get.back();
+              },
+              child: SuraWidget(
+                name: "الصفحة $e",
+                info: model.juzAyas(juzNumber).length.toString(),
+              ),
+            ),
+          ),
+    ];
+  }
+
   _getTab(
       {String txt,
       String img,
       Function onTap,
       bool isMiddle = false,
       isbookMarked = false,
-      isClose = false}) {
+      isClose = false,
+      int pageNumber = -1}) {
     return Expanded(
       flex: 1,
       child: InkWell(
@@ -228,10 +276,19 @@ class QuranBar extends ViewModelWidget<QuranNewVM> {
                       width: 20,
                       color: isbookMarked ? AppColors.mainColor : Colors.white,
                     ),
-              Text(
-                txt,
-                style: AppThemes.quranBarTextStyle,
-              ),
+              pageNumber > -1
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text("$txt  "),
+                        Text(
+                          pageNumber.toString(),
+                          style: AppThemes.timeTimerTextStyle
+                              .copyWith(color: Colors.black),
+                        )
+                      ],
+                    )
+                  : Text(txt),
               isClose
                   ? SizedBox()
                   : Image.asset(
@@ -270,10 +327,16 @@ class SuraWidget extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              Text("عدد الآيات $info"),
+              Text(
+                "عدد الآيات $info",
+                style:
+                    AppThemes.timeTimerTextStyle.copyWith(color: Colors.black),
+              ),
               Text(
                 "$name",
                 overflow: TextOverflow.ellipsis,
+                style:
+                    AppThemes.timeTimerTextStyle.copyWith(color: Colors.black),
               ),
             ],
           ),

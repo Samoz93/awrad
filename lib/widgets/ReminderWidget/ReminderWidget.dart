@@ -58,7 +58,9 @@ class _ReminderWidgetState extends State<ReminderWidget> {
                                   ? Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: InstaAudioPlay(
+                                        wrdType: "أوراد",
                                         url: model.reminder.link,
+                                        wrdName: model.reminder.wrdName,
                                         player: player,
                                       ),
                                     )
@@ -83,7 +85,11 @@ class _ReminderWidgetState extends State<ReminderWidget> {
                   } else
                     Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => QuranNewScreen(
-                        suraName: model.reminder.wrdName,
+                        suraName:
+                            model.reminder.isJuz ? '' : model.reminder.wrdName,
+                        juzNumber: model.reminder.isJuz
+                            ? model.reminder.juzNumber
+                            : -1,
                       ),
                     ));
                 },
@@ -140,7 +146,10 @@ class _ReminderWidgetState extends State<ReminderWidget> {
                                         : Icons.library_books),
                                   ),
                                   Text(
-                                    model.reminder.wrdName,
+                                    !model.reminder.isAwrad &&
+                                            model.reminder.isJuz
+                                        ? "الجزء ${model.reminder.juzNumber}"
+                                        : model.reminder.wrdName,
                                     style: AppThemes.wrdTitleTextStyle,
                                   ),
                                 ],

@@ -8,7 +8,17 @@ class WrdModel {
   String pdfLink;
   bool isPDF;
   num createDate;
-  WrdModel({this.uid, this.wrdDesc, this.wrdName, this.wrdType});
+  WrdModel({
+    this.uid,
+    this.wrdDesc,
+    this.wrdName,
+    this.wrdType,
+    this.hasSound,
+    this.link,
+    this.pdfLink,
+    this.isPDF,
+    this.createDate,
+  });
 
   WrdModel.fromJson(Map<String, dynamic> json) {
     uid = json['uid'];
@@ -32,5 +42,10 @@ class WrdModel {
     data['link'] = this.hasSound ?? "";
 
     return data;
+  }
+
+  @override
+  String toString() {
+    return 'WrdModel(uid: $uid, wrdDesc: $wrdDesc, wrdName: $wrdName, wrdType: $wrdType, hasSound: $hasSound, link: $link, pdfLink: $pdfLink, isPDF: $isPDF, createDate: $createDate)';
   }
 }
