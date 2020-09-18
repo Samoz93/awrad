@@ -105,6 +105,7 @@ class InstaAudioVM extends BaseViewModel {
             showNotification: true,
             notificationSettings: NotificationSettings(
               nextEnabled: false,
+              seekBarEnabled: true,
               prevEnabled: false,
             ),
           );

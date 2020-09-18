@@ -27,7 +27,7 @@ class QuranNewVM extends BaseViewModel {
   }
 
   int get extraNexJuz {
-    if (currentJuzNumber >= 30) return -1;
+    if (currentJuzNumber >= 29) return -1;
     return currentJuzNumber + 2;
   }
 

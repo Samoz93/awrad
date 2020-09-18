@@ -227,6 +227,7 @@ class QuranBar extends ViewModelWidget<QuranNewVM> {
   List<Widget> _getJuzData(QuranNewVM model, int juzNumber,
       {bool isCurrent = true}) {
     // final text = isCurrent ? "السورة الحالية " : "السورة التالية ";
+    if (juzNumber < 0) return [SizedBox.shrink()];
     return [
       Text(
         "الجزء $juzNumber",
