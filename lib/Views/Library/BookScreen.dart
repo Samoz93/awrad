@@ -25,6 +25,7 @@ class BookScreen extends StatelessWidget {
           link: book.bookLink,
           name: book.name,
           uid: book.uid,
+          soundLink: "",
         ),
         child: Center(
           child: ViewModelBuilder<BookVm>.reactive(

@@ -12,6 +12,7 @@ import 'package:awrad/widgets/Myhtml.dart';
 import 'package:awrad/widgets/PdfPage/PdfPage.dart';
 import 'package:awrad/widgets/ShareWidget.dart/ShareWidget.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:stacked/stacked.dart';
 
 class AwradListScreen extends StatelessWidget {
@@ -67,6 +68,28 @@ class AwradListScreen extends StatelessWidget {
                           wrd.isPDF
                               ? InkWell(
                                   onTap: () {
+                                    if (wrd.pdfLink == null ||
+                                        wrd.pdfLink.isEmpty) {
+                                      return Get.dialog(
+                                        Directionality(
+                                          textDirection: TextDirection.rtl,
+                                          child: AlertDialog(
+                                            title: Text("خطأ"),
+                                            content: Text(
+                                                "الورد غير متوفر حالياً,سيتم إضافته قريباً !!"),
+                                            actions: <Widget>[
+                                              FlatButton(
+                                                child: Text("تمام"),
+                                                onPressed: () {
+                                                  model.reportMissing(wrd);
+                                                  Get.back();
+                                                },
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      );
+                                    }
                                     Navigator.of(context, rootNavigator: true)
                                         .push(MaterialPageRoute(
                                       builder: (context) => PdfPage(
@@ -142,6 +165,7 @@ class AwradListScreen extends StatelessWidget {
       isPdf: wrd.isPDF,
       link: wrd.pdfLink,
       uid: wrd.uid,
+      soundLink: wrd.hasSound ? wrd.link : "",
     );
   }
 }

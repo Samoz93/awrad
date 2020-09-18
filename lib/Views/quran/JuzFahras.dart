@@ -1,7 +1,6 @@
 import 'package:awrad/Consts/ConstMethodes.dart';
 import 'package:awrad/Consts/ThemeCosts.dart';
 import 'package:awrad/Views/quran/QuranNewVM.dart';
-import 'package:awrad/Views/welcome/FirstPage.dart';
 import 'package:awrad/models/AwradModel.dart';
 import 'package:awrad/widgets/AlarmOption/ExpansionVM.dart';
 import 'package:awrad/widgets/Schedular2/Schedular2.dart';

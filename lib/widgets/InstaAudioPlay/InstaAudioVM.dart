@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:awrad/Consts/ThemeCosts.dart';
 import 'package:awrad/widgets/LoadingWidget.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
@@ -61,9 +64,13 @@ class InstaAudioVM extends BaseViewModel {
                   angle: ctrl.value,
                   child: ch,
                 ),
-                child: Icon(
-                  (isPlaying && isTheSameFile) ? Icons.stop : Icons.play_arrow,
-                  color: AppColors.addColor,
+                child: Center(
+                  child: Icon(
+                    (isPlaying && isTheSameFile)
+                        ? _getIcon(stop: true)
+                        : _getIcon(stop: false),
+                    color: AppColors.addColor,
+                  ),
                 ),
               ),
             ),
@@ -76,6 +83,10 @@ class InstaAudioVM extends BaseViewModel {
             : isPlaying ? player.pause() : player.play();
       },
     );
+  }
+
+  _getIcon({bool stop = false}) {
+    return stop ? Icons.stop : Icons.play_arrow;
   }
 
   open() async {

@@ -70,4 +70,8 @@ class AwradService {
         .value;
     return WrdModel.fromJson(Map<String, String>.from(data));
   }
+
+  reportMissingWrd(WrdModel wrd) {
+    _db.reference().child(MissingWrd).child(wrd.uid).update(wrd.toJson());
+  }
 }

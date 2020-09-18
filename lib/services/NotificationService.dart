@@ -109,12 +109,16 @@ class NotificationService {
         'قناة الأوراد',
         'هذه القناة مختصة لإظهار الاوراد المحفوظة',
         styleInformation: bigTextStyleInformation,
+        playSound: true,
+        enableVibration: true,
       );
     else
       androidPlatformChannelSpecifics = AndroidNotificationDetails(
         'wrdChannal',
         'قناة الأوراد',
         'هذه القناة مختصة لإظهار الاوراد المحفوظة',
+        playSound: true,
+        enableVibration: true,
       );
 
     var iOSPlatformChannelSpecifics = IOSNotificationDetails();

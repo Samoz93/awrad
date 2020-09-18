@@ -31,4 +31,8 @@ class AwradVM extends BaseViewModel {
     player.dispose();
     super.dispose();
   }
+
+  reportMissing(WrdModel wrd) {
+    ser.reportMissingWrd(wrd);
+  }
 }

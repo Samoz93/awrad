@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:awrad/Views/quran/QuranNewVM.dart';
+import 'package:awrad/Views/services/SettingService.dart';
 import 'package:awrad/models/ReceivedNotification.dart';
 import 'package:awrad/services/AdhanApi.dart';
 import 'package:awrad/services/BookService.dart';
@@ -30,6 +31,7 @@ setupLocator() {
   Get.lazyPut<LocationSerivce>(() => LocationSerivce());
   Get.lazyPut<AdhanApi>(() => AdhanApi());
   Get.lazyPut<QuranNewVM>(() => QuranNewVM());
+  Get.lazyPut<SettingService>(() => SettingService());
 }
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =

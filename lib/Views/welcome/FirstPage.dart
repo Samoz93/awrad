@@ -162,7 +162,10 @@ class FirstPage extends StatelessWidget {
                           padding: const EdgeInsets.all(20.0),
                           child: FittedBox(
                             fit: BoxFit.fitWidth,
-                            child: Text(_getText(i)),
+                            child: Text(
+                              _getText(i),
+                              textAlign: TextAlign.center,
+                            ),
                           ),
                         ),
                       ),

@@ -21,6 +21,8 @@ getSvgIcon(String name, {double size, Color color}) {
   );
 }
 
+final shareLink = "http://onelink.to/jy9wut";
+
 Map<String, dynamic> getMap(data) {
   return Map<String, dynamic>.from(data);
 }

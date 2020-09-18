@@ -1,14 +1,17 @@
 import 'package:awrad/Consts/DATABASECONST.dart';
 import 'package:awrad/Consts/ThemeCosts.dart';
 import 'package:awrad/Views/MainPage.dart';
+import 'package:awrad/Views/services/SettingService.dart';
 
 import 'package:awrad/models/ReminderModel.dart';
+import 'package:awrad/models/SettingsModel.dart';
 import 'package:awrad/services/NotificationService.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:provider/provider.dart';
 
 import 'base/locator.dart';
 
@@ -78,20 +81,24 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      title: 'أذكار الصالحين',
-      navigatorKey: _nab,
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primaryColor: AppColors.mainColorSelected,
-        accentColor: AppColors.mainColor,
-        fontFamily: "gg",
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      home: Directionality(
-        textDirection: TextDirection.rtl,
-        child: MainPage(),
+    return StreamProvider<SettingMode>(
+      create: (context) => Get.find<SettingService>().settings,
+      initialData: SettingMode(openShare: false),
+      builder: (context, child) => GetMaterialApp(
+        title: 'أذكار الصالحين',
+        navigatorKey: _nab,
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          primaryColor: AppColors.mainColorSelected,
+          accentColor: AppColors.mainColor,
+          fontFamily: "gg",
+          primarySwatch: Colors.blue,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+        ),
+        home: Directionality(
+          textDirection: TextDirection.rtl,
+          child: MainPage(),
+        ),
       ),
     );
   }

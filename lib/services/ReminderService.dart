@@ -84,10 +84,17 @@ class ReminderService {
   }
 
   Future<void> toggleAzanState(String azanType) async {
-    final crntState = getAzanReminderState(azanType);
-    if (crntState == "on") await _setAzanReminderState(azanType, "silent");
-    if (crntState == "silent") await _setAzanReminderState(azanType, "off");
-    if (crntState == "off") await _setAzanReminderState(azanType, "on");
+    await _setAzanReminderState(azanType, nextToggleOption(azanType));
     _notiSer.scheduleAzanTimes();
+  }
+
+  String nextToggleOption(String azanType) {
+    final crntState = getAzanReminderState(azanType);
+    String nextType = "";
+    if (crntState == "on") nextType = "silent";
+    if (crntState == "silent") nextType = "off";
+    if (crntState == "off") nextType = "on";
+
+    return nextType;
   }
 }

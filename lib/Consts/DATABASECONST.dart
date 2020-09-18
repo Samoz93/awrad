@@ -21,3 +21,5 @@ const LAST_AZAN_SCHEDULE = "LAST_AZAN_SCHEDULE";
 const LAST_AWRAD_SCHEDULE = "LAST_AWRAD_SCHEDULE";
 const AZAN_MEHODE = "AZAN_MEHODE";
 const SIGNS_AZAN = "SIGNS_AZAN";
+const SETTING_DB = "settings";
+const MissingWrd = "missings";

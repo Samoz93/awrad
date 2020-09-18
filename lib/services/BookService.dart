@@ -94,9 +94,38 @@ class BookService {
     }
   }
 
+  Future<String> downloadSound({String uid, String link}) async {
+    try {
+      final pth = await _getSoundPath(uid);
+      final file = File(pth);
+      if (file.existsSync()) {
+        _progress.add(1.0);
+        return pth;
+      }
+      hasActiveDownload = true;
+
+      await dio.download(
+        link,
+        pth,
+        onReceiveProgress: (count, total) => _progress.sink.add(count / total),
+      );
+
+      return pth;
+    } catch (e) {
+      return '';
+    } finally {
+      hasActiveDownload = false;
+    }
+  }
+
   Future<String> _getBookPath(String uid) async {
     final Directory pth = await getTemporaryDirectory();
     return "${pth.path}/$uid.pdf";
+  }
+
+  Future<String> _getSoundPath(String uid) async {
+    final Directory pth = await getTemporaryDirectory();
+    return "${pth.path}/$uid.mp3";
   }
 
   Future<void> savePage(String uid, int page) async {

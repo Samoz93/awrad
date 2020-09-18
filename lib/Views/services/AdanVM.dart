@@ -1,3 +1,4 @@
+import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:awrad/models/AdanModel.dart';
 import 'package:awrad/services/AdhanApi.dart';
 import 'package:awrad/services/ReminderService.dart';
@@ -50,8 +51,16 @@ class AdanVm extends BaseViewModel {
     return _reminderSer.getAzanReminderState(azanType);
   }
 
+  final _audipPl = AssetsAudioPlayer.newPlayer();
   Future<void> toggleState(String type) async {
-    Vibration.vibrate(duration: 500);
+    final t = _reminderSer.nextToggleOption(type);
+    if (t == "on")
+      _audipPl.open(
+        Audio("assets/tick.mp3"),
+        autoStart: true,
+        forceOpen: true,
+      );
+    if (t != "off") Vibration.vibrate(duration: 500);
     await _reminderSer.toggleAzanState(type);
     notifyListeners();
   }
